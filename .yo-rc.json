@@ -1,0 +1,33 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "authenticationType": "jwt",
+    "baseName": "legal",
+    "buildTool": "maven",
+    "cacheProvider": "ehcache",
+    "clientFramework": "angular",
+    "clientTestFrameworks": [],
+    "clientTheme": "none",
+    "creationTimestamp": 1786088823278,
+    "databaseType": "sql",
+    "defaultCommand": "app",
+    "devDatabaseType": "h2Disk",
+    "enableHibernateCache": true,
+    "enableTranslation": false,
+    "entities": [],
+    "feignClient": null,
+    "jhipsterVersion": "9.2.0",
+    "jwtSecretKey": "NzZlMWY3YzI5ZmE5ZjlhYTA3MTE5NGU4MWI1NzI3NDM1ZGI0Y2U1ODlkMGI5ZjQ2NTVjNzQzMzU3ZDJhNDJjNDVlODk5OGViZjc3MDdlN2M4YzhlOTU3NGQzNmIzOTcyOWFmNGM1OTM0OGQ1ZWQ2NGRhMjQ0NjNiMzIyMzA4NGM=",
+    "microfrontend": null,
+    "microfrontends": [],
+    "nativeLanguage": "en",
+    "packageName": "com.lds",
+    "prodDatabaseType": "mariadb",
+    "reactive": false,
+    "serverPort": null,
+    "serviceDiscoveryType": null,
+    "syncUserWithIdp": null,
+    "testFrameworks": [],
+    "withAdminUi": false
+  }
+}
