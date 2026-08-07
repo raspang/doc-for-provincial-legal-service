@@ -1,0 +1,24 @@
+{
+  "annotations": {
+    "changelogDate": "20260807075453"
+  },
+  "applications": ["*"],
+  "documentation": "Defines the status of a document, e.g., \"Pending\", \"Filed\", \"Done\".",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "color",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "DocumentStatus",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

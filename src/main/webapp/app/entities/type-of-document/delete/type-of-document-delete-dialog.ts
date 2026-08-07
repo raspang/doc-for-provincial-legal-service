@@ -1,0 +1,32 @@
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal';
+
+import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
+import { AlertError } from 'app/shared/alert/alert-error';
+import { TypeOfDocumentService } from '../service/type-of-document.service';
+import { ITypeOfDocument } from '../type-of-document.model';
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './type-of-document-delete-dialog.html',
+  imports: [FormsModule, FontAwesomeModule, AlertError],
+})
+export class TypeOfDocumentDeleteDialog {
+  typeOfDocument?: ITypeOfDocument;
+
+  protected readonly typeOfDocumentService = inject(TypeOfDocumentService);
+  protected readonly activeModal = inject(NgbActiveModal);
+
+  cancel(): void {
+    this.activeModal.dismiss();
+  }
+
+  confirmDelete(id: number): void {
+    this.typeOfDocumentService.delete(id).subscribe(() => {
+      this.activeModal.close(ITEM_DELETED_EVENT);
+    });
+  }
+}

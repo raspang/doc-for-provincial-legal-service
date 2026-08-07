@@ -1,0 +1,9 @@
+export enum TransactionType {
+  SIMPLE = 'SIMPLE',
+
+  COMPLEX = 'COMPLEX',
+
+  HIGHLY_TECHNICAL = 'HIGHLY_TECHNICAL',
+
+  NOT_APPLICABLE = 'NOT_APPLICABLE',
+}

@@ -1,0 +1,151 @@
+<div>
+  <h2 id="page-heading" data-cy="DocumentHistoryHeading">
+    <span>Document Histories</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
+        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined" />
+        <span>Refresh list</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <jhi-filter [filters]="filters" />
+
+  @if (documentHistories().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Document Histories found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="documentId">
+              <div class="d-flex">
+                <span>Document Id</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="documentType">
+              <div class="d-flex">
+                <span>Document Type</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="action">
+              <div class="d-flex">
+                <span>Action</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="changedBy">
+              <div class="d-flex">
+                <span>Changed By</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="timestamp">
+              <div class="d-flex">
+                <span>Timestamp</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="previousValue">
+              <div class="d-flex">
+                <span>Previous Value</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="newValue">
+              <div class="d-flex">
+                <span>New Value</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="remarks">
+              <div class="d-flex">
+                <span>Remarks</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (documentHistory of documentHistories(); track trackId(documentHistory)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/document-history', documentHistory.id, 'view']">{{ documentHistory.id }}</a>
+              </td>
+              <td>{{ documentHistory.documentId }}</td>
+              <td>
+                {{
+                  { null: '', RECEIVED_DOCUMENT: 'RECEIVED_DOCUMENT', DOCUMENT_REFERENCE: 'DOCUMENT_REFERENCE' }[
+                    documentHistory.documentType ?? 'null'
+                  ]
+                }}
+              </td>
+              <td>{{ documentHistory.action }}</td>
+              <td>{{ documentHistory.changedBy }}</td>
+              <td>{{ documentHistory.timestamp | formatMediumDatetime }}</td>
+              <td>{{ documentHistory.previousValue }}</td>
+              <td>{{ documentHistory.newValue }}</td>
+              <td>{{ documentHistory.remarks }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/document-history', documentHistory.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye" />
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (documentHistories().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page(), totalItems: totalItems(), itemsPerPage: itemsPerPage() }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems()"
+          [page]="page()"
+          [pageSize]="itemsPerPage()"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        />
+      </div>
+    </div>
+  }
+</div>

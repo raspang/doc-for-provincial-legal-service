@@ -1,0 +1,23 @@
+{
+  "annotations": {
+    "changelogDate": "20260807075451"
+  },
+  "applications": ["*"],
+  "documentation": "Represents an office or department within the organization.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "shortName",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Office",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

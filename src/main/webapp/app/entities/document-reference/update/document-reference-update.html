@@ -1,0 +1,163 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-document-reference-heading" data-cy="DocumentReferenceCreateUpdateHeading">Create or edit a Document Reference</h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let dateRef = editForm.get('date')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_date">Date</label>
+          <div class="d-flex">
+            <input
+              id="field_date"
+              data-cy="date"
+              type="datetime-local"
+              class="form-control"
+              name="date"
+              formControlName="date"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (dateRef.invalid && (dateRef.dirty || dateRef.touched)) {
+            <div>
+              @if (dateRef.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!dateRef.errors?.datetimelocal">This field should be a date and time.</small>
+            </div>
+          }
+        </div>
+
+        @let referenceNoRef = editForm.get('referenceNo')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_referenceNo">Reference No</label>
+          <input
+            type="text"
+            class="form-control"
+            name="referenceNo"
+            id="field_referenceNo"
+            data-cy="referenceNo"
+            formControlName="referenceNo"
+          />
+          @if (referenceNoRef.invalid && (referenceNoRef.dirty || referenceNoRef.touched)) {
+            <div></div>
+          }
+        </div>
+
+        @let documentTitleRef = editForm.get('documentTitle')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_documentTitle">Document Title</label>
+          <input
+            type="text"
+            class="form-control"
+            name="documentTitle"
+            id="field_documentTitle"
+            data-cy="documentTitle"
+            formControlName="documentTitle"
+          />
+          @if (documentTitleRef.invalid && (documentTitleRef.dirty || documentTitleRef.touched)) {
+            <div>
+              @if (documentTitleRef.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_author">Author</label>
+          <input type="text" class="form-control" name="author" id="field_author" data-cy="author" formControlName="author" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dateReleased">Date Released</label>
+          <div class="d-flex">
+            <input
+              id="field_dateReleased"
+              data-cy="dateReleased"
+              type="datetime-local"
+              class="form-control"
+              name="dateReleased"
+              formControlName="dateReleased"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_submittedToSirKing">Submitted To Sir King</label>
+          <div class="d-flex">
+            <input
+              id="field_submittedToSirKing"
+              data-cy="submittedToSirKing"
+              type="datetime-local"
+              class="form-control"
+              name="submittedToSirKing"
+              formControlName="submittedToSirKing"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_remarks">Remarks</label>
+          <input type="text" class="form-control" name="remarks" id="field_remarks" data-cy="remarks" formControlName="remarks" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_typeOfDocument">Type Of Document</label>
+          <select
+            class="form-control"
+            id="field_typeOfDocument"
+            data-cy="typeOfDocument"
+            name="typeOfDocument"
+            formControlName="typeOfDocument"
+            [compareWith]="compareTypeOfDocument"
+          >
+            @if (!editForm.get('typeOfDocument')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (typeOfDocumentOption of typeOfDocumentsSharedCollection(); track $index) {
+              <option [ngValue]="typeOfDocumentOption">{{ typeOfDocumentOption.name }}</option>
+            }
+          </select>
+        </div>
+        @if (
+          editForm.get(['typeOfDocument'])!.invalid &&
+          (editForm.get(['typeOfDocument'])!.dirty || editForm.get(['typeOfDocument'])!.touched)
+        ) {
+          <div>
+            @if (editForm.get(['typeOfDocument'])?.errors?.required) {
+              <small class="form-text text-danger">This field is required.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban" />&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving()"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save" />&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

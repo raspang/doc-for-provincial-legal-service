@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity ReceivedDocument.
+    -->
+    <changeSet id="20260807075446-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="requested_action_id"
+                                 baseTableName="received_document"
+                                 constraintName="fk_received_document__requested_action_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="requested_action"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="type_of_document_id"
+                                 baseTableName="received_document"
+                                 constraintName="fk_received_document__type_of_document_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="type_of_document"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="office_id"
+                                 baseTableName="received_document"
+                                 constraintName="fk_received_document__office_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="office"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="responsible_person_id"
+                                 baseTableName="received_document"
+                                 constraintName="fk_received_document__responsible_person_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="responsible_person"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="document_status_id"
+                                 baseTableName="received_document"
+                                 constraintName="fk_received_document__document_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="document_status"
+                                 />
+    </changeSet>
+</databaseChangeLog>

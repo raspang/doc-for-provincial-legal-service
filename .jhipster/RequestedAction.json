@@ -1,0 +1,19 @@
+{
+  "annotations": {
+    "changelogDate": "20260807075449"
+  },
+  "applications": ["*"],
+  "documentation": "Represents the specific action requested for a document.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    }
+  ],
+  "name": "RequestedAction",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

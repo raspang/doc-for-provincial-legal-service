@@ -1,0 +1,105 @@
+/** Represents a document received from an external agency or office (Incoming). */
+entity ReceivedDocument {
+    date Instant required,
+    documentTitle String required,
+    transactionType TransactionType,
+    days Integer,
+    dueDate Instant,
+    daysBeforeDue Integer,
+    dateReleased Instant,
+    remarks String
+}
+
+/** Represents an outgoing transmittal or issued document (Outgoing). */
+entity DocumentReference {
+    date Instant required,
+    referenceNo String unique,
+    documentTitle String required,
+    author String,
+    dateReleased Instant,
+    submittedToSirKing Instant,
+    remarks String
+}
+
+/** Represents the personnel responsible for a document. */
+entity ResponsiblePerson {
+    name String required,
+    position String,
+    email String required,
+    contactNo String
+}
+
+/** Represents the specific action requested for a document. */
+entity RequestedAction {
+    name String required unique
+}
+
+/** A type or category for a document, e.g., "Memorandum", "Letter", "Certificate". */
+entity TypeOfDocument {
+    name String required unique
+}
+
+/** Represents an office or department within the organization. */
+entity Office {
+    name String required unique,
+    shortName String
+}
+
+/** Tracks the history and audit trail for a specific document. */
+@readOnly
+entity DocumentHistory {
+    documentId Long required,
+    documentType DocumentType required,
+    action String required,
+    changedBy String required,
+    timestamp Instant required,
+    previousValue String,
+    newValue String,
+    remarks TextBlob
+}
+
+/** Defines the status of a document, e.g., "Pending", "Filed", "Done". */
+entity DocumentStatus {
+    name String required unique,
+    color String required
+}
+
+/** Enum for transaction complexities. */
+enum TransactionType {
+    SIMPLE,
+    COMPLEX,
+    HIGHLY_TECHNICAL,
+    NOT_APPLICABLE
+}
+
+/** Enum for document types in history log. */
+enum DocumentType {
+    RECEIVED_DOCUMENT,
+    DOCUMENT_REFERENCE
+}
+
+// RELATIONSHIPS
+
+relationship ManyToOne {
+    ReceivedDocument{requestedAction(name)} to RequestedAction,
+    ReceivedDocument{typeOfDocument(name) required} to TypeOfDocument,
+    ReceivedDocument{office(name)} to Office,
+    ReceivedDocument{responsiblePerson(name)} to ResponsiblePerson,
+    ReceivedDocument{documentStatus(name) required} to DocumentStatus,
+    
+    DocumentReference{typeOfDocument(name) required} to TypeOfDocument
+}
+
+// GENERATOR OPTIONS
+
+// Service layer pattern
+service all with serviceClass
+
+// Transfer objects layer using MapStruct
+dto * with mapstruct
+
+// Dynamic search filtering via JPA Criteria API
+filter ReceivedDocument, DocumentReference, DocumentHistory
+
+// Pagination
+paginate ReceivedDocument, DocumentReference, DocumentHistory with pagination

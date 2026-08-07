@@ -1,0 +1,32 @@
+{
+  "annotations": {
+    "changelogDate": "20260807075448"
+  },
+  "applications": ["*"],
+  "documentation": "Represents the personnel responsible for a document.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "position",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "contactNo",
+      "fieldType": "String"
+    }
+  ],
+  "name": "ResponsiblePerson",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

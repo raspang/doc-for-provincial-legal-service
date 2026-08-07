@@ -1,0 +1,265 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-received-document-heading" data-cy="ReceivedDocumentCreateUpdateHeading">Create or edit a Received Document</h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let dateRef = editForm.get('date')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_date">Date</label>
+          <div class="d-flex">
+            <input
+              id="field_date"
+              data-cy="date"
+              type="datetime-local"
+              class="form-control"
+              name="date"
+              formControlName="date"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (dateRef.invalid && (dateRef.dirty || dateRef.touched)) {
+            <div>
+              @if (dateRef.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!dateRef.errors?.datetimelocal">This field should be a date and time.</small>
+            </div>
+          }
+        </div>
+
+        @let documentTitleRef = editForm.get('documentTitle')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_documentTitle">Document Title</label>
+          <input
+            type="text"
+            class="form-control"
+            name="documentTitle"
+            id="field_documentTitle"
+            data-cy="documentTitle"
+            formControlName="documentTitle"
+          />
+          @if (documentTitleRef.invalid && (documentTitleRef.dirty || documentTitleRef.touched)) {
+            <div>
+              @if (documentTitleRef.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_transactionType">Transaction Type</label>
+          <select
+            class="form-control"
+            name="transactionType"
+            formControlName="transactionType"
+            id="field_transactionType"
+            data-cy="transactionType"
+          >
+            <option [ngValue]="null"></option>
+            @for (transactionType of transactionTypeValues; track $index) {
+              <option [value]="transactionType">
+                {{
+                  {
+                    null: '',
+                    SIMPLE: 'SIMPLE',
+                    COMPLEX: 'COMPLEX',
+                    HIGHLY_TECHNICAL: 'HIGHLY_TECHNICAL',
+                    NOT_APPLICABLE: 'NOT_APPLICABLE',
+                  }[transactionType]
+                }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_days">Days</label>
+          <input type="number" class="form-control" name="days" id="field_days" data-cy="days" formControlName="days" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dueDate">Due Date</label>
+          <div class="d-flex">
+            <input
+              id="field_dueDate"
+              data-cy="dueDate"
+              type="datetime-local"
+              class="form-control"
+              name="dueDate"
+              formControlName="dueDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_daysBeforeDue">Days Before Due</label>
+          <input
+            type="number"
+            class="form-control"
+            name="daysBeforeDue"
+            id="field_daysBeforeDue"
+            data-cy="daysBeforeDue"
+            formControlName="daysBeforeDue"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dateReleased">Date Released</label>
+          <div class="d-flex">
+            <input
+              id="field_dateReleased"
+              data-cy="dateReleased"
+              type="datetime-local"
+              class="form-control"
+              name="dateReleased"
+              formControlName="dateReleased"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_remarks">Remarks</label>
+          <input type="text" class="form-control" name="remarks" id="field_remarks" data-cy="remarks" formControlName="remarks" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_requestedAction">Requested Action</label>
+          <select
+            class="form-control"
+            id="field_requestedAction"
+            data-cy="requestedAction"
+            name="requestedAction"
+            formControlName="requestedAction"
+            [compareWith]="compareRequestedAction"
+          >
+            <option [ngValue]="null"></option>
+            @for (requestedActionOption of requestedActionsSharedCollection(); track $index) {
+              <option [ngValue]="requestedActionOption">{{ requestedActionOption.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_typeOfDocument">Type Of Document</label>
+          <select
+            class="form-control"
+            id="field_typeOfDocument"
+            data-cy="typeOfDocument"
+            name="typeOfDocument"
+            formControlName="typeOfDocument"
+            [compareWith]="compareTypeOfDocument"
+          >
+            @if (!editForm.get('typeOfDocument')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (typeOfDocumentOption of typeOfDocumentsSharedCollection(); track $index) {
+              <option [ngValue]="typeOfDocumentOption">{{ typeOfDocumentOption.name }}</option>
+            }
+          </select>
+        </div>
+        @if (
+          editForm.get(['typeOfDocument'])!.invalid &&
+          (editForm.get(['typeOfDocument'])!.dirty || editForm.get(['typeOfDocument'])!.touched)
+        ) {
+          <div>
+            @if (editForm.get(['typeOfDocument'])?.errors?.required) {
+              <small class="form-text text-danger">This field is required.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_office">Office</label>
+          <select
+            class="form-control"
+            id="field_office"
+            data-cy="office"
+            name="office"
+            formControlName="office"
+            [compareWith]="compareOffice"
+          >
+            <option [ngValue]="null"></option>
+            @for (officeOption of officesSharedCollection(); track $index) {
+              <option [ngValue]="officeOption">{{ officeOption.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_responsiblePerson">Responsible Person</label>
+          <select
+            class="form-control"
+            id="field_responsiblePerson"
+            data-cy="responsiblePerson"
+            name="responsiblePerson"
+            formControlName="responsiblePerson"
+            [compareWith]="compareResponsiblePerson"
+          >
+            <option [ngValue]="null"></option>
+            @for (responsiblePersonOption of responsiblePeopleSharedCollection(); track $index) {
+              <option [ngValue]="responsiblePersonOption">{{ responsiblePersonOption.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_documentStatus">Document Status</label>
+          <select
+            class="form-control"
+            id="field_documentStatus"
+            data-cy="documentStatus"
+            name="documentStatus"
+            formControlName="documentStatus"
+            [compareWith]="compareDocumentStatus"
+          >
+            @if (!editForm.get('documentStatus')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (documentStatusOption of documentStatusesSharedCollection(); track $index) {
+              <option [ngValue]="documentStatusOption">{{ documentStatusOption.name }}</option>
+            }
+          </select>
+        </div>
+        @if (
+          editForm.get(['documentStatus'])!.invalid &&
+          (editForm.get(['documentStatus'])!.dirty || editForm.get(['documentStatus'])!.touched)
+        ) {
+          <div>
+            @if (editForm.get(['documentStatus'])?.errors?.required) {
+              <small class="form-text text-danger">This field is required.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban" />&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving()"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save" />&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

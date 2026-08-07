@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (documentHistory(); as documentHistoryRef) {
+      <div>
+        <h2 data-cy="documentHistoryDetailsHeading"><span>Document History</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ documentHistoryRef.id }}</span>
+          </dd>
+          <dt><span>Document Id</span></dt>
+          <dd>
+            <span>{{ documentHistoryRef.documentId }}</span>
+          </dd>
+          <dt><span>Document Type</span></dt>
+          <dd>
+            <span>{{
+              { null: '', RECEIVED_DOCUMENT: 'RECEIVED_DOCUMENT', DOCUMENT_REFERENCE: 'DOCUMENT_REFERENCE' }[
+                documentHistoryRef.documentType ?? 'null'
+              ]
+            }}</span>
+          </dd>
+          <dt><span>Action</span></dt>
+          <dd>
+            <span>{{ documentHistoryRef.action }}</span>
+          </dd>
+          <dt><span>Changed By</span></dt>
+          <dd>
+            <span>{{ documentHistoryRef.changedBy }}</span>
+          </dd>
+          <dt><span>Timestamp</span></dt>
+          <dd>
+            <span>{{ documentHistoryRef.timestamp | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Previous Value</span></dt>
+          <dd>
+            <span>{{ documentHistoryRef.previousValue }}</span>
+          </dd>
+          <dt><span>New Value</span></dt>
+          <dd>
+            <span>{{ documentHistoryRef.newValue }}</span>
+          </dd>
+          <dt><span>Remarks</span></dt>
+          <dd>
+            <span>{{ documentHistoryRef.remarks }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left" />&nbsp;<span>Back</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (documentReference(); as documentReferenceRef) {
+      <div>
+        <h2 data-cy="documentReferenceDetailsHeading"><span>Document Reference</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ documentReferenceRef.id }}</span>
+          </dd>
+          <dt><span>Date</span></dt>
+          <dd>
+            <span>{{ documentReferenceRef.date | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Reference No</span></dt>
+          <dd>
+            <span>{{ documentReferenceRef.referenceNo }}</span>
+          </dd>
+          <dt><span>Document Title</span></dt>
+          <dd>
+            <span>{{ documentReferenceRef.documentTitle }}</span>
+          </dd>
+          <dt><span>Author</span></dt>
+          <dd>
+            <span>{{ documentReferenceRef.author }}</span>
+          </dd>
+          <dt><span>Date Released</span></dt>
+          <dd>
+            <span>{{ documentReferenceRef.dateReleased | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Submitted To Sir King</span></dt>
+          <dd>
+            <span>{{ documentReferenceRef.submittedToSirKing | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Remarks</span></dt>
+          <dd>
+            <span>{{ documentReferenceRef.remarks }}</span>
+          </dd>
+          <dt><span>Type Of Document</span></dt>
+          <dd>
+            @if (documentReference()!.typeOfDocument) {
+              <div>
+                <a [routerLink]="['/type-of-document', documentReference()!.typeOfDocument?.id, 'view']">{{
+                  documentReferenceRef.typeOfDocument?.name
+                }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left" />&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/document-reference', documentReferenceRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt" />&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

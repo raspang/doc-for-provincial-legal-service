@@ -1,0 +1,114 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (receivedDocument(); as receivedDocumentRef) {
+      <div>
+        <h2 data-cy="receivedDocumentDetailsHeading"><span>Received Document</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ receivedDocumentRef.id }}</span>
+          </dd>
+          <dt><span>Date</span></dt>
+          <dd>
+            <span>{{ receivedDocumentRef.date | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Document Title</span></dt>
+          <dd>
+            <span>{{ receivedDocumentRef.documentTitle }}</span>
+          </dd>
+          <dt><span>Transaction Type</span></dt>
+          <dd>
+            <span>{{
+              { null: '', SIMPLE: 'SIMPLE', COMPLEX: 'COMPLEX', HIGHLY_TECHNICAL: 'HIGHLY_TECHNICAL', NOT_APPLICABLE: 'NOT_APPLICABLE' }[
+                receivedDocumentRef.transactionType ?? 'null'
+              ]
+            }}</span>
+          </dd>
+          <dt><span>Days</span></dt>
+          <dd>
+            <span>{{ receivedDocumentRef.days }}</span>
+          </dd>
+          <dt><span>Due Date</span></dt>
+          <dd>
+            <span>{{ receivedDocumentRef.dueDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Days Before Due</span></dt>
+          <dd>
+            <span>{{ receivedDocumentRef.daysBeforeDue }}</span>
+          </dd>
+          <dt><span>Date Released</span></dt>
+          <dd>
+            <span>{{ receivedDocumentRef.dateReleased | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Remarks</span></dt>
+          <dd>
+            <span>{{ receivedDocumentRef.remarks }}</span>
+          </dd>
+          <dt><span>Requested Action</span></dt>
+          <dd>
+            @if (receivedDocument()!.requestedAction) {
+              <div>
+                <a [routerLink]="['/requested-action', receivedDocument()!.requestedAction?.id, 'view']">{{
+                  receivedDocumentRef.requestedAction?.name
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Type Of Document</span></dt>
+          <dd>
+            @if (receivedDocument()!.typeOfDocument) {
+              <div>
+                <a [routerLink]="['/type-of-document', receivedDocument()!.typeOfDocument?.id, 'view']">{{
+                  receivedDocumentRef.typeOfDocument?.name
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Office</span></dt>
+          <dd>
+            @if (receivedDocument()!.office) {
+              <div>
+                <a [routerLink]="['/office', receivedDocument()!.office?.id, 'view']">{{ receivedDocumentRef.office?.name }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Responsible Person</span></dt>
+          <dd>
+            @if (receivedDocument()!.responsiblePerson) {
+              <div>
+                <a [routerLink]="['/responsible-person', receivedDocument()!.responsiblePerson?.id, 'view']">{{
+                  receivedDocumentRef.responsiblePerson?.name
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Document Status</span></dt>
+          <dd>
+            @if (receivedDocument()!.documentStatus) {
+              <div>
+                <a [routerLink]="['/document-status', receivedDocument()!.documentStatus?.id, 'view']">{{
+                  receivedDocumentRef.documentStatus?.name
+                }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left" />&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/received-document', receivedDocumentRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt" />&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

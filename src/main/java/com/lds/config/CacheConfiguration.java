@@ -44,6 +44,14 @@ public class CacheConfiguration {
             createCache(cm, com.lds.domain.User.class.getName());
             createCache(cm, com.lds.domain.Authority.class.getName());
             createCache(cm, com.lds.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.lds.domain.ReceivedDocument.class.getName());
+            createCache(cm, com.lds.domain.DocumentReference.class.getName());
+            createCache(cm, com.lds.domain.ResponsiblePerson.class.getName());
+            createCache(cm, com.lds.domain.RequestedAction.class.getName());
+            createCache(cm, com.lds.domain.TypeOfDocument.class.getName());
+            createCache(cm, com.lds.domain.Office.class.getName());
+            createCache(cm, com.lds.domain.DocumentHistory.class.getName());
+            createCache(cm, com.lds.domain.DocumentStatus.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -1,0 +1,90 @@
+{
+  "annotations": {
+    "changelogDate": "20260807075446"
+  },
+  "applications": ["*"],
+  "documentation": "Represents a document received from an external agency or office (Incoming).",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "documentTitle",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "transactionType",
+      "fieldType": "TransactionType",
+      "fieldTypeDocumentation": "Enum for transaction complexities.",
+      "fieldValues": "SIMPLE,COMPLEX,HIGHLY_TECHNICAL,NOT_APPLICABLE"
+    },
+    {
+      "fieldName": "days",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "dueDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "daysBeforeDue",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "dateReleased",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "remarks",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "ReceivedDocument",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "requestedAction",
+      "relationshipName": "requestedAction",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "typeOfDocument",
+      "relationshipName": "typeOfDocument",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "office",
+      "relationshipName": "office",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "responsiblePerson",
+      "relationshipName": "responsiblePerson",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "documentStatus",
+      "relationshipName": "documentStatus",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

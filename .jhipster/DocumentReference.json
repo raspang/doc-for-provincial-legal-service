@@ -1,0 +1,56 @@
+{
+  "annotations": {
+    "changelogDate": "20260807075447"
+  },
+  "applications": ["*"],
+  "documentation": "Represents an outgoing transmittal or issued document (Outgoing).",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "referenceNo",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique"]
+    },
+    {
+      "fieldName": "documentTitle",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "author",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateReleased",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "submittedToSirKing",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "remarks",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "DocumentReference",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "typeOfDocument",
+      "relationshipName": "typeOfDocument",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

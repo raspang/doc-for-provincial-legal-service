@@ -1,0 +1,56 @@
+{
+  "annotations": {
+    "changelogDate": "20260807075452",
+    "readOnly": true
+  },
+  "applications": ["*"],
+  "documentation": "Tracks the history and audit trail for a specific document.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "documentId",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "documentType",
+      "fieldType": "DocumentType",
+      "fieldTypeDocumentation": "Enum for document types in history log.",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "RECEIVED_DOCUMENT,DOCUMENT_REFERENCE"
+    },
+    {
+      "fieldName": "action",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "changedBy",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "timestamp",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "previousValue",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "newValue",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "remarks",
+      "fieldType": "TextBlob"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "DocumentHistory",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

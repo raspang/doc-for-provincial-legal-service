@@ -1,0 +1,19 @@
+{
+  "annotations": {
+    "changelogDate": "20260807075450"
+  },
+  "applications": ["*"],
+  "documentation": "A type or category for a document, e.g., \"Memorandum\", \"Letter\", \"Certificate\".",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    }
+  ],
+  "name": "TypeOfDocument",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

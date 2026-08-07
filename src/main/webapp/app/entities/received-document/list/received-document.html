@@ -1,0 +1,252 @@
+<div>
+  <h2 id="page-heading" data-cy="ReceivedDocumentHeading">
+    <span>Received Documents</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
+        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined" />
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-received-document"
+        [routerLink]="['/received-document/new']"
+      >
+        <fa-icon icon="plus" />
+        <span>Create a new Received Document</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <jhi-filter [filters]="filters" />
+
+  @if (receivedDocuments().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Received Documents found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="date">
+              <div class="d-flex">
+                <span>Date</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="documentTitle">
+              <div class="d-flex">
+                <span>Document Title</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="transactionType">
+              <div class="d-flex">
+                <span>Transaction Type</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="days">
+              <div class="d-flex">
+                <span>Days</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dueDate">
+              <div class="d-flex">
+                <span>Due Date</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="daysBeforeDue">
+              <div class="d-flex">
+                <span>Days Before Due</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dateReleased">
+              <div class="d-flex">
+                <span>Date Released</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="remarks">
+              <div class="d-flex">
+                <span>Remarks</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="requestedAction.name">
+              <div class="d-flex">
+                <span>Requested Action</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="typeOfDocument.name">
+              <div class="d-flex">
+                <span>Type Of Document</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="office.name">
+              <div class="d-flex">
+                <span>Office</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="responsiblePerson.name">
+              <div class="d-flex">
+                <span>Responsible Person</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="documentStatus.name">
+              <div class="d-flex">
+                <span>Document Status</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (receivedDocument of receivedDocuments(); track trackId(receivedDocument)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/received-document', receivedDocument.id, 'view']">{{ receivedDocument.id }}</a>
+              </td>
+              <td>{{ receivedDocument.date | formatMediumDatetime }}</td>
+              <td>{{ receivedDocument.documentTitle }}</td>
+              <td>
+                {{
+                  {
+                    null: '',
+                    SIMPLE: 'SIMPLE',
+                    COMPLEX: 'COMPLEX',
+                    HIGHLY_TECHNICAL: 'HIGHLY_TECHNICAL',
+                    NOT_APPLICABLE: 'NOT_APPLICABLE',
+                  }[receivedDocument.transactionType ?? 'null']
+                }}
+              </td>
+              <td>{{ receivedDocument.days }}</td>
+              <td>{{ receivedDocument.dueDate | formatMediumDatetime }}</td>
+              <td>{{ receivedDocument.daysBeforeDue }}</td>
+              <td>{{ receivedDocument.dateReleased | formatMediumDatetime }}</td>
+              <td>{{ receivedDocument.remarks }}</td>
+              <td>
+                @if (receivedDocument.requestedAction) {
+                  <div>
+                    <a [routerLink]="['/requested-action', receivedDocument.requestedAction.id, 'view']">{{
+                      receivedDocument.requestedAction.name
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (receivedDocument.typeOfDocument) {
+                  <div>
+                    <a [routerLink]="['/type-of-document', receivedDocument.typeOfDocument.id, 'view']">{{
+                      receivedDocument.typeOfDocument.name
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (receivedDocument.office) {
+                  <div>
+                    <a [routerLink]="['/office', receivedDocument.office.id, 'view']">{{ receivedDocument.office.name }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (receivedDocument.responsiblePerson) {
+                  <div>
+                    <a [routerLink]="['/responsible-person', receivedDocument.responsiblePerson.id, 'view']">{{
+                      receivedDocument.responsiblePerson.name
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (receivedDocument.documentStatus) {
+                  <div>
+                    <a [routerLink]="['/document-status', receivedDocument.documentStatus.id, 'view']">{{
+                      receivedDocument.documentStatus.name
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/received-document', receivedDocument.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye" />
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/received-document', receivedDocument.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt" />
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(receivedDocument)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times" />
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (receivedDocuments().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page(), totalItems: totalItems(), itemsPerPage: itemsPerPage() }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems()"
+          [page]="page()"
+          [pageSize]="itemsPerPage()"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        />
+      </div>
+    </div>
+  }
+</div>
