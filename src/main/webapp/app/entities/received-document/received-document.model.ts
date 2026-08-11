@@ -18,7 +18,7 @@ export interface IReceivedDocument {
   office?: Pick<IOffice, 'id' | 'name'> | null;
   responsiblePerson?: Pick<IResponsiblePerson, 'id' | 'name'> | null;
   documentStatus?: Pick<IDocumentStatus, 'id' | 'name'> | null;
-  transactionType?: Pick<ITransactionType, 'id' | 'name'> | null;
+  transactionType?: Pick<ITransactionType, 'id' | 'name' | 'targetDays'> | null;
 }
 
 export type NewReceivedDocument = Omit<IReceivedDocument, 'id'> & { id: null };

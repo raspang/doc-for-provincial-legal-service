@@ -14,7 +14,10 @@ import com.lds.service.dto.RequestedActionDTO;
 import com.lds.service.dto.ResponsiblePersonDTO;
 import com.lds.service.dto.TransactionTypeDTO;
 import com.lds.service.dto.TypeOfDocumentDTO;
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 /**
  * Mapper for the entity {@link ReceivedDocument} and its DTO {@link ReceivedDocumentDTO}.
@@ -63,5 +66,6 @@ public interface ReceivedDocumentMapper extends EntityMapper<ReceivedDocumentDTO
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
+    @Mapping(target = "targetDays", source = "targetDays")
     TransactionTypeDTO toDtoTransactionTypeName(TransactionType transactionType);
 }

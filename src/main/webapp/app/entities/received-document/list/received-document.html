@@ -241,7 +241,13 @@
                   </div>
                 }
               </td>
-              <td>{{ 1 }}</td>
+              <td>
+                @if (receivedDocument.transactionType) {
+                  <div>
+                    {{ receivedDocument.transactionType.targetDays }}
+                  </div>
+                }
+              </td>
               <td>{{ 1 }}</td>
               <td>
                 @if (receivedDocument.documentStatus) {
