@@ -23,6 +23,8 @@ import { ReceivedDocumentService } from '../service/received-document.service';
 import { TypeOfDocumentService } from 'app/entities/type-of-document/service/type-of-document.service';
 import { ITypeOfDocument } from 'app/entities/type-of-document/type-of-document.model';
 import dayjs from 'dayjs/esm';
+import { ResponsiblePersonService } from 'app/entities/responsible-person/service/responsible-person.service';
+import { RequestedActionService } from 'app/entities/requested-action/service/requested-action.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -52,8 +54,12 @@ export class ReceivedDocument implements OnInit {
   dateTo?: string;
   documentTitle?: string;
   typeOfDocumentId: number | null = null;
+  responsiblePersonId: number | null = null;
+  requestedActionId: number | null = null;
 
   typeOfDocuments = signal<ITypeOfDocument[]>([]);
+  responsiblePersons = signal<ITypeOfDocument[]>([]);
+  requestedActions = signal<ITypeOfDocument[]>([]);
 
   readonly itemsPerPage = signal(ITEMS_PER_PAGE);
   readonly totalItems = signal(0);
@@ -68,6 +74,8 @@ export class ReceivedDocument implements OnInit {
   protected readonly filterOptions = toSignal(this.filters.filterChanges);
   protected modalService = inject(NgbModal);
   protected readonly typeOfDocumentService = inject(TypeOfDocumentService);
+  protected readonly responsiblePersonService = inject(ResponsiblePersonService);
+  protected readonly requestedActionService = inject(RequestedActionService);
 
   constructor() {
     effect(() => {
@@ -95,6 +103,8 @@ export class ReceivedDocument implements OnInit {
 
   ngOnInit(): void {
     this.loadTypeOfDocuments();
+    this.loadResponsiblePersonService();
+    this.loadRequestedActions();
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
         tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
@@ -143,6 +153,18 @@ export class ReceivedDocument implements OnInit {
     if (dateToInstant) {
       this.filters.addFilter('date.lessThanOrEqual', dateToInstant);
     }
+
+    if (this.typeOfDocumentId) {
+      this.filters.addFilter('typeOfDocumentId.equals', this.typeOfDocumentId.toString());
+    }
+
+    if (this.responsiblePersonId) {
+      this.filters.addFilter('responsiblePersonId.equals', this.responsiblePersonId.toString());
+    }
+
+    if (this.requestedActionId) {
+      this.filters.addFilter('requestedActionId.equals', this.requestedActionId.toString());
+    }
   }
 
   clearFilter(): void {
@@ -160,6 +182,27 @@ export class ReceivedDocument implements OnInit {
       },
       error: () => {
         this.typeOfDocuments.set([]);
+      },
+    });
+  }
+
+  protected loadResponsiblePersonService(): void {
+    this.responsiblePersonService.query({ page: 0, size: 1000, sort: ['name,asc'] }).subscribe({
+      next: res => {
+        this.responsiblePersons.set(res.body ?? []);
+      },
+      error: () => {
+        this.responsiblePersons.set([]);
+      },
+    });
+  }
+  protected loadRequestedActions(): void {
+    this.requestedActionService.query({ page: 0, size: 1000, sort: ['name,asc'] }).subscribe({
+      next: res => {
+        this.requestedActions.set(res.body ?? []);
+      },
+      error: () => {
+        this.requestedActions.set([]);
       },
     });
   }

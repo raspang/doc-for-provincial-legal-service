@@ -58,6 +58,30 @@
         }
       </select>
     </div>
+    <div class="col-md-3">
+      <label class="form-label" for="requestedAction">Requested Action</label>
+      <select id="requestedAction" name="requestedAction" class="form-select" [(ngModel)]="requestedActionId">
+        <option [ngValue]="null">All</option>
+
+        @for (requestedAction of requestedActions(); track requestedAction.id) {
+          <option [ngValue]="requestedAction.id">
+            {{ requestedAction.name }}
+          </option>
+        }
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label" for="responsiblePerson">Responsible Person</label>
+      <select id="responsiblePerson" name="responsiblePerson" class="form-select" [(ngModel)]="responsiblePersonId">
+        <option [ngValue]="null">All</option>
+
+        @for (responsiblePerson of responsiblePersons(); track responsiblePerson.id) {
+          <option [ngValue]="responsiblePerson.id">
+            {{ responsiblePerson.name }}
+          </option>
+        }
+      </select>
+    </div>
 
     <div class="col-md-4 d-flex gap-2">
       <button type="button" class="btn btn-primary" (click)="applyFilter()">Search</button>
