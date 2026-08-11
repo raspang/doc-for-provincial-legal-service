@@ -48,7 +48,8 @@ public class DocumentStatusAsserts {
         assertThat(actual)
             .as("Verify DocumentStatus relevant properties")
             .satisfies(a -> assertThat(a.getName()).as("check name").isEqualTo(expected.getName()))
-            .satisfies(a -> assertThat(a.getColor()).as("check color").isEqualTo(expected.getColor()));
+            .satisfies(a -> assertThat(a.getColor()).as("check color").isEqualTo(expected.getColor()))
+            .satisfies(a -> assertThat(a.getWarning()).as("check warning").isEqualTo(expected.getWarning()));
     }
 
     /**

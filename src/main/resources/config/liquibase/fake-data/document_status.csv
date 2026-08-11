@@ -1,8 +1,8 @@
-id;name;color
-1;Drafting;
-2;Done;
-3;Pending;
-4;For Review;
-5;Filed;
-6;Attended;
-7;Not Attended;
+id;name;color;warning
+1;Drafting;red;false
+2;Done;green;false
+3;Pending;red;false
+4;For Review;red;false
+5;Filed;red;false
+6;Attended;red;false
+7;Not Attended;red;false

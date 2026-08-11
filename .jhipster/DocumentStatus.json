@@ -15,6 +15,10 @@
       "fieldName": "color",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "warning",
+      "fieldType": "Boolean"
     }
   ],
   "name": "DocumentStatus",

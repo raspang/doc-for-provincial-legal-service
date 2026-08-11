@@ -7,15 +7,17 @@ export const sampleWithRequiredData: IDocumentStatus = {
 };
 
 export const sampleWithPartialData: IDocumentStatus = {
-  id: 9936,
-  name: 'or',
-  color: 'violet',
+  id: 6233,
+  name: 'runny aw reborn',
+  color: 'ivory',
+  warning: true,
 };
 
 export const sampleWithFullData: IDocumentStatus = {
   id: 5664,
   name: 'defiantly mothball',
   color: 'turquoise',
+  warning: false,
 };
 
 export const sampleWithNewData: NewDocumentStatus = {

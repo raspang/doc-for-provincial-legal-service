@@ -33,6 +33,9 @@ public class DocumentStatus implements Serializable {
     @Column(name = "color", nullable = false)
     private String color;
 
+    @Column(name = "warning")
+    private Boolean warning;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -74,6 +77,19 @@ public class DocumentStatus implements Serializable {
         this.color = color;
     }
 
+    public Boolean getWarning() {
+        return this.warning;
+    }
+
+    public DocumentStatus warning(Boolean warning) {
+        this.setWarning(warning);
+        return this;
+    }
+
+    public void setWarning(Boolean warning) {
+        this.warning = warning;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -100,6 +116,7 @@ public class DocumentStatus implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", color='" + getColor() + "'" +
+            ", warning='" + getWarning() + "'" +
             "}";
     }
 }

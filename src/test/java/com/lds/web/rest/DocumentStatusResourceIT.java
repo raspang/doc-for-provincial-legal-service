@@ -40,6 +40,9 @@ class DocumentStatusResourceIT {
     private static final String DEFAULT_COLOR = "AAAAAAAAAA";
     private static final String UPDATED_COLOR = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_WARNING = false;
+    private static final Boolean UPDATED_WARNING = true;
+
     private static final String ENTITY_API_URL = "/api/document-statuses";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -72,7 +75,7 @@ class DocumentStatusResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static DocumentStatus createEntity() {
-        return new DocumentStatus().name(DEFAULT_NAME).color(DEFAULT_COLOR);
+        return new DocumentStatus().name(DEFAULT_NAME).color(DEFAULT_COLOR).warning(DEFAULT_WARNING);
     }
 
     /**
@@ -82,7 +85,7 @@ class DocumentStatusResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static DocumentStatus createUpdatedEntity() {
-        return new DocumentStatus().name(UPDATED_NAME).color(UPDATED_COLOR);
+        return new DocumentStatus().name(UPDATED_NAME).color(UPDATED_COLOR).warning(UPDATED_WARNING);
     }
 
     @BeforeEach
@@ -187,7 +190,8 @@ class DocumentStatusResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(documentStatus.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].color").value(hasItem(DEFAULT_COLOR)));
+            .andExpect(jsonPath("$.[*].color").value(hasItem(DEFAULT_COLOR)))
+            .andExpect(jsonPath("$.[*].warning").value(hasItem(DEFAULT_WARNING)));
     }
 
     @Test
@@ -203,7 +207,8 @@ class DocumentStatusResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(documentStatus.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.color").value(DEFAULT_COLOR));
+            .andExpect(jsonPath("$.color").value(DEFAULT_COLOR))
+            .andExpect(jsonPath("$.warning").value(DEFAULT_WARNING));
     }
 
     @Test
@@ -225,7 +230,7 @@ class DocumentStatusResourceIT {
         DocumentStatus updatedDocumentStatus = documentStatusRepository.findById(documentStatus.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedDocumentStatus are not directly saved in db
         em.detach(updatedDocumentStatus);
-        updatedDocumentStatus.name(UPDATED_NAME).color(UPDATED_COLOR);
+        updatedDocumentStatus.name(UPDATED_NAME).color(UPDATED_COLOR).warning(UPDATED_WARNING);
         DocumentStatusDTO documentStatusDTO = documentStatusMapper.toDto(updatedDocumentStatus);
 
         restDocumentStatusMockMvc
@@ -346,7 +351,7 @@ class DocumentStatusResourceIT {
         DocumentStatus partialUpdatedDocumentStatus = new DocumentStatus();
         partialUpdatedDocumentStatus.setId(documentStatus.getId());
 
-        partialUpdatedDocumentStatus.name(UPDATED_NAME).color(UPDATED_COLOR);
+        partialUpdatedDocumentStatus.name(UPDATED_NAME).color(UPDATED_COLOR).warning(UPDATED_WARNING);
 
         restDocumentStatusMockMvc
             .perform(

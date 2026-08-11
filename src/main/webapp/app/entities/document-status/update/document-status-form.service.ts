@@ -14,12 +14,13 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type DocumentStatusFormGroupInput = IDocumentStatus | PartialWithRequiredKeyOf<NewDocumentStatus>;
 
-type DocumentStatusFormDefaults = Pick<NewDocumentStatus, 'id'>;
+type DocumentStatusFormDefaults = Pick<NewDocumentStatus, 'id' | 'warning'>;
 
 type DocumentStatusFormGroupContent = {
   id: FormControl<IDocumentStatus['id'] | NewDocumentStatus['id']>;
   name: FormControl<IDocumentStatus['name']>;
   color: FormControl<IDocumentStatus['color']>;
+  warning: FormControl<IDocumentStatus['warning']>;
 };
 
 export type DocumentStatusFormGroup = FormGroup<DocumentStatusFormGroupContent>;
@@ -46,6 +47,7 @@ export class DocumentStatusFormService {
       color: new FormControl(documentStatusRawValue.color, {
         validators: [Validators.required],
       }),
+      warning: new FormControl(documentStatusRawValue.warning),
     });
   }
 
@@ -64,6 +66,7 @@ export class DocumentStatusFormService {
   private getFormDefaults(): DocumentStatusFormDefaults {
     return {
       id: null,
+      warning: false,
     };
   }
 }

@@ -22,6 +22,7 @@ describe('DocumentStatus Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             color: expect.any(Object),
+            warning: expect.any(Object),
           }),
         );
       });
@@ -34,6 +35,7 @@ describe('DocumentStatus Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             color: expect.any(Object),
+            warning: expect.any(Object),
           }),
         );
       });

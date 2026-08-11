@@ -54,6 +54,13 @@
                 <fa-icon class="p-1" icon="sort" />
               </div>
             </th>
+            <th scope="col" jhiSortBy="warning">
+              <div class="d-flex">
+                <span>Warning</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -65,6 +72,7 @@
               </td>
               <td>{{ documentStatus.name }}</td>
               <td>{{ documentStatus.color }}</td>
+              <td>{{ documentStatus.warning }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a

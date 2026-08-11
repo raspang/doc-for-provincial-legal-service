@@ -20,6 +20,8 @@ public class DocumentStatusDTO implements Serializable {
     @NotNull
     private String color;
 
+    private Boolean warning;
+
     public Long getId() {
         return id;
     }
@@ -42,6 +44,14 @@ public class DocumentStatusDTO implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public Boolean getWarning() {
+        return warning;
+    }
+
+    public void setWarning(Boolean warning) {
+        this.warning = warning;
     }
 
     @Override
@@ -72,6 +82,7 @@ public class DocumentStatusDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", color='" + getColor() + "'" +
+            ", warning='" + getWarning() + "'" +
             "}";
     }
 }
