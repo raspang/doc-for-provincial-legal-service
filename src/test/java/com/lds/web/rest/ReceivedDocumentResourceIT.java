@@ -15,8 +15,8 @@ import com.lds.domain.Office;
 import com.lds.domain.ReceivedDocument;
 import com.lds.domain.RequestedAction;
 import com.lds.domain.ResponsiblePerson;
+import com.lds.domain.TransactionType;
 import com.lds.domain.TypeOfDocument;
-import com.lds.domain.enumeration.TransactionType;
 import com.lds.repository.ReceivedDocumentRepository;
 import com.lds.service.ReceivedDocumentService;
 import com.lds.service.dto.ReceivedDocumentDTO;
@@ -55,20 +55,6 @@ class ReceivedDocumentResourceIT {
 
     private static final String DEFAULT_DOCUMENT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_DOCUMENT_TITLE = "BBBBBBBBBB";
-
-    private static final TransactionType DEFAULT_TRANSACTION_TYPE = TransactionType.SIMPLE;
-    private static final TransactionType UPDATED_TRANSACTION_TYPE = TransactionType.COMPLEX;
-
-    private static final Integer DEFAULT_DAYS = 1;
-    private static final Integer UPDATED_DAYS = 2;
-    private static final Integer SMALLER_DAYS = 1 - 1;
-
-    private static final Instant DEFAULT_DUE_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_DUE_DATE = Instant.ofEpochMilli(1786088823278L);
-
-    private static final Integer DEFAULT_DAYS_BEFORE_DUE = 1;
-    private static final Integer UPDATED_DAYS_BEFORE_DUE = 2;
-    private static final Integer SMALLER_DAYS_BEFORE_DUE = 1 - 1;
 
     private static final Instant DEFAULT_DATE_RELEASED = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATE_RELEASED = Instant.ofEpochMilli(1786088823278L);
@@ -117,10 +103,6 @@ class ReceivedDocumentResourceIT {
         ReceivedDocument receivedDocument = new ReceivedDocument()
             .date(DEFAULT_DATE)
             .documentTitle(DEFAULT_DOCUMENT_TITLE)
-            .transactionType(DEFAULT_TRANSACTION_TYPE)
-            .days(DEFAULT_DAYS)
-            .dueDate(DEFAULT_DUE_DATE)
-            .daysBeforeDue(DEFAULT_DAYS_BEFORE_DUE)
             .dateReleased(DEFAULT_DATE_RELEASED)
             .remarks(DEFAULT_REMARKS);
         // Add required entity
@@ -156,10 +138,6 @@ class ReceivedDocumentResourceIT {
         ReceivedDocument updatedReceivedDocument = new ReceivedDocument()
             .date(UPDATED_DATE)
             .documentTitle(UPDATED_DOCUMENT_TITLE)
-            .transactionType(UPDATED_TRANSACTION_TYPE)
-            .days(UPDATED_DAYS)
-            .dueDate(UPDATED_DUE_DATE)
-            .daysBeforeDue(UPDATED_DAYS_BEFORE_DUE)
             .dateReleased(UPDATED_DATE_RELEASED)
             .remarks(UPDATED_REMARKS);
         // Add required entity
@@ -288,10 +266,6 @@ class ReceivedDocumentResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(receivedDocument.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].documentTitle").value(hasItem(DEFAULT_DOCUMENT_TITLE)))
-            .andExpect(jsonPath("$.[*].transactionType").value(hasItem(DEFAULT_TRANSACTION_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].days").value(hasItem(DEFAULT_DAYS)))
-            .andExpect(jsonPath("$.[*].dueDate").value(hasItem(DEFAULT_DUE_DATE.toString())))
-            .andExpect(jsonPath("$.[*].daysBeforeDue").value(hasItem(DEFAULT_DAYS_BEFORE_DUE)))
             .andExpect(jsonPath("$.[*].dateReleased").value(hasItem(DEFAULT_DATE_RELEASED.toString())))
             .andExpect(jsonPath("$.[*].remarks").value(hasItem(DEFAULT_REMARKS)));
     }
@@ -327,10 +301,6 @@ class ReceivedDocumentResourceIT {
             .andExpect(jsonPath("$.id").value(receivedDocument.getId().intValue()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.documentTitle").value(DEFAULT_DOCUMENT_TITLE))
-            .andExpect(jsonPath("$.transactionType").value(DEFAULT_TRANSACTION_TYPE.toString()))
-            .andExpect(jsonPath("$.days").value(DEFAULT_DAYS))
-            .andExpect(jsonPath("$.dueDate").value(DEFAULT_DUE_DATE.toString()))
-            .andExpect(jsonPath("$.daysBeforeDue").value(DEFAULT_DAYS_BEFORE_DUE))
             .andExpect(jsonPath("$.dateReleased").value(DEFAULT_DATE_RELEASED.toString()))
             .andExpect(jsonPath("$.remarks").value(DEFAULT_REMARKS));
     }
@@ -439,230 +409,6 @@ class ReceivedDocumentResourceIT {
         defaultReceivedDocumentFiltering(
             "documentTitle.doesNotContain=" + UPDATED_DOCUMENT_TITLE,
             "documentTitle.doesNotContain=" + DEFAULT_DOCUMENT_TITLE
-        );
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByTransactionTypeIsEqualToSomething() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where transactionType equals to
-        defaultReceivedDocumentFiltering(
-            "transactionType.equals=" + DEFAULT_TRANSACTION_TYPE,
-            "transactionType.equals=" + UPDATED_TRANSACTION_TYPE
-        );
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByTransactionTypeIsInShouldWork() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where transactionType in
-        defaultReceivedDocumentFiltering(
-            "transactionType.in=" + DEFAULT_TRANSACTION_TYPE + "," + UPDATED_TRANSACTION_TYPE,
-            "transactionType.in=" + UPDATED_TRANSACTION_TYPE
-        );
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByTransactionTypeIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where transactionType is not null
-        defaultReceivedDocumentFiltering("transactionType.specified=true", "transactionType.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysIsEqualToSomething() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where days equals to
-        defaultReceivedDocumentFiltering("days.equals=" + DEFAULT_DAYS, "days.equals=" + UPDATED_DAYS);
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysIsInShouldWork() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where days in
-        defaultReceivedDocumentFiltering("days.in=" + DEFAULT_DAYS + "," + UPDATED_DAYS, "days.in=" + UPDATED_DAYS);
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where days is not null
-        defaultReceivedDocumentFiltering("days.specified=true", "days.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where days is greater than or equal to
-        defaultReceivedDocumentFiltering("days.greaterThanOrEqual=" + DEFAULT_DAYS, "days.greaterThanOrEqual=" + UPDATED_DAYS);
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where days is less than or equal to
-        defaultReceivedDocumentFiltering("days.lessThanOrEqual=" + DEFAULT_DAYS, "days.lessThanOrEqual=" + SMALLER_DAYS);
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysIsLessThanSomething() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where days is less than
-        defaultReceivedDocumentFiltering("days.lessThan=" + UPDATED_DAYS, "days.lessThan=" + DEFAULT_DAYS);
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where days is greater than
-        defaultReceivedDocumentFiltering("days.greaterThan=" + SMALLER_DAYS, "days.greaterThan=" + DEFAULT_DAYS);
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDueDateIsEqualToSomething() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where dueDate equals to
-        defaultReceivedDocumentFiltering("dueDate.equals=" + DEFAULT_DUE_DATE, "dueDate.equals=" + UPDATED_DUE_DATE);
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDueDateIsInShouldWork() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where dueDate in
-        defaultReceivedDocumentFiltering("dueDate.in=" + DEFAULT_DUE_DATE + "," + UPDATED_DUE_DATE, "dueDate.in=" + UPDATED_DUE_DATE);
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDueDateIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where dueDate is not null
-        defaultReceivedDocumentFiltering("dueDate.specified=true", "dueDate.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysBeforeDueIsEqualToSomething() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where daysBeforeDue equals to
-        defaultReceivedDocumentFiltering(
-            "daysBeforeDue.equals=" + DEFAULT_DAYS_BEFORE_DUE,
-            "daysBeforeDue.equals=" + UPDATED_DAYS_BEFORE_DUE
-        );
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysBeforeDueIsInShouldWork() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where daysBeforeDue in
-        defaultReceivedDocumentFiltering(
-            "daysBeforeDue.in=" + DEFAULT_DAYS_BEFORE_DUE + "," + UPDATED_DAYS_BEFORE_DUE,
-            "daysBeforeDue.in=" + UPDATED_DAYS_BEFORE_DUE
-        );
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysBeforeDueIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where daysBeforeDue is not null
-        defaultReceivedDocumentFiltering("daysBeforeDue.specified=true", "daysBeforeDue.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysBeforeDueIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where daysBeforeDue is greater than or equal to
-        defaultReceivedDocumentFiltering(
-            "daysBeforeDue.greaterThanOrEqual=" + DEFAULT_DAYS_BEFORE_DUE,
-            "daysBeforeDue.greaterThanOrEqual=" + UPDATED_DAYS_BEFORE_DUE
-        );
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysBeforeDueIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where daysBeforeDue is less than or equal to
-        defaultReceivedDocumentFiltering(
-            "daysBeforeDue.lessThanOrEqual=" + DEFAULT_DAYS_BEFORE_DUE,
-            "daysBeforeDue.lessThanOrEqual=" + SMALLER_DAYS_BEFORE_DUE
-        );
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysBeforeDueIsLessThanSomething() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where daysBeforeDue is less than
-        defaultReceivedDocumentFiltering(
-            "daysBeforeDue.lessThan=" + UPDATED_DAYS_BEFORE_DUE,
-            "daysBeforeDue.lessThan=" + DEFAULT_DAYS_BEFORE_DUE
-        );
-    }
-
-    @Test
-    @Transactional
-    void getAllReceivedDocumentsByDaysBeforeDueIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        insertedReceivedDocument = receivedDocumentRepository.saveAndFlush(receivedDocument);
-
-        // Get all the receivedDocumentList where daysBeforeDue is greater than
-        defaultReceivedDocumentFiltering(
-            "daysBeforeDue.greaterThan=" + SMALLER_DAYS_BEFORE_DUE,
-            "daysBeforeDue.greaterThan=" + DEFAULT_DAYS_BEFORE_DUE
         );
     }
 
@@ -859,6 +605,28 @@ class ReceivedDocumentResourceIT {
         defaultReceivedDocumentShouldNotBeFound("documentStatusId.equals=" + (documentStatusId + 1));
     }
 
+    @Test
+    @Transactional
+    void getAllReceivedDocumentsByTransactionTypeIsEqualToSomething() throws Exception {
+        TransactionType transactionType;
+        if (TestUtil.findAll(em, TransactionType.class).isEmpty()) {
+            receivedDocumentRepository.saveAndFlush(receivedDocument);
+            transactionType = TransactionTypeResourceIT.createEntity();
+        } else {
+            transactionType = TestUtil.findAll(em, TransactionType.class).get(0);
+        }
+        em.persist(transactionType);
+        em.flush();
+        receivedDocument.setTransactionType(transactionType);
+        receivedDocumentRepository.saveAndFlush(receivedDocument);
+        Long transactionTypeId = transactionType.getId();
+        // Get all the receivedDocumentList where transactionType equals to transactionTypeId
+        defaultReceivedDocumentShouldBeFound("transactionTypeId.equals=" + transactionTypeId);
+
+        // Get all the receivedDocumentList where transactionType equals to (transactionTypeId + 1)
+        defaultReceivedDocumentShouldNotBeFound("transactionTypeId.equals=" + (transactionTypeId + 1));
+    }
+
     private void defaultReceivedDocumentFiltering(String shouldBeFound, String shouldNotBeFound) throws Exception {
         defaultReceivedDocumentShouldBeFound(shouldBeFound);
         defaultReceivedDocumentShouldNotBeFound(shouldNotBeFound);
@@ -875,10 +643,6 @@ class ReceivedDocumentResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(receivedDocument.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].documentTitle").value(hasItem(DEFAULT_DOCUMENT_TITLE)))
-            .andExpect(jsonPath("$.[*].transactionType").value(hasItem(DEFAULT_TRANSACTION_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].days").value(hasItem(DEFAULT_DAYS)))
-            .andExpect(jsonPath("$.[*].dueDate").value(hasItem(DEFAULT_DUE_DATE.toString())))
-            .andExpect(jsonPath("$.[*].daysBeforeDue").value(hasItem(DEFAULT_DAYS_BEFORE_DUE)))
             .andExpect(jsonPath("$.[*].dateReleased").value(hasItem(DEFAULT_DATE_RELEASED.toString())))
             .andExpect(jsonPath("$.[*].remarks").value(hasItem(DEFAULT_REMARKS)));
 
@@ -931,10 +695,6 @@ class ReceivedDocumentResourceIT {
         updatedReceivedDocument
             .date(UPDATED_DATE)
             .documentTitle(UPDATED_DOCUMENT_TITLE)
-            .transactionType(UPDATED_TRANSACTION_TYPE)
-            .days(UPDATED_DAYS)
-            .dueDate(UPDATED_DUE_DATE)
-            .daysBeforeDue(UPDATED_DAYS_BEFORE_DUE)
             .dateReleased(UPDATED_DATE_RELEASED)
             .remarks(UPDATED_REMARKS);
         ReceivedDocumentDTO receivedDocumentDTO = receivedDocumentMapper.toDto(updatedReceivedDocument);
@@ -1026,8 +786,6 @@ class ReceivedDocumentResourceIT {
         ReceivedDocument partialUpdatedReceivedDocument = new ReceivedDocument();
         partialUpdatedReceivedDocument.setId(receivedDocument.getId());
 
-        partialUpdatedReceivedDocument.daysBeforeDue(UPDATED_DAYS_BEFORE_DUE).dateReleased(UPDATED_DATE_RELEASED);
-
         restReceivedDocumentMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedReceivedDocument.getId())
@@ -1060,10 +818,6 @@ class ReceivedDocumentResourceIT {
         partialUpdatedReceivedDocument
             .date(UPDATED_DATE)
             .documentTitle(UPDATED_DOCUMENT_TITLE)
-            .transactionType(UPDATED_TRANSACTION_TYPE)
-            .days(UPDATED_DAYS)
-            .dueDate(UPDATED_DUE_DATE)
-            .daysBeforeDue(UPDATED_DAYS_BEFORE_DUE)
             .dateReleased(UPDATED_DATE_RELEASED)
             .remarks(UPDATED_REMARKS);
 

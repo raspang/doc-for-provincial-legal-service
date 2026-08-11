@@ -51,6 +51,11 @@ const routes: Routes = [
     data: { pageTitle: 'DocumentStatuses' },
     loadChildren: () => import('./document-status/document-status.routes'),
   },
+  {
+    path: 'transaction-type',
+    data: { pageTitle: 'TransactionTypes' },
+    loadChildren: () => import('./transaction-type/transaction-type.routes'),
+  },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];
 

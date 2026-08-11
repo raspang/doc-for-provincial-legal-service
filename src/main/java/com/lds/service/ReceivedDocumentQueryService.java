@@ -79,6 +79,7 @@ public class ReceivedDocumentQueryService extends QueryService<ReceivedDocument>
                 root.fetch(ReceivedDocument_.office, JoinType.LEFT);
                 root.fetch(ReceivedDocument_.responsiblePerson, JoinType.LEFT);
                 root.fetch(ReceivedDocument_.documentStatus, JoinType.LEFT);
+                root.fetch(ReceivedDocument_.transactionType, JoinType.LEFT);
             }
             return null;
         });
@@ -90,10 +91,6 @@ public class ReceivedDocumentQueryService extends QueryService<ReceivedDocument>
                     buildRangeSpecification(criteria.getId(), ReceivedDocument_.id),
                     buildRangeSpecification(criteria.getDate(), ReceivedDocument_.date),
                     buildStringSpecification(criteria.getDocumentTitle(), ReceivedDocument_.documentTitle),
-                    buildSpecification(criteria.getTransactionType(), ReceivedDocument_.transactionType),
-                    buildRangeSpecification(criteria.getDays(), ReceivedDocument_.days),
-                    buildRangeSpecification(criteria.getDueDate(), ReceivedDocument_.dueDate),
-                    buildRangeSpecification(criteria.getDaysBeforeDue(), ReceivedDocument_.daysBeforeDue),
                     buildRangeSpecification(criteria.getDateReleased(), ReceivedDocument_.dateReleased),
                     buildStringSpecification(criteria.getRemarks(), ReceivedDocument_.remarks),
                     buildSpecification(criteria.getRequestedActionId(), root ->
@@ -108,6 +105,9 @@ public class ReceivedDocumentQueryService extends QueryService<ReceivedDocument>
                     ),
                     buildSpecification(criteria.getDocumentStatusId(), root ->
                         root.join(ReceivedDocument_.documentStatus, JoinType.LEFT).get(DocumentStatus_.id)
+                    ),
+                    buildSpecification(criteria.getTransactionTypeId(), root ->
+                        root.join(ReceivedDocument_.transactionType, JoinType.LEFT).get(TransactionType_.id)
                     )
                 )
             );

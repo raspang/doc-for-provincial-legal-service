@@ -52,6 +52,7 @@ public class CacheConfiguration {
             createCache(cm, com.lds.domain.Office.class.getName());
             createCache(cm, com.lds.domain.DocumentHistory.class.getName());
             createCache(cm, com.lds.domain.DocumentStatus.class.getName());
+            createCache(cm, com.lds.domain.TransactionType.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

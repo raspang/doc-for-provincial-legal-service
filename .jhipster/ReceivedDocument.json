@@ -17,24 +17,6 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "transactionType",
-      "fieldType": "TransactionType",
-      "fieldTypeDocumentation": "Enum for transaction complexities.",
-      "fieldValues": "SIMPLE,COMPLEX,HIGHLY_TECHNICAL,NOT_APPLICABLE"
-    },
-    {
-      "fieldName": "days",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "dueDate",
-      "fieldType": "Instant"
-    },
-    {
-      "fieldName": "daysBeforeDue",
-      "fieldType": "Integer"
-    },
-    {
       "fieldName": "dateReleased",
       "fieldType": "Instant"
     },
@@ -83,6 +65,13 @@
       "relationshipSide": "left",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "transactionType",
+      "relationshipName": "transactionType",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
     }
   ],
   "searchEngine": "no",

@@ -74,10 +74,6 @@ class ReceivedDocumentCriteriaTest {
         receivedDocumentCriteria.id();
         receivedDocumentCriteria.date();
         receivedDocumentCriteria.documentTitle();
-        receivedDocumentCriteria.transactionType();
-        receivedDocumentCriteria.days();
-        receivedDocumentCriteria.dueDate();
-        receivedDocumentCriteria.daysBeforeDue();
         receivedDocumentCriteria.dateReleased();
         receivedDocumentCriteria.remarks();
         receivedDocumentCriteria.requestedActionId();
@@ -85,6 +81,7 @@ class ReceivedDocumentCriteriaTest {
         receivedDocumentCriteria.officeId();
         receivedDocumentCriteria.responsiblePersonId();
         receivedDocumentCriteria.documentStatusId();
+        receivedDocumentCriteria.transactionTypeId();
         receivedDocumentCriteria.distinct();
     }
 
@@ -94,10 +91,6 @@ class ReceivedDocumentCriteriaTest {
                 condition.apply(criteria.getId()) &&
                 condition.apply(criteria.getDate()) &&
                 condition.apply(criteria.getDocumentTitle()) &&
-                condition.apply(criteria.getTransactionType()) &&
-                condition.apply(criteria.getDays()) &&
-                condition.apply(criteria.getDueDate()) &&
-                condition.apply(criteria.getDaysBeforeDue()) &&
                 condition.apply(criteria.getDateReleased()) &&
                 condition.apply(criteria.getRemarks()) &&
                 condition.apply(criteria.getRequestedActionId()) &&
@@ -105,6 +98,7 @@ class ReceivedDocumentCriteriaTest {
                 condition.apply(criteria.getOfficeId()) &&
                 condition.apply(criteria.getResponsiblePersonId()) &&
                 condition.apply(criteria.getDocumentStatusId()) &&
+                condition.apply(criteria.getTransactionTypeId()) &&
                 condition.apply(criteria.getDistinct()),
             "every filter matches"
         );
@@ -119,10 +113,6 @@ class ReceivedDocumentCriteriaTest {
                 condition.apply(criteria.getId(), copy.getId()) &&
                 condition.apply(criteria.getDate(), copy.getDate()) &&
                 condition.apply(criteria.getDocumentTitle(), copy.getDocumentTitle()) &&
-                condition.apply(criteria.getTransactionType(), copy.getTransactionType()) &&
-                condition.apply(criteria.getDays(), copy.getDays()) &&
-                condition.apply(criteria.getDueDate(), copy.getDueDate()) &&
-                condition.apply(criteria.getDaysBeforeDue(), copy.getDaysBeforeDue()) &&
                 condition.apply(criteria.getDateReleased(), copy.getDateReleased()) &&
                 condition.apply(criteria.getRemarks(), copy.getRemarks()) &&
                 condition.apply(criteria.getRequestedActionId(), copy.getRequestedActionId()) &&
@@ -130,6 +120,7 @@ class ReceivedDocumentCriteriaTest {
                 condition.apply(criteria.getOfficeId(), copy.getOfficeId()) &&
                 condition.apply(criteria.getResponsiblePersonId(), copy.getResponsiblePersonId()) &&
                 condition.apply(criteria.getDocumentStatusId(), copy.getDocumentStatusId()) &&
+                condition.apply(criteria.getTransactionTypeId(), copy.getTransactionTypeId()) &&
                 condition.apply(criteria.getDistinct(), copy.getDistinct()),
             "every filter matches"
         );

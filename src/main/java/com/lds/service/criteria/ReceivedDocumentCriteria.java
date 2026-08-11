@@ -1,6 +1,5 @@
 package com.lds.service.criteria;
 
-import com.lds.domain.enumeration.TransactionType;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -22,23 +21,6 @@ import tech.jhipster.service.filter.*;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ReceivedDocumentCriteria implements Serializable, Criteria {
 
-    /**
-     * Class for filtering TransactionType
-     */
-    public static class TransactionTypeFilter extends Filter<TransactionType> {
-
-        public TransactionTypeFilter() {}
-
-        public TransactionTypeFilter(TransactionTypeFilter filter) {
-            super(filter);
-        }
-
-        @Override
-        public TransactionTypeFilter copy() {
-            return new TransactionTypeFilter(this);
-        }
-    }
-
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -47,14 +29,6 @@ public class ReceivedDocumentCriteria implements Serializable, Criteria {
     private InstantFilter date;
 
     private StringFilter documentTitle;
-
-    private TransactionTypeFilter transactionType;
-
-    private IntegerFilter days;
-
-    private InstantFilter dueDate;
-
-    private IntegerFilter daysBeforeDue;
 
     private InstantFilter dateReleased;
 
@@ -70,6 +44,8 @@ public class ReceivedDocumentCriteria implements Serializable, Criteria {
 
     private LongFilter documentStatusId;
 
+    private LongFilter transactionTypeId;
+
     private Boolean distinct;
 
     public ReceivedDocumentCriteria() {}
@@ -78,10 +54,6 @@ public class ReceivedDocumentCriteria implements Serializable, Criteria {
         this.id = other.optionalId().map(LongFilter::copy).orElse(null);
         this.date = other.optionalDate().map(InstantFilter::copy).orElse(null);
         this.documentTitle = other.optionalDocumentTitle().map(StringFilter::copy).orElse(null);
-        this.transactionType = other.optionalTransactionType().map(TransactionTypeFilter::copy).orElse(null);
-        this.days = other.optionalDays().map(IntegerFilter::copy).orElse(null);
-        this.dueDate = other.optionalDueDate().map(InstantFilter::copy).orElse(null);
-        this.daysBeforeDue = other.optionalDaysBeforeDue().map(IntegerFilter::copy).orElse(null);
         this.dateReleased = other.optionalDateReleased().map(InstantFilter::copy).orElse(null);
         this.remarks = other.optionalRemarks().map(StringFilter::copy).orElse(null);
         this.requestedActionId = other.optionalRequestedActionId().map(LongFilter::copy).orElse(null);
@@ -89,6 +61,7 @@ public class ReceivedDocumentCriteria implements Serializable, Criteria {
         this.officeId = other.optionalOfficeId().map(LongFilter::copy).orElse(null);
         this.responsiblePersonId = other.optionalResponsiblePersonId().map(LongFilter::copy).orElse(null);
         this.documentStatusId = other.optionalDocumentStatusId().map(LongFilter::copy).orElse(null);
+        this.transactionTypeId = other.optionalTransactionTypeId().map(LongFilter::copy).orElse(null);
         this.distinct = other.distinct;
     }
 
@@ -152,82 +125,6 @@ public class ReceivedDocumentCriteria implements Serializable, Criteria {
 
     public void setDocumentTitle(StringFilter documentTitle) {
         this.documentTitle = documentTitle;
-    }
-
-    public TransactionTypeFilter getTransactionType() {
-        return transactionType;
-    }
-
-    public Optional<TransactionTypeFilter> optionalTransactionType() {
-        return Optional.ofNullable(transactionType);
-    }
-
-    public TransactionTypeFilter transactionType() {
-        if (transactionType == null) {
-            setTransactionType(new TransactionTypeFilter());
-        }
-        return transactionType;
-    }
-
-    public void setTransactionType(TransactionTypeFilter transactionType) {
-        this.transactionType = transactionType;
-    }
-
-    public IntegerFilter getDays() {
-        return days;
-    }
-
-    public Optional<IntegerFilter> optionalDays() {
-        return Optional.ofNullable(days);
-    }
-
-    public IntegerFilter days() {
-        if (days == null) {
-            setDays(new IntegerFilter());
-        }
-        return days;
-    }
-
-    public void setDays(IntegerFilter days) {
-        this.days = days;
-    }
-
-    public InstantFilter getDueDate() {
-        return dueDate;
-    }
-
-    public Optional<InstantFilter> optionalDueDate() {
-        return Optional.ofNullable(dueDate);
-    }
-
-    public InstantFilter dueDate() {
-        if (dueDate == null) {
-            setDueDate(new InstantFilter());
-        }
-        return dueDate;
-    }
-
-    public void setDueDate(InstantFilter dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public IntegerFilter getDaysBeforeDue() {
-        return daysBeforeDue;
-    }
-
-    public Optional<IntegerFilter> optionalDaysBeforeDue() {
-        return Optional.ofNullable(daysBeforeDue);
-    }
-
-    public IntegerFilter daysBeforeDue() {
-        if (daysBeforeDue == null) {
-            setDaysBeforeDue(new IntegerFilter());
-        }
-        return daysBeforeDue;
-    }
-
-    public void setDaysBeforeDue(IntegerFilter daysBeforeDue) {
-        this.daysBeforeDue = daysBeforeDue;
     }
 
     public InstantFilter getDateReleased() {
@@ -363,6 +260,25 @@ public class ReceivedDocumentCriteria implements Serializable, Criteria {
         this.documentStatusId = documentStatusId;
     }
 
+    public LongFilter getTransactionTypeId() {
+        return transactionTypeId;
+    }
+
+    public Optional<LongFilter> optionalTransactionTypeId() {
+        return Optional.ofNullable(transactionTypeId);
+    }
+
+    public LongFilter transactionTypeId() {
+        if (transactionTypeId == null) {
+            setTransactionTypeId(new LongFilter());
+        }
+        return transactionTypeId;
+    }
+
+    public void setTransactionTypeId(LongFilter transactionTypeId) {
+        this.transactionTypeId = transactionTypeId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -395,10 +311,6 @@ public class ReceivedDocumentCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(date, that.date) &&
             Objects.equals(documentTitle, that.documentTitle) &&
-            Objects.equals(transactionType, that.transactionType) &&
-            Objects.equals(days, that.days) &&
-            Objects.equals(dueDate, that.dueDate) &&
-            Objects.equals(daysBeforeDue, that.daysBeforeDue) &&
             Objects.equals(dateReleased, that.dateReleased) &&
             Objects.equals(remarks, that.remarks) &&
             Objects.equals(requestedActionId, that.requestedActionId) &&
@@ -406,6 +318,7 @@ public class ReceivedDocumentCriteria implements Serializable, Criteria {
             Objects.equals(officeId, that.officeId) &&
             Objects.equals(responsiblePersonId, that.responsiblePersonId) &&
             Objects.equals(documentStatusId, that.documentStatusId) &&
+            Objects.equals(transactionTypeId, that.transactionTypeId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -416,10 +329,6 @@ public class ReceivedDocumentCriteria implements Serializable, Criteria {
             id,
             date,
             documentTitle,
-            transactionType,
-            days,
-            dueDate,
-            daysBeforeDue,
             dateReleased,
             remarks,
             requestedActionId,
@@ -427,6 +336,7 @@ public class ReceivedDocumentCriteria implements Serializable, Criteria {
             officeId,
             responsiblePersonId,
             documentStatusId,
+            transactionTypeId,
             distinct
         );
     }
@@ -438,10 +348,6 @@ public class ReceivedDocumentCriteria implements Serializable, Criteria {
             optionalId().map(f -> "id=" + f + ", ").orElse("") +
             optionalDate().map(f -> "date=" + f + ", ").orElse("") +
             optionalDocumentTitle().map(f -> "documentTitle=" + f + ", ").orElse("") +
-            optionalTransactionType().map(f -> "transactionType=" + f + ", ").orElse("") +
-            optionalDays().map(f -> "days=" + f + ", ").orElse("") +
-            optionalDueDate().map(f -> "dueDate=" + f + ", ").orElse("") +
-            optionalDaysBeforeDue().map(f -> "daysBeforeDue=" + f + ", ").orElse("") +
             optionalDateReleased().map(f -> "dateReleased=" + f + ", ").orElse("") +
             optionalRemarks().map(f -> "remarks=" + f + ", ").orElse("") +
             optionalRequestedActionId().map(f -> "requestedActionId=" + f + ", ").orElse("") +
@@ -449,6 +355,7 @@ public class ReceivedDocumentCriteria implements Serializable, Criteria {
             optionalOfficeId().map(f -> "officeId=" + f + ", ").orElse("") +
             optionalResponsiblePersonId().map(f -> "responsiblePersonId=" + f + ", ").orElse("") +
             optionalDocumentStatusId().map(f -> "documentStatusId=" + f + ", ").orElse("") +
+            optionalTransactionTypeId().map(f -> "transactionTypeId=" + f + ", ").orElse("") +
             optionalDistinct().map(f -> "distinct=" + f + ", ").orElse("") +
         "}";
     }

@@ -122,60 +122,18 @@
           <label class="form-label" for="field_transactionType">Transaction Type</label>
           <select
             class="form-control"
-            name="transactionType"
-            formControlName="transactionType"
             id="field_transactionType"
             data-cy="transactionType"
+            name="transactionType"
+            formControlName="transactionType"
+            [compareWith]="compareTransactionType"
           >
             <option [ngValue]="null"></option>
-            @for (transactionType of transactionTypeValues; track $index) {
-              <option [value]="transactionType">
-                {{
-                  {
-                    null: '',
-                    SIMPLE: 'SIMPLE',
-                    COMPLEX: 'COMPLEX',
-                    HIGHLY_TECHNICAL: 'HIGHLY_TECHNICAL',
-                    NOT_APPLICABLE: 'NOT_APPLICABLE',
-                  }[transactionType]
-                }}
-              </option>
+            @for (transactionTypeOption of transactionTypesSharedCollection(); track $index) {
+              <option [ngValue]="transactionTypeOption">{{ transactionTypeOption.name }}</option>
             }
           </select>
         </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_days">Days</label>
-          <input type="number" class="form-control" name="days" id="field_days" data-cy="days" formControlName="days" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_dueDate">Due Date</label>
-          <div class="d-flex">
-            <input
-              id="field_dueDate"
-              data-cy="dueDate"
-              type="datetime-local"
-              class="form-control"
-              name="dueDate"
-              formControlName="dueDate"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_daysBeforeDue">Days Before Due</label>
-          <input
-            type="number"
-            class="form-control"
-            name="daysBeforeDue"
-            id="field_daysBeforeDue"
-            data-cy="daysBeforeDue"
-            formControlName="daysBeforeDue"
-          />
-        </div>
-
         <div class="mb-3">
           <label class="form-label" for="field_dateReleased">Date Released</label>
           <div class="d-flex">

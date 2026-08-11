@@ -20,18 +20,6 @@
             <column name="document_title" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="transaction_type" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="days" type="integer">
-                <constraints nullable="true" />
-            </column>
-            <column name="due_date" type="${datetimeType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="days_before_due" type="integer">
-                <constraints nullable="true" />
-            </column>
             <column name="date_released" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
@@ -53,10 +41,12 @@
             <column name="document_status_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+            <column name="transaction_type_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="received_document" columnName="date" columnDataType="${datetimeType}"/>
-        <dropDefaultValue tableName="received_document" columnName="due_date" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="received_document" columnName="date_released" columnDataType="${datetimeType}"/>
     </changeSet>
 
@@ -80,10 +70,6 @@
             <column name="id" type="numeric"/>
             <column name="date" type="date"/>
             <column name="document_title" type="string"/>
-            <column name="transaction_type" type="string"/>
-            <column name="days" type="numeric"/>
-            <column name="due_date" type="date"/>
-            <column name="days_before_due" type="numeric"/>
             <column name="date_released" type="date"/>
             <column name="remarks" type="string"/>
             <column name="type_of_document_id" type="numeric"/>

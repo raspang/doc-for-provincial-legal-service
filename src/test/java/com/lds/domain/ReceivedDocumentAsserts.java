@@ -49,10 +49,6 @@ public class ReceivedDocumentAsserts {
             .as("Verify ReceivedDocument relevant properties")
             .satisfies(a -> assertThat(a.getDate()).as("check date").isEqualTo(expected.getDate()))
             .satisfies(a -> assertThat(a.getDocumentTitle()).as("check documentTitle").isEqualTo(expected.getDocumentTitle()))
-            .satisfies(a -> assertThat(a.getTransactionType()).as("check transactionType").isEqualTo(expected.getTransactionType()))
-            .satisfies(a -> assertThat(a.getDays()).as("check days").isEqualTo(expected.getDays()))
-            .satisfies(a -> assertThat(a.getDueDate()).as("check dueDate").isEqualTo(expected.getDueDate()))
-            .satisfies(a -> assertThat(a.getDaysBeforeDue()).as("check daysBeforeDue").isEqualTo(expected.getDaysBeforeDue()))
             .satisfies(a -> assertThat(a.getDateReleased()).as("check dateReleased").isEqualTo(expected.getDateReleased()))
             .satisfies(a -> assertThat(a.getRemarks()).as("check remarks").isEqualTo(expected.getRemarks()));
     }
@@ -70,6 +66,7 @@ public class ReceivedDocumentAsserts {
             .satisfies(a -> assertThat(a.getTypeOfDocument()).as("check typeOfDocument").isEqualTo(expected.getTypeOfDocument()))
             .satisfies(a -> assertThat(a.getOffice()).as("check office").isEqualTo(expected.getOffice()))
             .satisfies(a -> assertThat(a.getResponsiblePerson()).as("check responsiblePerson").isEqualTo(expected.getResponsiblePerson()))
-            .satisfies(a -> assertThat(a.getDocumentStatus()).as("check documentStatus").isEqualTo(expected.getDocumentStatus()));
+            .satisfies(a -> assertThat(a.getDocumentStatus()).as("check documentStatus").isEqualTo(expected.getDocumentStatus()))
+            .satisfies(a -> assertThat(a.getTransactionType()).as("check transactionType").isEqualTo(expected.getTransactionType()));
     }
 }

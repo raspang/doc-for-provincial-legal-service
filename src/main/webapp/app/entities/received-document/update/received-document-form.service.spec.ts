@@ -22,10 +22,6 @@ describe('ReceivedDocument Form Service', () => {
             id: expect.any(Object),
             date: expect.any(Object),
             documentTitle: expect.any(Object),
-            transactionType: expect.any(Object),
-            days: expect.any(Object),
-            dueDate: expect.any(Object),
-            daysBeforeDue: expect.any(Object),
             dateReleased: expect.any(Object),
             remarks: expect.any(Object),
             requestedAction: expect.any(Object),
@@ -33,6 +29,7 @@ describe('ReceivedDocument Form Service', () => {
             office: expect.any(Object),
             responsiblePerson: expect.any(Object),
             documentStatus: expect.any(Object),
+            transactionType: expect.any(Object),
           }),
         );
       });
@@ -45,10 +42,6 @@ describe('ReceivedDocument Form Service', () => {
             id: expect.any(Object),
             date: expect.any(Object),
             documentTitle: expect.any(Object),
-            transactionType: expect.any(Object),
-            days: expect.any(Object),
-            dueDate: expect.any(Object),
-            daysBeforeDue: expect.any(Object),
             dateReleased: expect.any(Object),
             remarks: expect.any(Object),
             requestedAction: expect.any(Object),
@@ -56,6 +49,7 @@ describe('ReceivedDocument Form Service', () => {
             office: expect.any(Object),
             responsiblePerson: expect.any(Object),
             documentStatus: expect.any(Object),
+            transactionType: expect.any(Object),
           }),
         );
       });

@@ -5,12 +5,14 @@ import com.lds.domain.Office;
 import com.lds.domain.ReceivedDocument;
 import com.lds.domain.RequestedAction;
 import com.lds.domain.ResponsiblePerson;
+import com.lds.domain.TransactionType;
 import com.lds.domain.TypeOfDocument;
 import com.lds.service.dto.DocumentStatusDTO;
 import com.lds.service.dto.OfficeDTO;
 import com.lds.service.dto.ReceivedDocumentDTO;
 import com.lds.service.dto.RequestedActionDTO;
 import com.lds.service.dto.ResponsiblePersonDTO;
+import com.lds.service.dto.TransactionTypeDTO;
 import com.lds.service.dto.TypeOfDocumentDTO;
 import org.mapstruct.*;
 
@@ -24,6 +26,7 @@ public interface ReceivedDocumentMapper extends EntityMapper<ReceivedDocumentDTO
     @Mapping(target = "office", source = "office", qualifiedByName = "officeName")
     @Mapping(target = "responsiblePerson", source = "responsiblePerson", qualifiedByName = "responsiblePersonName")
     @Mapping(target = "documentStatus", source = "documentStatus", qualifiedByName = "documentStatusName")
+    @Mapping(target = "transactionType", source = "transactionType", qualifiedByName = "transactionTypeName")
     ReceivedDocumentDTO toDto(ReceivedDocument s);
 
     @Named("requestedActionName")
@@ -55,4 +58,10 @@ public interface ReceivedDocumentMapper extends EntityMapper<ReceivedDocumentDTO
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
     DocumentStatusDTO toDtoDocumentStatusName(DocumentStatus documentStatus);
+
+    @Named("transactionTypeName")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    TransactionTypeDTO toDtoTransactionTypeName(TransactionType transactionType);
 }

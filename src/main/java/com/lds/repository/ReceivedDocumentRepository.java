@@ -27,18 +27,18 @@ public interface ReceivedDocumentRepository extends JpaRepository<ReceivedDocume
     }
 
     @Query(
-        value = "select receivedDocument from ReceivedDocument receivedDocument left join fetch receivedDocument.requestedAction left join fetch receivedDocument.typeOfDocument left join fetch receivedDocument.office left join fetch receivedDocument.responsiblePerson left join fetch receivedDocument.documentStatus",
+        value = "select receivedDocument from ReceivedDocument receivedDocument left join fetch receivedDocument.requestedAction left join fetch receivedDocument.typeOfDocument left join fetch receivedDocument.office left join fetch receivedDocument.responsiblePerson left join fetch receivedDocument.documentStatus left join fetch receivedDocument.transactionType",
         countQuery = "select count(receivedDocument) from ReceivedDocument receivedDocument"
     )
     Page<ReceivedDocument> findAllWithToOneRelationships(Pageable pageable);
 
     @Query(
-        "select receivedDocument from ReceivedDocument receivedDocument left join fetch receivedDocument.requestedAction left join fetch receivedDocument.typeOfDocument left join fetch receivedDocument.office left join fetch receivedDocument.responsiblePerson left join fetch receivedDocument.documentStatus"
+        "select receivedDocument from ReceivedDocument receivedDocument left join fetch receivedDocument.requestedAction left join fetch receivedDocument.typeOfDocument left join fetch receivedDocument.office left join fetch receivedDocument.responsiblePerson left join fetch receivedDocument.documentStatus left join fetch receivedDocument.transactionType"
     )
     List<ReceivedDocument> findAllWithToOneRelationships();
 
     @Query(
-        "select receivedDocument from ReceivedDocument receivedDocument left join fetch receivedDocument.requestedAction left join fetch receivedDocument.typeOfDocument left join fetch receivedDocument.office left join fetch receivedDocument.responsiblePerson left join fetch receivedDocument.documentStatus where receivedDocument.id =:id"
+        "select receivedDocument from ReceivedDocument receivedDocument left join fetch receivedDocument.requestedAction left join fetch receivedDocument.typeOfDocument left join fetch receivedDocument.office left join fetch receivedDocument.responsiblePerson left join fetch receivedDocument.documentStatus left join fetch receivedDocument.transactionType where receivedDocument.id =:id"
     )
     Optional<ReceivedDocument> findOneWithToOneRelationships(@Param("id") Long id);
 }

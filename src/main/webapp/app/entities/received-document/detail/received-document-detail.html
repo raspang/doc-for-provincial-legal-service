@@ -23,26 +23,6 @@
           <dd>
             <span>{{ receivedDocumentRef.documentTitle }}</span>
           </dd>
-          <dt><span>Transaction Type</span></dt>
-          <dd>
-            <span>{{
-              { null: '', SIMPLE: 'SIMPLE', COMPLEX: 'COMPLEX', HIGHLY_TECHNICAL: 'HIGHLY_TECHNICAL', NOT_APPLICABLE: 'NOT_APPLICABLE' }[
-                receivedDocumentRef.transactionType ?? 'null'
-              ]
-            }}</span>
-          </dd>
-          <dt><span>Days</span></dt>
-          <dd>
-            <span>{{ receivedDocumentRef.days }}</span>
-          </dd>
-          <dt><span>Due Date</span></dt>
-          <dd>
-            <span>{{ receivedDocumentRef.dueDate | formatMediumDatetime }}</span>
-          </dd>
-          <dt><span>Days Before Due</span></dt>
-          <dd>
-            <span>{{ receivedDocumentRef.daysBeforeDue }}</span>
-          </dd>
           <dt><span>Date Released</span></dt>
           <dd>
             <span>{{ receivedDocumentRef.dateReleased | formatMediumDatetime }}</span>
@@ -95,6 +75,16 @@
               <div>
                 <a [routerLink]="['/document-status', receivedDocument()!.documentStatus?.id, 'view']">{{
                   receivedDocumentRef.documentStatus?.name
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Transaction Type</span></dt>
+          <dd>
+            @if (receivedDocument()!.transactionType) {
+              <div>
+                <a [routerLink]="['/transaction-type', receivedDocument()!.transactionType?.id, 'view']">{{
+                  receivedDocumentRef.transactionType?.name
                 }}</a>
               </div>
             }

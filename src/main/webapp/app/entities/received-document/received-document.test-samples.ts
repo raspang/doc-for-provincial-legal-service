@@ -9,24 +9,18 @@ export const sampleWithRequiredData: IReceivedDocument = {
 };
 
 export const sampleWithPartialData: IReceivedDocument = {
-  id: 11254,
-  date: dayjs('2026-08-06T22:48'),
-  documentTitle: 'scaffold',
-  days: 16251,
-  dueDate: dayjs('2026-08-06T18:05'),
-  daysBeforeDue: 22757,
+  id: 5705,
+  date: dayjs('2026-08-06T08:21'),
+  documentTitle: 'competent populist',
+  remarks: 'common in',
 };
 
 export const sampleWithFullData: IReceivedDocument = {
   id: 32056,
   date: dayjs('2026-08-06T23:10'),
   documentTitle: 'gummy taut',
-  transactionType: 'NOT_APPLICABLE',
-  days: 6225,
-  dueDate: dayjs('2026-08-07T06:31'),
-  daysBeforeDue: 12941,
-  dateReleased: dayjs('2026-08-06T16:47'),
-  remarks: 'nutritious mystify',
+  dateReleased: dayjs('2026-08-07T04:33'),
+  remarks: 'intelligent',
 };
 
 export const sampleWithNewData: NewReceivedDocument = {

@@ -8,11 +8,11 @@ import { Observable, finalize, map } from 'rxjs';
 
 import { IDocumentStatus } from 'app/entities/document-status/document-status.model';
 import { DocumentStatusService } from 'app/entities/document-status/service/document-status.service';
-import { TransactionType } from 'app/entities/enumerations/transaction-type.model';
 import { IOffice } from 'app/entities/office/office.model';
 import { OfficeService } from 'app/entities/office/service/office.service';
 import { IRequestedAction } from 'app/entities/requested-action/requested-action.model';
 import { RequestedActionService } from 'app/entities/requested-action/service/requested-action.service';
+import { TypeOfDocumentService } from 'app/entities/type-of-document/service/type-of-document.service';
 import { ITypeOfDocument } from 'app/entities/type-of-document/type-of-document.model';
 import { AlertError } from 'app/shared/alert/alert-error';
 
@@ -20,9 +20,10 @@ import { IReceivedDocument } from '../received-document.model';
 
 import { ReceivedDocumentService } from '../service/received-document.service';
 import { ReceivedDocumentFormService, ReceivedDocumentFormGroup } from './received-document-form.service';
-import { TypeOfDocumentService } from 'app/entities/type-of-document/service/type-of-document.service';
 import { IResponsiblePerson } from 'app/entities/responsible-person/responsible-person.model';
 import { ResponsiblePersonService } from 'app/entities/responsible-person/service/responsible-person.service';
+import { ITransactionType } from 'app/entities/transaction-type/transaction-type.model';
+import { TransactionTypeService } from 'app/entities/transaction-type/service/transaction-type.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,13 +34,13 @@ import { ResponsiblePersonService } from 'app/entities/responsible-person/servic
 export class ReceivedDocumentUpdate implements OnInit {
   readonly isSaving = signal(false);
   receivedDocument: IReceivedDocument | null = null;
-  transactionTypeValues = Object.keys(TransactionType);
 
   requestedActionsSharedCollection = signal<IRequestedAction[]>([]);
   typeOfDocumentsSharedCollection = signal<ITypeOfDocument[]>([]);
   officesSharedCollection = signal<IOffice[]>([]);
   responsiblePeopleSharedCollection = signal<IResponsiblePerson[]>([]);
   documentStatusesSharedCollection = signal<IDocumentStatus[]>([]);
+  transactionTypesSharedCollection = signal<ITransactionType[]>([]);
 
   protected receivedDocumentService = inject(ReceivedDocumentService);
   protected receivedDocumentFormService = inject(ReceivedDocumentFormService);
@@ -48,6 +49,7 @@ export class ReceivedDocumentUpdate implements OnInit {
   protected officeService = inject(OfficeService);
   protected responsiblePersonService = inject(ResponsiblePersonService);
   protected documentStatusService = inject(DocumentStatusService);
+  protected transactionTypeService = inject(TransactionTypeService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -66,6 +68,9 @@ export class ReceivedDocumentUpdate implements OnInit {
 
   compareDocumentStatus = (o1: IDocumentStatus | null, o2: IDocumentStatus | null): boolean =>
     this.documentStatusService.compareDocumentStatus(o1, o2);
+
+  compareTransactionType = (o1: ITransactionType | null, o2: ITransactionType | null): boolean =>
+    this.transactionTypeService.compareTransactionType(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ receivedDocument }) => {
@@ -136,6 +141,12 @@ export class ReceivedDocumentUpdate implements OnInit {
     this.documentStatusesSharedCollection.update(documentStatuses =>
       this.documentStatusService.addDocumentStatusToCollectionIfMissing<IDocumentStatus>(documentStatuses, receivedDocument.documentStatus),
     );
+    this.transactionTypesSharedCollection.update(transactionTypes =>
+      this.transactionTypeService.addTransactionTypeToCollectionIfMissing<ITransactionType>(
+        transactionTypes,
+        receivedDocument.transactionType,
+      ),
+    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -196,5 +207,18 @@ export class ReceivedDocumentUpdate implements OnInit {
         ),
       )
       .subscribe((documentStatuses: IDocumentStatus[]) => this.documentStatusesSharedCollection.set(documentStatuses));
+
+    this.transactionTypeService
+      .query()
+      .pipe(map((res: HttpResponse<ITransactionType[]>) => res.body ?? []))
+      .pipe(
+        map((transactionTypes: ITransactionType[]) =>
+          this.transactionTypeService.addTransactionTypeToCollectionIfMissing<ITransactionType>(
+            transactionTypes,
+            this.receivedDocument?.transactionType,
+          ),
+        ),
+      )
+      .subscribe((transactionTypes: ITransactionType[]) => this.transactionTypesSharedCollection.set(transactionTypes));
   }
 }

@@ -44,5 +44,12 @@
                                  referencedColumnNames="id"
                                  referencedTableName="document_status"
                                  />
+
+        <addForeignKeyConstraint baseColumnNames="transaction_type_id"
+                                 baseTableName="received_document"
+                                 constraintName="fk_received_document__transaction_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_type"
+                                 />
     </changeSet>
 </databaseChangeLog>

@@ -20,9 +20,8 @@ type ReceivedDocumentFormGroupInput = IReceivedDocument | PartialWithRequiredKey
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends IReceivedDocument | NewReceivedDocument> = Omit<T, 'date' | 'dueDate' | 'dateReleased'> & {
+type FormValueOf<T extends IReceivedDocument | NewReceivedDocument> = Omit<T, 'date' | 'dateReleased'> & {
   date?: string | null;
-  dueDate?: string | null;
   dateReleased?: string | null;
 };
 
@@ -30,16 +29,12 @@ type ReceivedDocumentFormRawValue = FormValueOf<IReceivedDocument>;
 
 type NewReceivedDocumentFormRawValue = FormValueOf<NewReceivedDocument>;
 
-type ReceivedDocumentFormDefaults = Pick<NewReceivedDocument, 'id' | 'date' | 'dueDate' | 'dateReleased'>;
+type ReceivedDocumentFormDefaults = Pick<NewReceivedDocument, 'id' | 'date' | 'dateReleased'>;
 
 type ReceivedDocumentFormGroupContent = {
   id: FormControl<ReceivedDocumentFormRawValue['id'] | NewReceivedDocument['id']>;
   date: FormControl<ReceivedDocumentFormRawValue['date']>;
   documentTitle: FormControl<ReceivedDocumentFormRawValue['documentTitle']>;
-  transactionType: FormControl<ReceivedDocumentFormRawValue['transactionType']>;
-  days: FormControl<ReceivedDocumentFormRawValue['days']>;
-  dueDate: FormControl<ReceivedDocumentFormRawValue['dueDate']>;
-  daysBeforeDue: FormControl<ReceivedDocumentFormRawValue['daysBeforeDue']>;
   dateReleased: FormControl<ReceivedDocumentFormRawValue['dateReleased']>;
   remarks: FormControl<ReceivedDocumentFormRawValue['remarks']>;
   requestedAction: FormControl<ReceivedDocumentFormRawValue['requestedAction']>;
@@ -47,6 +42,7 @@ type ReceivedDocumentFormGroupContent = {
   office: FormControl<ReceivedDocumentFormRawValue['office']>;
   responsiblePerson: FormControl<ReceivedDocumentFormRawValue['responsiblePerson']>;
   documentStatus: FormControl<ReceivedDocumentFormRawValue['documentStatus']>;
+  transactionType: FormControl<ReceivedDocumentFormRawValue['transactionType']>;
 };
 
 export type ReceivedDocumentFormGroup = FormGroup<ReceivedDocumentFormGroupContent>;
@@ -73,10 +69,6 @@ export class ReceivedDocumentFormService {
       documentTitle: new FormControl(receivedDocumentRawValue.documentTitle, {
         validators: [Validators.required],
       }),
-      transactionType: new FormControl(receivedDocumentRawValue.transactionType),
-      days: new FormControl(receivedDocumentRawValue.days),
-      dueDate: new FormControl(receivedDocumentRawValue.dueDate),
-      daysBeforeDue: new FormControl(receivedDocumentRawValue.daysBeforeDue),
       dateReleased: new FormControl(receivedDocumentRawValue.dateReleased),
       remarks: new FormControl(receivedDocumentRawValue.remarks),
       requestedAction: new FormControl(receivedDocumentRawValue.requestedAction),
@@ -88,6 +80,7 @@ export class ReceivedDocumentFormService {
       documentStatus: new FormControl(receivedDocumentRawValue.documentStatus, {
         validators: [Validators.required],
       }),
+      transactionType: new FormControl(receivedDocumentRawValue.transactionType),
     });
   }
 
@@ -112,7 +105,6 @@ export class ReceivedDocumentFormService {
     return {
       id: null,
       date: currentTime,
-      dueDate: currentTime,
       dateReleased: currentTime,
     };
   }
@@ -123,7 +115,6 @@ export class ReceivedDocumentFormService {
     return {
       ...rawReceivedDocument,
       date: dayjs(rawReceivedDocument.date, DATE_TIME_FORMAT),
-      dueDate: dayjs(rawReceivedDocument.dueDate, DATE_TIME_FORMAT),
       dateReleased: dayjs(rawReceivedDocument.dateReleased, DATE_TIME_FORMAT),
     };
   }
@@ -134,7 +125,6 @@ export class ReceivedDocumentFormService {
     return {
       ...receivedDocument,
       date: receivedDocument.date ? receivedDocument.date.format(DATE_TIME_FORMAT) : undefined,
-      dueDate: receivedDocument.dueDate ? receivedDocument.dueDate.format(DATE_TIME_FORMAT) : undefined,
       dateReleased: receivedDocument.dateReleased ? receivedDocument.dateReleased.format(DATE_TIME_FORMAT) : undefined,
     };
   }

@@ -11,9 +11,8 @@ import { IReceivedDocument, NewReceivedDocument } from '../received-document.mod
 
 export type PartialUpdateReceivedDocument = Partial<IReceivedDocument> & Pick<IReceivedDocument, 'id'>;
 
-type RestOf<T extends IReceivedDocument | NewReceivedDocument> = Omit<T, 'date' | 'dueDate' | 'dateReleased'> & {
+type RestOf<T extends IReceivedDocument | NewReceivedDocument> = Omit<T, 'date' | 'dateReleased'> & {
   date?: string | null;
-  dueDate?: string | null;
   dateReleased?: string | null;
 };
 
@@ -51,7 +50,6 @@ export class ReceivedDocumentsService {
     return {
       ...restReceivedDocument,
       date: restReceivedDocument.date ? dayjs(restReceivedDocument.date) : undefined,
-      dueDate: restReceivedDocument.dueDate ? dayjs(restReceivedDocument.dueDate) : undefined,
       dateReleased: restReceivedDocument.dateReleased ? dayjs(restReceivedDocument.dateReleased) : undefined,
     };
   }
@@ -133,7 +131,6 @@ export class ReceivedDocumentService extends ReceivedDocumentsService {
     return {
       ...receivedDocument,
       date: receivedDocument.date?.toJSON() ?? null,
-      dueDate: receivedDocument.dueDate?.toJSON() ?? null,
       dateReleased: receivedDocument.dateReleased?.toJSON() ?? null,
     };
   }

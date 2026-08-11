@@ -10,7 +10,6 @@ import { ReceivedDocumentService, RestReceivedDocument } from './received-docume
 const requireRestSample: RestReceivedDocument = {
   ...sampleWithRequiredData,
   date: sampleWithRequiredData.date?.toJSON(),
-  dueDate: sampleWithRequiredData.dueDate?.toJSON(),
   dateReleased: sampleWithRequiredData.dateReleased?.toJSON(),
 };
 

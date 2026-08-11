@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { ASC } from 'app/config/navigation.constants';
+import { ASC, DESC } from 'app/config/navigation.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 
 import DocumentReferenceResolve from './route/document-reference-routing-resolve.service';
@@ -10,7 +10,7 @@ const documentReferenceRoute: Routes = [
     path: '',
     loadComponent: () => import('./list/document-reference').then(m => m.DocumentReference),
     data: {
-      defaultSort: `id,${ASC}`,
+      defaultSort: `id,${DESC}`,
     },
     canActivate: [UserRouteAccessService],
   },

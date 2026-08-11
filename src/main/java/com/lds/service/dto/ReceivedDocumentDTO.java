@@ -1,6 +1,5 @@
 package com.lds.service.dto;
 
-import com.lds.domain.enumeration.TransactionType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -22,14 +21,6 @@ public class ReceivedDocumentDTO implements Serializable {
     @NotNull
     private String documentTitle;
 
-    private TransactionType transactionType;
-
-    private Integer days;
-
-    private Instant dueDate;
-
-    private Integer daysBeforeDue;
-
     private Instant dateReleased;
 
     private String remarks;
@@ -45,6 +36,8 @@ public class ReceivedDocumentDTO implements Serializable {
 
     @NotNull
     private DocumentStatusDTO documentStatus;
+
+    private TransactionTypeDTO transactionType;
 
     public Long getId() {
         return id;
@@ -68,38 +61,6 @@ public class ReceivedDocumentDTO implements Serializable {
 
     public void setDocumentTitle(String documentTitle) {
         this.documentTitle = documentTitle;
-    }
-
-    public TransactionType getTransactionType() {
-        return transactionType;
-    }
-
-    public void setTransactionType(TransactionType transactionType) {
-        this.transactionType = transactionType;
-    }
-
-    public Integer getDays() {
-        return days;
-    }
-
-    public void setDays(Integer days) {
-        this.days = days;
-    }
-
-    public Instant getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(Instant dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public Integer getDaysBeforeDue() {
-        return daysBeforeDue;
-    }
-
-    public void setDaysBeforeDue(Integer daysBeforeDue) {
-        this.daysBeforeDue = daysBeforeDue;
     }
 
     public Instant getDateReleased() {
@@ -158,6 +119,14 @@ public class ReceivedDocumentDTO implements Serializable {
         this.documentStatus = documentStatus;
     }
 
+    public TransactionTypeDTO getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(TransactionTypeDTO transactionType) {
+        this.transactionType = transactionType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -186,10 +155,6 @@ public class ReceivedDocumentDTO implements Serializable {
             "id=" + getId() +
             ", date='" + getDate() + "'" +
             ", documentTitle='" + getDocumentTitle() + "'" +
-            ", transactionType='" + getTransactionType() + "'" +
-            ", days=" + getDays() +
-            ", dueDate='" + getDueDate() + "'" +
-            ", daysBeforeDue=" + getDaysBeforeDue() +
             ", dateReleased='" + getDateReleased() + "'" +
             ", remarks='" + getRemarks() + "'" +
             ", requestedAction=" + getRequestedAction() +
@@ -197,6 +162,7 @@ public class ReceivedDocumentDTO implements Serializable {
             ", office=" + getOffice() +
             ", responsiblePerson=" + getResponsiblePerson() +
             ", documentStatus=" + getDocumentStatus() +
+            ", transactionType=" + getTransactionType() +
             "}";
     }
 }

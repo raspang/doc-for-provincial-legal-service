@@ -1,6 +1,5 @@
 package com.lds.domain;
 
-import com.lds.domain.enumeration.TransactionType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serial;
@@ -35,19 +34,6 @@ public class ReceivedDocument implements Serializable {
     @Column(name = "document_title", nullable = false)
     private String documentTitle;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "transaction_type")
-    private TransactionType transactionType;
-
-    @Column(name = "days")
-    private Integer days;
-
-    @Column(name = "due_date")
-    private Instant dueDate;
-
-    @Column(name = "days_before_due")
-    private Integer daysBeforeDue;
-
     @Column(name = "date_released")
     private Instant dateReleased;
 
@@ -70,6 +56,9 @@ public class ReceivedDocument implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     private DocumentStatus documentStatus;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TransactionType transactionType;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -110,58 +99,6 @@ public class ReceivedDocument implements Serializable {
 
     public void setDocumentTitle(String documentTitle) {
         this.documentTitle = documentTitle;
-    }
-
-    public TransactionType getTransactionType() {
-        return this.transactionType;
-    }
-
-    public ReceivedDocument transactionType(TransactionType transactionType) {
-        this.setTransactionType(transactionType);
-        return this;
-    }
-
-    public void setTransactionType(TransactionType transactionType) {
-        this.transactionType = transactionType;
-    }
-
-    public Integer getDays() {
-        return this.days;
-    }
-
-    public ReceivedDocument days(Integer days) {
-        this.setDays(days);
-        return this;
-    }
-
-    public void setDays(Integer days) {
-        this.days = days;
-    }
-
-    public Instant getDueDate() {
-        return this.dueDate;
-    }
-
-    public ReceivedDocument dueDate(Instant dueDate) {
-        this.setDueDate(dueDate);
-        return this;
-    }
-
-    public void setDueDate(Instant dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public Integer getDaysBeforeDue() {
-        return this.daysBeforeDue;
-    }
-
-    public ReceivedDocument daysBeforeDue(Integer daysBeforeDue) {
-        this.setDaysBeforeDue(daysBeforeDue);
-        return this;
-    }
-
-    public void setDaysBeforeDue(Integer daysBeforeDue) {
-        this.daysBeforeDue = daysBeforeDue;
     }
 
     public Instant getDateReleased() {
@@ -255,6 +192,19 @@ public class ReceivedDocument implements Serializable {
         return this;
     }
 
+    public TransactionType getTransactionType() {
+        return this.transactionType;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public ReceivedDocument transactionType(TransactionType transactionType) {
+        this.setTransactionType(transactionType);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -281,10 +231,6 @@ public class ReceivedDocument implements Serializable {
             "id=" + getId() +
             ", date='" + getDate() + "'" +
             ", documentTitle='" + getDocumentTitle() + "'" +
-            ", transactionType='" + getTransactionType() + "'" +
-            ", days=" + getDays() +
-            ", dueDate='" + getDueDate() + "'" +
-            ", daysBeforeDue=" + getDaysBeforeDue() +
             ", dateReleased='" + getDateReleased() + "'" +
             ", remarks='" + getRemarks() + "'" +
             "}";

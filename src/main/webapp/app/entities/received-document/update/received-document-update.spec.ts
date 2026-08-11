@@ -14,6 +14,8 @@ import { IRequestedAction } from 'app/entities/requested-action/requested-action
 import { RequestedActionService } from 'app/entities/requested-action/service/requested-action.service';
 import { IResponsiblePerson } from 'app/entities/responsible-person/responsible-person.model';
 import { ResponsiblePersonService } from 'app/entities/responsible-person/service/responsible-person.service';
+import { TransactionTypeService } from 'app/entities/transaction-type/service/transaction-type.service';
+import { ITransactionType } from 'app/entities/transaction-type/transaction-type.model';
 import { TypeOfDocumentService } from 'app/entities/type-of-document/service/type-of-document.service';
 import { ITypeOfDocument } from 'app/entities/type-of-document/type-of-document.model';
 import { IReceivedDocument } from '../received-document.model';
@@ -33,6 +35,7 @@ describe('ReceivedDocument Management Update Component', () => {
   let officeService: OfficeService;
   let responsiblePersonService: ResponsiblePersonService;
   let documentStatusService: DocumentStatusService;
+  let transactionTypeService: TransactionTypeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -56,6 +59,7 @@ describe('ReceivedDocument Management Update Component', () => {
     officeService = TestBed.inject(OfficeService);
     responsiblePersonService = TestBed.inject(ResponsiblePersonService);
     documentStatusService = TestBed.inject(DocumentStatusService);
+    transactionTypeService = TestBed.inject(TransactionTypeService);
 
     comp = fixture.componentInstance;
   });
@@ -171,6 +175,28 @@ describe('ReceivedDocument Management Update Component', () => {
       expect(comp.documentStatusesSharedCollection()).toEqual(expectedCollection);
     });
 
+    it('should call TransactionType query and add missing value', () => {
+      const receivedDocument: IReceivedDocument = { id: 23963 };
+      const transactionType: ITransactionType = { id: 4045 };
+      receivedDocument.transactionType = transactionType;
+
+      const transactionTypeCollection: ITransactionType[] = [{ id: 4045 }];
+      vitest.spyOn(transactionTypeService, 'query').mockReturnValue(of(new HttpResponse({ body: transactionTypeCollection })));
+      const additionalTransactionTypes = [transactionType];
+      const expectedCollection: ITransactionType[] = [...additionalTransactionTypes, ...transactionTypeCollection];
+      vitest.spyOn(transactionTypeService, 'addTransactionTypeToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ receivedDocument });
+      comp.ngOnInit();
+
+      expect(transactionTypeService.query).toHaveBeenCalled();
+      expect(transactionTypeService.addTransactionTypeToCollectionIfMissing).toHaveBeenCalledWith(
+        transactionTypeCollection,
+        ...additionalTransactionTypes.map(i => expect.objectContaining(i) as typeof i),
+      );
+      expect(comp.transactionTypesSharedCollection()).toEqual(expectedCollection);
+    });
+
     it('should update editForm', () => {
       const receivedDocument: IReceivedDocument = { id: 23963 };
       const requestedAction: IRequestedAction = { id: 13303 };
@@ -183,6 +209,8 @@ describe('ReceivedDocument Management Update Component', () => {
       receivedDocument.responsiblePerson = responsiblePerson;
       const documentStatus: IDocumentStatus = { id: 22980 };
       receivedDocument.documentStatus = documentStatus;
+      const transactionType: ITransactionType = { id: 4045 };
+      receivedDocument.transactionType = transactionType;
 
       activatedRoute.data = of({ receivedDocument });
       comp.ngOnInit();
@@ -192,6 +220,7 @@ describe('ReceivedDocument Management Update Component', () => {
       expect(comp.officesSharedCollection()).toContainEqual(office);
       expect(comp.responsiblePeopleSharedCollection()).toContainEqual(responsiblePerson);
       expect(comp.documentStatusesSharedCollection()).toContainEqual(documentStatus);
+      expect(comp.transactionTypesSharedCollection()).toContainEqual(transactionType);
       expect(comp.receivedDocument).toEqual(receivedDocument);
     });
   });
@@ -312,6 +341,16 @@ describe('ReceivedDocument Management Update Component', () => {
         vitest.spyOn(documentStatusService, 'compareDocumentStatus');
         comp.compareDocumentStatus(entity, entity2);
         expect(documentStatusService.compareDocumentStatus).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
+    describe('compareTransactionType', () => {
+      it('should forward to transactionTypeService', () => {
+        const entity = { id: 4045 };
+        const entity2 = { id: 32159 };
+        vitest.spyOn(transactionTypeService, 'compareTransactionType');
+        comp.compareTransactionType(entity, entity2);
+        expect(transactionTypeService.compareTransactionType).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

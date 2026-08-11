@@ -5,6 +5,7 @@ import static com.lds.domain.OfficeTestSamples.*;
 import static com.lds.domain.ReceivedDocumentTestSamples.*;
 import static com.lds.domain.RequestedActionTestSamples.*;
 import static com.lds.domain.ResponsiblePersonTestSamples.*;
+import static com.lds.domain.TransactionTypeTestSamples.*;
 import static com.lds.domain.TypeOfDocumentTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -85,5 +86,17 @@ class ReceivedDocumentTest {
 
         receivedDocument.documentStatus(null);
         assertThat(receivedDocument.getDocumentStatus()).isNull();
+    }
+
+    @Test
+    void transactionTypeTest() {
+        ReceivedDocument receivedDocument = getReceivedDocumentRandomSampleGenerator();
+        TransactionType transactionTypeBack = getTransactionTypeRandomSampleGenerator();
+
+        receivedDocument.setTransactionType(transactionTypeBack);
+        assertThat(receivedDocument.getTransactionType()).isEqualTo(transactionTypeBack);
+
+        receivedDocument.transactionType(null);
+        assertThat(receivedDocument.getTransactionType()).isNull();
     }
 }
