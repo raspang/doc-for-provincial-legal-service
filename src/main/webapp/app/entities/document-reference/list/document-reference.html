@@ -24,6 +24,70 @@
 
   <jhi-alert />
 
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <label class="form-label" for="dateFrom">From</label>
+      <input id="dateFrom" name="dateFrom" type="datetime-local" class="form-control" [(ngModel)]="dateFrom" />
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label" for="dateTo">To</label>
+      <input id="dateTo" name="dateTo" type="datetime-local" class="form-control" [(ngModel)]="dateTo" />
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label" for="referenceNo">Reference No</label>
+      <input
+        id="referenceNo"
+        name="referenceNo"
+        type="text"
+        class="form-control"
+        [(ngModel)]="referenceNo"
+        placeholder="Search reference no"
+      />
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label" for="documentTitle">Document Title</label>
+      <input
+        id="documentTitle"
+        name="documentTitle"
+        type="text"
+        class="form-control"
+        [(ngModel)]="documentTitle"
+        placeholder="Search document title"
+      />
+    </div>
+    <div class="col-md-3">
+      <label class="form-label" for="typeOfDocument">Type Of Document</label>
+      <select id="typeOfDocument" name="typeOfDocument" class="form-select" [(ngModel)]="typeOfDocumentId">
+        <option [ngValue]="null">All</option>
+
+        @for (typeOfDocument of typeOfDocuments(); track typeOfDocument.id) {
+          <option [ngValue]="typeOfDocument.id">
+            {{ typeOfDocument.name }}
+          </option>
+        }
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label" for="author">Author</label>
+      <input id="author" name="author" type="text" class="form-control" [(ngModel)]="author" placeholder="Search author" />
+    </div>
+    <div class="col-md-3">
+      <label class="form-label" for="remarks">Remarks</label>
+      <input id="remarks" name="remarks" type="text" class="form-control" [(ngModel)]="remarks" placeholder="Search remarks" />
+    </div>
+    <div class="col-md-4 d-flex gap-2">
+      <button type="button" class="btn btn-primary" (click)="applyFilter()">Search</button>
+
+      <button type="button" class="btn btn-secondary" (click)="clearFilter()">Clear</button>
+    </div>
+  </div>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   <jhi-filter [filters]="filters" />
 
   @if (documentReferences().length === 0) {
@@ -63,6 +127,12 @@
                 <fa-icon class="p-1" icon="sort" />
               </div>
             </th>
+            <th scope="col" jhiSortBy="typeOfDocument.name">
+              <div class="d-flex">
+                <span>Type Of Document</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
             <th scope="col" jhiSortBy="author">
               <div class="d-flex">
                 <span>Author</span>
@@ -91,12 +161,7 @@
                 <fa-icon class="p-1" icon="sort" />
               </div>
             </th>
-            <th scope="col" jhiSortBy="typeOfDocument.name">
-              <div class="d-flex">
-                <span>Type Of Document</span>
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
+
             <th scope="col"></th>
           </tr>
         </thead>
@@ -109,29 +174,28 @@
               <td>{{ documentReference.date | formatMediumDatetime }}</td>
               <td>{{ documentReference.referenceNo }}</td>
               <td>{{ documentReference.documentTitle }}</td>
+              <td>
+                @if (documentReference.typeOfDocument) {
+                  <div>
+                    {{ documentReference.typeOfDocument.name }}
+                  </div>
+                }
+              </td>
               <td>{{ documentReference.author }}</td>
               <td>{{ documentReference.dateReleased | formatMediumDatetime }}</td>
               <td>{{ documentReference.submittedToSirKing | formatMediumDatetime }}</td>
               <td>{{ documentReference.remarks }}</td>
-              <td>
-                @if (documentReference.typeOfDocument) {
-                  <div>
-                    <a [routerLink]="['/type-of-document', documentReference.typeOfDocument.id, 'view']">{{
-                      documentReference.typeOfDocument.name
-                    }}</a>
-                  </div>
-                }
-              </td>
+
               <td class="text-end">
                 <div class="btn-group">
-                  <a
+                  <!-- <a
                     [routerLink]="['/document-reference', documentReference.id, 'view']"
                     class="btn btn-info btn-sm"
                     data-cy="entityDetailsButton"
                   >
                     <fa-icon icon="eye" />
                     <span class="d-none d-md-inline">View</span>
-                  </a>
+                  </a> -->
 
                   <a
                     [routerLink]="['/document-reference', documentReference.id, 'edit']"

@@ -72,7 +72,34 @@
             </div>
           }
         </div>
-
+        <div class="mb-3">
+          <label class="form-label" for="field_typeOfDocument">Type Of Document</label>
+          <select
+            class="form-control"
+            id="field_typeOfDocument"
+            data-cy="typeOfDocument"
+            name="typeOfDocument"
+            formControlName="typeOfDocument"
+            [compareWith]="compareTypeOfDocument"
+          >
+            @if (!editForm.get('typeOfDocument')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (typeOfDocumentOption of typeOfDocumentsSharedCollection(); track $index) {
+              <option [ngValue]="typeOfDocumentOption">{{ typeOfDocumentOption.name }}</option>
+            }
+          </select>
+        </div>
+        @if (
+          editForm.get(['typeOfDocument'])!.invalid &&
+          (editForm.get(['typeOfDocument'])!.dirty || editForm.get(['typeOfDocument'])!.touched)
+        ) {
+          <div>
+            @if (editForm.get(['typeOfDocument'])?.errors?.required) {
+              <small class="form-text text-danger">This field is required.</small>
+            }
+          </div>
+        }
         <div class="mb-3">
           <label class="form-label" for="field_author">Author</label>
           <input type="text" class="form-control" name="author" id="field_author" data-cy="author" formControlName="author" />
@@ -112,35 +139,6 @@
           <label class="form-label" for="field_remarks">Remarks</label>
           <input type="text" class="form-control" name="remarks" id="field_remarks" data-cy="remarks" formControlName="remarks" />
         </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_typeOfDocument">Type Of Document</label>
-          <select
-            class="form-control"
-            id="field_typeOfDocument"
-            data-cy="typeOfDocument"
-            name="typeOfDocument"
-            formControlName="typeOfDocument"
-            [compareWith]="compareTypeOfDocument"
-          >
-            @if (!editForm.get('typeOfDocument')!.value) {
-              <option [ngValue]="null" selected></option>
-            }
-            @for (typeOfDocumentOption of typeOfDocumentsSharedCollection(); track $index) {
-              <option [ngValue]="typeOfDocumentOption">{{ typeOfDocumentOption.name }}</option>
-            }
-          </select>
-        </div>
-        @if (
-          editForm.get(['typeOfDocument'])!.invalid &&
-          (editForm.get(['typeOfDocument'])!.dirty || editForm.get(['typeOfDocument'])!.touched)
-        ) {
-          <div>
-            @if (editForm.get(['typeOfDocument'])?.errors?.required) {
-              <small class="form-text text-danger">This field is required.</small>
-            }
-          </div>
-        }
       </div>
 
       <div>

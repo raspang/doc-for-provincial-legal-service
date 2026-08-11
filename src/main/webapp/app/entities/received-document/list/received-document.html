@@ -24,7 +24,49 @@
 
   <jhi-alert />
 
-  <jhi-filter [filters]="filters" />
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <label class="form-label" for="dateFrom">From</label>
+      <input id="dateFrom" name="dateFrom" type="datetime-local" class="form-control" [(ngModel)]="dateFrom" />
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label" for="dateTo">To</label>
+      <input id="dateTo" name="dateTo" type="datetime-local" class="form-control" [(ngModel)]="dateTo" />
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label" for="documentTitle">Document Title</label>
+      <input
+        id="documentTitle"
+        name="documentTitle"
+        type="text"
+        class="form-control"
+        [(ngModel)]="documentTitle"
+        placeholder="Search document title"
+      />
+    </div>
+    <div class="col-md-3">
+      <label class="form-label" for="typeOfDocument">Type Of Document</label>
+      <select id="typeOfDocument" name="typeOfDocument" class="form-select" [(ngModel)]="typeOfDocumentId">
+        <option [ngValue]="null">All</option>
+
+        @for (typeOfDocument of typeOfDocuments(); track typeOfDocument.id) {
+          <option [ngValue]="typeOfDocument.id">
+            {{ typeOfDocument.name }}
+          </option>
+        }
+      </select>
+    </div>
+
+    <div class="col-md-4 d-flex gap-2">
+      <button type="button" class="btn btn-primary" (click)="applyFilter()">Search</button>
+
+      <button type="button" class="btn btn-secondary" (click)="clearFilter()">Clear</button>
+    </div>
+  </div>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
 
   @if (receivedDocuments().length === 0) {
     <div class="alert alert-warning" id="no-result">
@@ -56,48 +98,6 @@
                 <fa-icon class="p-1" icon="sort" />
               </div>
             </th>
-            <th scope="col" jhiSortBy="transactionType">
-              <div class="d-flex">
-                <span>Transaction Type</span>
-
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="days">
-              <div class="d-flex">
-                <span>Days</span>
-
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dueDate">
-              <div class="d-flex">
-                <span>Due Date</span>
-
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="daysBeforeDue">
-              <div class="d-flex">
-                <span>Days Before Due</span>
-
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dateReleased">
-              <div class="d-flex">
-                <span>Date Released</span>
-
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="remarks">
-              <div class="d-flex">
-                <span>Remarks</span>
-
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
             <th scope="col" jhiSortBy="requestedAction.name">
               <div class="d-flex">
                 <span>Requested Action</span>
@@ -122,12 +122,55 @@
                 <fa-icon class="p-1" icon="sort" />
               </div>
             </th>
-            <th scope="col" jhiSortBy="documentStatus.name">
+            <th scope="col" jhiSortBy="transactionType">
               <div class="d-flex">
-                <span>Document Status</span>
+                <span>Transaction Type</span>
+
                 <fa-icon class="p-1" icon="sort" />
               </div>
             </th>
+            <th scope="col" jhiSortBy="days">
+              <div class="d-flex">
+                <span>Days</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dueDate">
+              <div class="d-flex">
+                <span>Due Date</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="documentStatus.name">
+              <div class="d-flex">
+                <span>Status</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="daysBeforeDue">
+              <div class="d-flex">
+                <span>Days Before Due</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dateReleased">
+              <div class="d-flex">
+                <span>Date Released</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="remarks">
+              <div class="d-flex">
+                <span>Remarks</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+
             <th scope="col"></th>
           </tr>
         </thead>
@@ -139,6 +182,34 @@
               </td>
               <td>{{ receivedDocument.date | formatMediumDatetime }}</td>
               <td>{{ receivedDocument.documentTitle }}</td>
+              <td>
+                @if (receivedDocument.requestedAction) {
+                  <div>
+                    {{ receivedDocument.requestedAction.name }}
+                  </div>
+                }
+              </td>
+              <td>
+                @if (receivedDocument.typeOfDocument) {
+                  <div>
+                    {{ receivedDocument.typeOfDocument.name }}
+                  </div>
+                }
+              </td>
+              <td>
+                @if (receivedDocument.office) {
+                  <div>
+                    {{ receivedDocument.office.name }}
+                  </div>
+                }
+              </td>
+              <td>
+                @if (receivedDocument.responsiblePerson) {
+                  <div>
+                    {{ receivedDocument.responsiblePerson.name }}
+                  </div>
+                }
+              </td>
               <td>
                 {{
                   {
@@ -152,63 +223,19 @@
               </td>
               <td>{{ receivedDocument.days }}</td>
               <td>{{ receivedDocument.dueDate | formatMediumDatetime }}</td>
-              <td>{{ receivedDocument.daysBeforeDue }}</td>
-              <td>{{ receivedDocument.dateReleased | formatMediumDatetime }}</td>
-              <td>{{ receivedDocument.remarks }}</td>
-              <td>
-                @if (receivedDocument.requestedAction) {
-                  <div>
-                    <a [routerLink]="['/requested-action', receivedDocument.requestedAction.id, 'view']">{{
-                      receivedDocument.requestedAction.name
-                    }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (receivedDocument.typeOfDocument) {
-                  <div>
-                    <a [routerLink]="['/type-of-document', receivedDocument.typeOfDocument.id, 'view']">{{
-                      receivedDocument.typeOfDocument.name
-                    }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (receivedDocument.office) {
-                  <div>
-                    <a [routerLink]="['/office', receivedDocument.office.id, 'view']">{{ receivedDocument.office.name }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (receivedDocument.responsiblePerson) {
-                  <div>
-                    <a [routerLink]="['/responsible-person', receivedDocument.responsiblePerson.id, 'view']">{{
-                      receivedDocument.responsiblePerson.name
-                    }}</a>
-                  </div>
-                }
-              </td>
               <td>
                 @if (receivedDocument.documentStatus) {
                   <div>
-                    <a [routerLink]="['/document-status', receivedDocument.documentStatus.id, 'view']">{{
-                      receivedDocument.documentStatus.name
-                    }}</a>
+                    {{ receivedDocument.documentStatus.name }}
                   </div>
                 }
               </td>
+              <td>{{ receivedDocument.daysBeforeDue }}</td>
+              <td>{{ receivedDocument.dateReleased | formatMediumDatetime }}</td>
+              <td>{{ receivedDocument.remarks }}</td>
+
               <td class="text-end">
                 <div class="btn-group">
-                  <a
-                    [routerLink]="['/received-document', receivedDocument.id, 'view']"
-                    class="btn btn-info btn-sm"
-                    data-cy="entityDetailsButton"
-                  >
-                    <fa-icon icon="eye" />
-                    <span class="d-none d-md-inline">View</span>
-                  </a>
-
                   <a
                     [routerLink]="['/received-document', receivedDocument.id, 'edit']"
                     class="btn btn-primary btn-sm"

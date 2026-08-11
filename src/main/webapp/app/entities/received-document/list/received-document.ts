@@ -20,6 +20,9 @@ import { SortByDirective, SortDirective, SortService, type SortState, sortStateS
 import { ReceivedDocumentDeleteDialog } from '../delete/received-document-delete-dialog';
 import { IReceivedDocument } from '../received-document.model';
 import { ReceivedDocumentService } from '../service/received-document.service';
+import { TypeOfDocumentService } from 'app/entities/type-of-document/service/type-of-document.service';
+import { ITypeOfDocument } from 'app/entities/type-of-document/type-of-document.model';
+import dayjs from 'dayjs/esm';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,6 +48,12 @@ export class ReceivedDocument implements OnInit {
 
   sortState = sortStateSignal({});
   filters: IFilterOptions = new FilterOptions();
+  dateFrom?: string;
+  dateTo?: string;
+  documentTitle?: string;
+  typeOfDocumentId: number | null = null;
+
+  typeOfDocuments = signal<ITypeOfDocument[]>([]);
 
   readonly itemsPerPage = signal(ITEMS_PER_PAGE);
   readonly totalItems = signal(0);
@@ -58,6 +67,7 @@ export class ReceivedDocument implements OnInit {
   protected readonly sortService = inject(SortService);
   protected readonly filterOptions = toSignal(this.filters.filterChanges);
   protected modalService = inject(NgbModal);
+  protected readonly typeOfDocumentService = inject(TypeOfDocumentService);
 
   constructor() {
     effect(() => {
@@ -84,6 +94,7 @@ export class ReceivedDocument implements OnInit {
   trackId = (item: IReceivedDocument): number => this.receivedDocumentService.getReceivedDocumentIdentifier(item);
 
   ngOnInit(): void {
+    this.loadTypeOfDocuments();
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
         tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
@@ -114,6 +125,55 @@ export class ReceivedDocument implements OnInit {
 
   navigateToPage(page: number): void {
     this.handleNavigation(page, this.sortState(), this.filters.filterOptions);
+  }
+
+  applyFilter(): void {
+    this.filters.clear();
+
+    if (this.documentTitle?.trim()) {
+      this.filters.addFilter('documentTitle.contains', this.documentTitle.trim());
+    }
+
+    const dateFromInstant = this.toInstant(this.dateFrom);
+    if (dateFromInstant) {
+      this.filters.addFilter('date.greaterThanOrEqual', dateFromInstant);
+    }
+
+    const dateToInstant = this.toInstant(this.dateTo, true);
+    if (dateToInstant) {
+      this.filters.addFilter('date.lessThanOrEqual', dateToInstant);
+    }
+  }
+
+  clearFilter(): void {
+    this.documentTitle = undefined;
+    this.typeOfDocumentId = null;
+    this.dateFrom = undefined;
+    this.dateTo = undefined;
+    this.filters.clear();
+  }
+
+  protected loadTypeOfDocuments(): void {
+    this.typeOfDocumentService.query({ page: 0, size: 1000, sort: ['name,asc'] }).subscribe({
+      next: res => {
+        this.typeOfDocuments.set(res.body ?? []);
+      },
+      error: () => {
+        this.typeOfDocuments.set([]);
+      },
+    });
+  }
+
+  protected toInstant(value: string | undefined, endOfRange = false): string | undefined {
+    if (!value) {
+      return undefined;
+    }
+
+    if (endOfRange) {
+      return dayjs(value).endOf('minute').toISOString();
+    }
+
+    return dayjs(value).startOf('minute').toISOString();
   }
 
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {

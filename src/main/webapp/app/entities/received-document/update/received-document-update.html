@@ -56,7 +56,68 @@
             </div>
           }
         </div>
+        <div class="mb-3">
+          <label class="form-label" for="field_typeOfDocument">Type Of Document</label>
+          <select
+            class="form-control"
+            id="field_typeOfDocument"
+            data-cy="typeOfDocument"
+            name="typeOfDocument"
+            formControlName="typeOfDocument"
+            [compareWith]="compareTypeOfDocument"
+          >
+            @if (!editForm.get('typeOfDocument')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (typeOfDocumentOption of typeOfDocumentsSharedCollection(); track $index) {
+              <option [ngValue]="typeOfDocumentOption">{{ typeOfDocumentOption.name }}</option>
+            }
+          </select>
+        </div>
+        @if (
+          editForm.get(['typeOfDocument'])!.invalid &&
+          (editForm.get(['typeOfDocument'])!.dirty || editForm.get(['typeOfDocument'])!.touched)
+        ) {
+          <div>
+            @if (editForm.get(['typeOfDocument'])?.errors?.required) {
+              <small class="form-text text-danger">This field is required.</small>
+            }
+          </div>
+        }
 
+        <div class="mb-3">
+          <label class="form-label" for="field_office">Office</label>
+          <select
+            class="form-control"
+            id="field_office"
+            data-cy="office"
+            name="office"
+            formControlName="office"
+            [compareWith]="compareOffice"
+          >
+            <option [ngValue]="null"></option>
+            @for (officeOption of officesSharedCollection(); track $index) {
+              <option [ngValue]="officeOption">{{ officeOption.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_responsiblePerson">Responsible Person</label>
+          <select
+            class="form-control"
+            id="field_responsiblePerson"
+            data-cy="responsiblePerson"
+            name="responsiblePerson"
+            formControlName="responsiblePerson"
+            [compareWith]="compareResponsiblePerson"
+          >
+            <option [ngValue]="null"></option>
+            @for (responsiblePersonOption of responsiblePeopleSharedCollection(); track $index) {
+              <option [ngValue]="responsiblePersonOption">{{ responsiblePersonOption.name }}</option>
+            }
+          </select>
+        </div>
         <div class="mb-3">
           <label class="form-label" for="field_transactionType">Transaction Type</label>
           <select
@@ -148,69 +209,6 @@
             <option [ngValue]="null"></option>
             @for (requestedActionOption of requestedActionsSharedCollection(); track $index) {
               <option [ngValue]="requestedActionOption">{{ requestedActionOption.name }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_typeOfDocument">Type Of Document</label>
-          <select
-            class="form-control"
-            id="field_typeOfDocument"
-            data-cy="typeOfDocument"
-            name="typeOfDocument"
-            formControlName="typeOfDocument"
-            [compareWith]="compareTypeOfDocument"
-          >
-            @if (!editForm.get('typeOfDocument')!.value) {
-              <option [ngValue]="null" selected></option>
-            }
-            @for (typeOfDocumentOption of typeOfDocumentsSharedCollection(); track $index) {
-              <option [ngValue]="typeOfDocumentOption">{{ typeOfDocumentOption.name }}</option>
-            }
-          </select>
-        </div>
-        @if (
-          editForm.get(['typeOfDocument'])!.invalid &&
-          (editForm.get(['typeOfDocument'])!.dirty || editForm.get(['typeOfDocument'])!.touched)
-        ) {
-          <div>
-            @if (editForm.get(['typeOfDocument'])?.errors?.required) {
-              <small class="form-text text-danger">This field is required.</small>
-            }
-          </div>
-        }
-
-        <div class="mb-3">
-          <label class="form-label" for="field_office">Office</label>
-          <select
-            class="form-control"
-            id="field_office"
-            data-cy="office"
-            name="office"
-            formControlName="office"
-            [compareWith]="compareOffice"
-          >
-            <option [ngValue]="null"></option>
-            @for (officeOption of officesSharedCollection(); track $index) {
-              <option [ngValue]="officeOption">{{ officeOption.name }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_responsiblePerson">Responsible Person</label>
-          <select
-            class="form-control"
-            id="field_responsiblePerson"
-            data-cy="responsiblePerson"
-            name="responsiblePerson"
-            formControlName="responsiblePerson"
-            [compareWith]="compareResponsiblePerson"
-          >
-            <option [ngValue]="null"></option>
-            @for (responsiblePersonOption of responsiblePeopleSharedCollection(); track $index) {
-              <option [ngValue]="responsiblePersonOption">{{ responsiblePersonOption.name }}</option>
             }
           </select>
         </div>

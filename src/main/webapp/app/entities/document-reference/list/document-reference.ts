@@ -20,6 +20,9 @@ import { SortByDirective, SortDirective, SortService, type SortState, sortStateS
 import { DocumentReferenceDeleteDialog } from '../delete/document-reference-delete-dialog';
 import { IDocumentReference } from '../document-reference.model';
 import { DocumentReferenceService } from '../service/document-reference.service';
+import { ITypeOfDocument } from 'app/entities/type-of-document/type-of-document.model';
+import { TypeOfDocumentService } from 'app/entities/type-of-document/service/type-of-document.service';
+import dayjs from 'dayjs/esm';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,6 +48,16 @@ export class DocumentReference implements OnInit {
 
   sortState = sortStateSignal({});
   filters: IFilterOptions = new FilterOptions();
+  referenceNo?: string;
+  documentTitle?: string;
+  author?: string;
+  remarks?: string;
+  typeOfDocumentId: number | null = null;
+
+  dateFrom?: string;
+  dateTo?: string;
+
+  typeOfDocuments = signal<ITypeOfDocument[]>([]);
 
   readonly itemsPerPage = signal(ITEMS_PER_PAGE);
   readonly totalItems = signal(0);
@@ -58,6 +71,7 @@ export class DocumentReference implements OnInit {
   protected readonly sortService = inject(SortService);
   protected readonly filterOptions = toSignal(this.filters.filterChanges);
   protected modalService = inject(NgbModal);
+  protected readonly typeOfDocumentService = inject(TypeOfDocumentService);
 
   constructor() {
     effect(() => {
@@ -84,12 +98,54 @@ export class DocumentReference implements OnInit {
   trackId = (item: IDocumentReference): number => this.documentReferenceService.getDocumentReferenceIdentifier(item);
 
   ngOnInit(): void {
+    this.loadTypeOfDocuments();
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
         tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
         tap(() => this.load()),
       )
       .subscribe();
+  }
+
+  applyFilter(): void {
+    this.filters.clear();
+
+    if (this.referenceNo?.trim()) {
+      this.filters.addFilter('referenceNo.contains', this.referenceNo.trim());
+    }
+    if (this.documentTitle?.trim()) {
+      this.filters.addFilter('documentTitle.contains', this.documentTitle.trim());
+    }
+    if (this.author?.trim()) {
+      this.filters.addFilter('author.contains', this.author.trim());
+    }
+    if (this.remarks?.trim()) {
+      this.filters.addFilter('remarks.contains', this.remarks.trim());
+    }
+    if (this.typeOfDocumentId !== null && this.typeOfDocumentId !== undefined) {
+      this.filters.addFilter('typeOfDocumentId.equals', String(this.typeOfDocumentId));
+    }
+
+    const dateFromInstant = this.toInstant(this.dateFrom);
+    if (dateFromInstant) {
+      this.filters.addFilter('date.greaterThanOrEqual', dateFromInstant);
+    }
+
+    const dateToInstant = this.toInstant(this.dateTo, true);
+    if (dateToInstant) {
+      this.filters.addFilter('date.lessThanOrEqual', dateToInstant);
+    }
+  }
+
+  clearFilter(): void {
+    this.referenceNo = undefined;
+    this.documentTitle = undefined;
+    this.author = undefined;
+    this.remarks = undefined;
+    this.typeOfDocumentId = null;
+    this.dateFrom = undefined;
+    this.dateTo = undefined;
+    this.filters.clear();
   }
 
   delete(documentReference: IDocumentReference): void {
@@ -114,6 +170,29 @@ export class DocumentReference implements OnInit {
 
   navigateToPage(page: number): void {
     this.handleNavigation(page, this.sortState(), this.filters.filterOptions);
+  }
+
+  protected toInstant(value: string | undefined, endOfRange = false): string | undefined {
+    if (!value) {
+      return undefined;
+    }
+
+    if (endOfRange) {
+      return dayjs(value).endOf('minute').toISOString();
+    }
+
+    return dayjs(value).startOf('minute').toISOString();
+  }
+
+  protected loadTypeOfDocuments(): void {
+    this.typeOfDocumentService.query({ page: 0, size: 1000, sort: ['name,asc'] }).subscribe({
+      next: res => {
+        this.typeOfDocuments.set(res.body ?? []);
+      },
+      error: () => {
+        this.typeOfDocuments.set([]);
+      },
+    });
   }
 
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
