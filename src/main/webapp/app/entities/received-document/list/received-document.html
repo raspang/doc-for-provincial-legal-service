@@ -248,15 +248,21 @@
                   </div>
                 }
               </td>
-              <td>{{ 1 }}</td>
-              <td>
+              <td class="status-color" [style.--status-color]="receivedDocument.documentStatus?.color ?? ''">
+                {{ getDueDate(receivedDocument) | formatMediumDatetime }}
+              </td>
+              <td class="status-color" [style.--status-color]="receivedDocument.documentStatus?.color ?? ''">
                 @if (receivedDocument.documentStatus) {
-                  <div>
-                    {{ receivedDocument.documentStatus.name }}
-                  </div>
+                  {{ receivedDocument.documentStatus.name }}
                 }
               </td>
-              <td>{{ 1 }}</td>
+              <td
+                class="status-color"
+                [style.--status-color]="receivedDocument.documentStatus?.color ?? ''"
+                [class.blink]="isDaysBeforeDueBlink(receivedDocument)"
+              >
+                {{ displayDaysBeforeDue(receivedDocument) }}
+              </td>
               <td>{{ receivedDocument.dateReleased | formatMediumDatetime }}</td>
               <td>{{ receivedDocument.remarks }}</td>
               <td class="text-end">

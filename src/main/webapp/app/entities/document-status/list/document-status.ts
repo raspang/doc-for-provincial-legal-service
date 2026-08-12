@@ -55,6 +55,37 @@ export class DocumentStatus implements OnInit {
       .subscribe();
   }
 
+  getTextColor(background?: string | null): string {
+    if (!background) {
+      return '#000000';
+    }
+
+    let hex = background.replace('#', '').trim();
+
+    if (hex.length === 3) {
+      hex = hex
+        .split('')
+        .map(char => char + char)
+        .join('');
+    }
+
+    if (hex.length !== 6) {
+      return '#000000';
+    }
+
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+
+    if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) {
+      return '#000000';
+    }
+
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+    return brightness > 150 ? '#000000' : '#ffffff';
+  }
+
   delete(documentStatus: IDocumentStatus): void {
     const modalRef = this.modalService.open(DocumentStatusDeleteDialog, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.documentStatus = documentStatus;

@@ -60,6 +60,8 @@ public interface ReceivedDocumentMapper extends EntityMapper<ReceivedDocumentDTO
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
+    @Mapping(target = "color", source = "color")
+    @Mapping(target = "warning", source = "warning")
     DocumentStatusDTO toDtoDocumentStatusName(DocumentStatus documentStatus);
 
     @Named("transactionTypeName")

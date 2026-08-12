@@ -71,7 +71,13 @@
                 <a [routerLink]="['/document-status', documentStatus.id, 'view']">{{ documentStatus.id }}</a>
               </td>
               <td>{{ documentStatus.name }}</td>
-              <td>{{ documentStatus.color }}</td>
+              <td>
+                @if (documentStatus.color) {
+                  <span class="badge" [style.background-color]="documentStatus.color" [style.color]="getTextColor(documentStatus.color)">
+                    {{ documentStatus.color }}
+                  </span>
+                }
+              </td>
               <td>{{ documentStatus.warning }}</td>
               <td class="text-end">
                 <div class="btn-group">

@@ -30,6 +30,37 @@ import { RequestedActionService } from 'app/entities/requested-action/service/re
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'jhi-received-document',
   templateUrl: './received-document.html',
+  styles: [
+    `
+      .status-color {
+        color: var(--status-color, inherit);
+      }
+
+      .blink {
+        animation: received-document-highlight-blink 1.2s ease-in-out infinite;
+        font-weight: 700;
+        color: #000000;
+      }
+
+      @keyframes received-document-highlight-blink {
+        0%,
+        100% {
+          background-color: #fff9c4;
+        }
+        50% {
+          background-color: #ffc107;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .blink {
+          animation: none;
+          background-color: #fff9c4;
+          color: #000000;
+        }
+      }
+    `,
+  ],
   imports: [
     RouterLink,
     FormsModule,
@@ -111,6 +142,84 @@ export class ReceivedDocument implements OnInit {
         tap(() => this.load()),
       )
       .subscribe();
+  }
+
+  getDueDate(receivedDocument: IReceivedDocument): dayjs.Dayjs | null {
+    if (!receivedDocument.date) {
+      return null;
+    }
+
+    const targetDays = Number(receivedDocument.transactionType?.targetDays);
+
+    if (Number.isNaN(targetDays)) {
+      return null;
+    }
+
+    return receivedDocument.date.add(targetDays, 'day');
+  }
+
+  getDaysBeforeDue(receivedDocument: IReceivedDocument): number | null {
+    const dueDate = this.getDueDate(receivedDocument);
+
+    if (!dueDate) {
+      return null;
+    }
+
+    const today = dayjs().startOf('day');
+    const due = dueDate.startOf('day');
+
+    return due.diff(today, 'day');
+  }
+
+  displayDaysBeforeDue(receivedDocument: IReceivedDocument): string {
+    if (!receivedDocument.documentStatus?.warning) {
+      return '';
+    }
+
+    const daysBeforeDue = this.getDaysBeforeDue(receivedDocument);
+
+    if (daysBeforeDue === null) {
+      return '';
+    }
+
+    return daysBeforeDue.toString();
+  }
+
+  getTextColor(background?: string | null): string {
+    if (!background) {
+      return '#000000';
+    }
+
+    let hex = background.replace('#', '').trim();
+
+    if (hex.length === 3) {
+      hex = hex
+        .split('')
+        .map(char => char + char)
+        .join('');
+    }
+
+    if (hex.length !== 6) {
+      return '#000000';
+    }
+
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+
+    if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) {
+      return '#000000';
+    }
+
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+    return brightness > 150 ? '#000000' : '#ffffff';
+  }
+
+  isDaysBeforeDueBlink(receivedDocument: IReceivedDocument): boolean {
+    const days = this.getDaysBeforeDue(receivedDocument);
+
+    return days !== null && days <= 0;
   }
 
   delete(receivedDocument: IReceivedDocument): void {
