@@ -105,7 +105,7 @@ export class ReceivedDocumentFormService {
     return {
       id: null,
       date: currentTime,
-      dateReleased: currentTime,
+      // dateReleased: currentTime,
     };
   }
 

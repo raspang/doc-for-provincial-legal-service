@@ -7,7 +7,7 @@ import { ActivatedRoute, Data, ParamMap, Router, RouterLink } from '@angular/rou
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
-import { Subscription, combineLatest, filter, tap } from 'rxjs';
+import { Subscription, combineLatest, filter, firstValueFrom, tap } from 'rxjs';
 
 import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
@@ -22,6 +22,9 @@ import { IDocumentReference } from '../document-reference.model';
 import { DocumentReferenceService } from '../service/document-reference.service';
 import { ITypeOfDocument } from 'app/entities/type-of-document/type-of-document.model';
 import { TypeOfDocumentService } from 'app/entities/type-of-document/service/type-of-document.service';
+
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import dayjs from 'dayjs/esm';
 
 @Component({
@@ -45,6 +48,7 @@ import dayjs from 'dayjs/esm';
 export class DocumentReference implements OnInit {
   subscription: Subscription | null = null;
   readonly documentReferences = signal<IDocumentReference[]>([]);
+  readonly isExporting = signal(false);
 
   sortState = sortStateSignal({});
   filters: IFilterOptions = new FilterOptions();
@@ -105,6 +109,220 @@ export class DocumentReference implements OnInit {
         tap(() => this.load()),
       )
       .subscribe();
+  }
+
+  async exportAllFilteredPdf(): Promise<void> {
+    if (this.isExporting()) {
+      return;
+    }
+
+    this.isExporting.set(true);
+
+    try {
+      const allRows = await this.fetchAllFilteredDocumentReferences();
+
+      if (allRows.length === 0) {
+        return;
+      }
+
+      this.generateDocumentReferencePdf(allRows);
+    } finally {
+      this.isExporting.set(false);
+    }
+  }
+
+  protected async fetchAllFilteredDocumentReferences(): Promise<IDocumentReference[]> {
+    const pageSize = 1000;
+    let page = 0;
+    let allRows: IDocumentReference[] = [];
+
+    while (true) {
+      const queryObject = this.buildExportQuery(page, pageSize);
+
+      const response = await firstValueFrom(this.documentReferenceService.query(queryObject));
+
+      const rows = response.body ?? [];
+
+      if (rows.length === 0) {
+        break;
+      }
+
+      allRows = [...allRows, ...rows];
+
+      const totalCountHeader = response.headers.get(TOTAL_COUNT_RESPONSE_HEADER);
+
+      if (totalCountHeader) {
+        const total = Number(totalCountHeader);
+
+        if (!Number.isNaN(total) && allRows.length >= total) {
+          break;
+        }
+      } else if (rows.length < pageSize) {
+        break;
+      }
+
+      page++;
+
+      // Safety guard to avoid infinite loop
+      if (page > 1000) {
+        break;
+      }
+    }
+
+    return allRows;
+  }
+
+  protected buildExportQuery(page: number, size: number): any {
+    const queryObject: any = {
+      page,
+      size,
+      eagerload: true,
+      sort: this.sortService.buildSortParam(this.sortState()),
+    };
+
+    for (const filterOption of this.filters.filterOptions) {
+      /*
+      Use the same filter format as your table query.
+
+      Your current queryBackend() uses:
+
+        queryObject[filterOption.name] = filterOption.values;
+
+      So this export also uses filterOption.name.
+
+      If you later change queryBackend() to use filterOption.nameAsQueryParam(),
+      then change this line too.
+    */
+      queryObject[filterOption.name] = filterOption.values;
+    }
+
+    return queryObject;
+  }
+
+  protected generateDocumentReferencePdf(rows: IDocumentReference[]): void {
+    const doc = new jsPDF({
+      orientation: 'landscape',
+      unit: 'pt',
+      format: 'a4',
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    const bismillahLogo = 'content/images/bismillah.png';
+    const leftLogo = 'content/images/cropped-CAPITOLLOGO-01.png';
+    const rightLogo = 'content/images/BARMM-OFFICIAL-LOGO.png';
+
+    const loadImage = (url: string): Promise<string> =>
+      fetch(url)
+        .then(response => response.blob())
+        .then(
+          blob =>
+            new Promise<string>(resolve => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result as string);
+              reader.readAsDataURL(blob);
+            }),
+        );
+
+    Promise.all([loadImage(bismillahLogo), loadImage(leftLogo), loadImage(rightLogo)])
+      .then(([bismillahImg, leftImg, rightImg]) => {
+        // Add header images
+        // Add header images (Adjusted width/height to match the text block)
+        doc.addImage(leftImg, 'PNG', 20, 15, 45, 60);
+        doc.addImage(rightImg, 'PNG', pageWidth - 65, 15, 45, 60);
+        //doc.addImage(bismillahImg, 'PNG', pageWidth / 2 - 20, 5, 40, 18);
+
+        // Set header text (Increased Y spacing to prevent overlapping)
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        doc.setTextColor(0, 0, 0);
+        doc.text('Republic of the Philippines', pageWidth / 2, 30, { align: 'center' });
+
+        doc.setFontSize(11);
+        doc.text('BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO', pageWidth / 2, 44, { align: 'center' });
+
+        doc.setFontSize(9);
+        doc.text('Province of Lanao del Sur', pageWidth / 2, 57, { align: 'center' });
+
+        doc.setFontSize(12);
+        doc.text('PROVINCIAL LEGAL SERVICES', pageWidth / 2, 72, { align: 'center' });
+
+        doc.setFontSize(9);
+        doc.text('New Capitol Complex, Buadi Sacayo, Marawi City', pageWidth / 2, 85, { align: 'center' });
+
+        // Line separator (Moved down to 98)
+        doc.setLineWidth(0.5);
+        doc.line(15, 98, pageWidth - 15, 98);
+
+        // Report title (Moved down to 115)
+        doc.setFontSize(14);
+        doc.text('Document Reference Report', pageWidth / 2, 115, { align: 'center' }); // Change to 'Document Reference Report' for the other file
+
+        // Table setup
+        const columns = [
+          'Date',
+          'Reference No',
+          'Document Title',
+          'Type Of Document',
+          'Author',
+          'Date Released',
+          'Submitted To Sir King',
+          'Remarks',
+        ];
+
+        const tableRows = rows.map(documentReference => [
+          this.formatDateTimeForPdf(documentReference.date),
+          documentReference.referenceNo ?? '',
+          documentReference.documentTitle ?? '',
+          documentReference.typeOfDocument?.name ?? '',
+          documentReference.author ?? '',
+          this.formatDateTimeForPdf(documentReference.dateReleased),
+          this.formatDateTimeForPdf(documentReference.submittedToSirKing),
+          documentReference.remarks ?? '',
+        ]);
+
+        autoTable(doc, {
+          head: [columns],
+          body: tableRows,
+          startY: 125,
+          styles: {
+            fontSize: 9,
+            cellPadding: 3,
+            halign: 'left',
+            overflow: 'linebreak',
+          },
+          headStyles: {
+            fillColor: [200, 200, 200],
+            textColor: 0,
+            fontStyle: 'bold',
+          },
+          alternateRowStyles: { fillColor: [240, 240, 240] },
+          margin: { top: 10, left: 20, right: 20 },
+          theme: 'grid',
+        });
+
+        // Add Footer
+        const pageCount = doc.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+          doc.setPage(i);
+          doc.setFontSize(10);
+          doc.setTextColor(100);
+          doc.text(`Page ${i} of ${pageCount}`, pageWidth / 2, doc.internal.pageSize.getHeight() - 15, { align: 'center' });
+        }
+
+        doc.save(`document-references-${dayjs().format('YYYY-MM-DD-HH-mm')}.pdf`);
+      })
+      .catch((error: unknown) => {
+        console.error('Error loading images for PDF:', error);
+      });
+  }
+
+  protected formatDateTimeForPdf(value?: dayjs.Dayjs | null): string {
+    if (!value) {
+      return '';
+    }
+
+    return `${value.format('MMM[.] D, YYYY h:mm')}${value.format('a')}`;
   }
 
   applyFilter(): void {

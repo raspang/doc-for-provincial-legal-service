@@ -82,11 +82,31 @@
         }
       </select>
     </div>
+    <div class="col-md-3">
+      <label class="form-label" for="documentStatus">Document Status</label>
+      <select id="documentStatus" name="documentStatus" class="form-select" [(ngModel)]="documentStatusId">
+        <option [ngValue]="null">All</option>
+
+        @for (documentStatus of documentStatuses(); track documentStatus.id) {
+          <option [ngValue]="documentStatus.id">
+            {{ documentStatus.name }}
+          </option>
+        }
+      </select>
+    </div>
 
     <div class="col-md-4 d-flex gap-2">
       <button type="button" class="btn btn-primary" (click)="applyFilter()">Search</button>
 
       <button type="button" class="btn btn-secondary" (click)="clearFilter()">Clear</button>
+
+      <button type="button" class="btn btn-outline-secondary" (click)="exportAllFilteredPdf()" [disabled]="isExporting()">
+        @if (isExporting()) {
+          Exporting...
+        } @else {
+          Export PDF
+        }
+      </button>
     </div>
   </div>
 
@@ -159,11 +179,9 @@
                 <fa-icon class="p-1" icon="sort" />
               </div>
             </th>
-            <th scope="col" jhiSortBy="dueDate">
+            <th scope="col">
               <div class="d-flex">
                 <span>Due Date</span>
-
-                <fa-icon class="p-1" icon="sort" />
               </div>
             </th>
             <th scope="col" jhiSortBy="documentStatus.name">
@@ -172,11 +190,9 @@
                 <fa-icon class="p-1" icon="sort" />
               </div>
             </th>
-            <th scope="col" jhiSortBy="daysBeforeDue">
+            <th scope="col">
               <div class="d-flex">
                 <span>Days Before Due</span>
-
-                <fa-icon class="p-1" icon="sort" />
               </div>
             </th>
             <th scope="col" jhiSortBy="dateReleased">

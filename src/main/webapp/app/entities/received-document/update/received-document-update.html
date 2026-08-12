@@ -56,6 +56,25 @@
             </div>
           }
         </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_requestedAction">Requested Action</label>
+          <select
+            class="form-control"
+            id="field_requestedAction"
+            data-cy="requestedAction"
+            name="requestedAction"
+            formControlName="requestedAction"
+            [compareWith]="compareRequestedAction"
+            required
+          >
+            <option [ngValue]="null"></option>
+            @for (requestedActionOption of requestedActionsSharedCollection(); track $index) {
+              <option [ngValue]="requestedActionOption">{{ requestedActionOption.name }}</option>
+            }
+          </select>
+        </div>
+
         <div class="mb-3">
           <label class="form-label" for="field_typeOfDocument">Type Of Document</label>
           <select
@@ -152,23 +171,6 @@
         <div class="mb-3">
           <label class="form-label" for="field_remarks">Remarks</label>
           <input type="text" class="form-control" name="remarks" id="field_remarks" data-cy="remarks" formControlName="remarks" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_requestedAction">Requested Action</label>
-          <select
-            class="form-control"
-            id="field_requestedAction"
-            data-cy="requestedAction"
-            name="requestedAction"
-            formControlName="requestedAction"
-            [compareWith]="compareRequestedAction"
-          >
-            <option [ngValue]="null"></option>
-            @for (requestedActionOption of requestedActionsSharedCollection(); track $index) {
-              <option [ngValue]="requestedActionOption">{{ requestedActionOption.name }}</option>
-            }
-          </select>
         </div>
 
         <div class="mb-3">

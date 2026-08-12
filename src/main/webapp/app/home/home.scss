@@ -1,23 +1,49 @@
-/* ==========================================================================
-Main page styles
-========================================================================== */
-
-.hipster {
-  display: inline-block;
-  width: 347px;
-  height: 497px;
-  background: url('../../content/images/jhipster_family_member_1.svg') no-repeat center top;
-  background-size: contain;
+.home-hero {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  background: url('/content/images/legal.jpg') no-repeat center center;
+  background-size: cover;
 }
 
-/* wait autoprefixer update to allow simple generation of high pixel density media query */
-@media only screen and (-webkit-min-device-pixel-ratio: 2),
-  only screen and (-moz-min-device-pixel-ratio: 2),
-  only screen and (-o-min-device-pixel-ratio: 2/1),
-  only screen and (min-resolution: 192dpi),
-  only screen and (min-resolution: 2dppx) {
-  .hipster {
-    background: url('../../content/images/jhipster_family_member_1.svg') no-repeat center top;
-    background-size: contain;
-  }
+.home-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(10, 25, 47, 0.78), rgba(10, 25, 47, 0.88));
+}
+
+.home-logo {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 0.75rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.25);
+}
+
+.hero-description {
+  max-width: 720px;
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.feature-card {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.12);
+}
+
+.chart-placeholder {
+  min-height: 220px;
+  background-color: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 0.5rem;
+  color: #6c757d;
+  font-weight: 500;
 }

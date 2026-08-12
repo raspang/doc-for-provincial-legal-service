@@ -1,9 +1,8 @@
 <nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
-      <span class="logo-img"></span>
-      <span class="navbar-title">Legal</span>
-      <span class="navbar-version">{{ version }}</span>
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/" (click)="collapseNavbar()">
+      <span class="logo-img" aria-hidden="true"></span>
+      <span>Provincial Legal Services of Lanao del Sur</span>
     </a>
     <a
       class="navbar-toggler d-lg-none"
@@ -39,11 +38,11 @@
             <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
               <span>
                 <fa-icon icon="th-list" />
-                <span>Entities</span>
+                <span>Tables</span>
               </span>
             </a>
             <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
-              <li>
+              <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                 <a
                   class="dropdown-item"
                   routerLink="/received-document"
@@ -51,7 +50,7 @@
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="collapseNavbar()"
                 >
-                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <fa-icon [icon]="faInbox" class="me-1"></fa-icon>
                   <span>Received Document</span>
                 </a>
               </li>
@@ -63,11 +62,12 @@
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="collapseNavbar()"
                 >
-                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <fa-icon [icon]="faFileLines" class="me-1"></fa-icon>
                   <span>Document Reference</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="'ROLE_ADMIN'"><div class="dropdown-divider"></div></li>
+              <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                 <a
                   class="dropdown-item"
                   routerLink="/responsible-person"
@@ -75,11 +75,11 @@
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="collapseNavbar()"
                 >
-                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <fa-icon [icon]="faUser" class="me-2"></fa-icon>
                   <span>Responsible Person</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                 <a
                   class="dropdown-item"
                   routerLink="/requested-action"
@@ -87,11 +87,11 @@
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="collapseNavbar()"
                 >
-                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <fa-icon [icon]="faTasks" class="me-2"></fa-icon>
                   <span>Requested Action</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                 <a
                   class="dropdown-item"
                   routerLink="/type-of-document"
@@ -99,11 +99,11 @@
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="collapseNavbar()"
                 >
-                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <fa-icon [icon]="faThList" class="me-2"></fa-icon>
                   <span>Type Of Document</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                 <a
                   class="dropdown-item"
                   routerLink="/office"
@@ -111,11 +111,11 @@
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="collapseNavbar()"
                 >
-                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <fa-icon [icon]="faBuilding" class="me-2"></fa-icon>
                   <span>Office</span>
                 </a>
               </li>
-              <li>
+              <!-- <li  *jhiHasAnyAuthority="'ROLE_ADMIN'">
                 <a
                   class="dropdown-item"
                   routerLink="/document-history"
@@ -123,11 +123,11 @@
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="collapseNavbar()"
                 >
-                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                    <fa-icon [icon]="faClockRotateLeft" class="me-2"></fa-icon>
                   <span>Document History</span>
                 </a>
-              </li>
-              <li>
+              </li> -->
+              <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                 <a
                   class="dropdown-item"
                   routerLink="/document-status"
@@ -135,11 +135,11 @@
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="collapseNavbar()"
                 >
-                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <fa-icon [icon]="faFlag" class="me-2"></fa-icon>
                   <span>Document Status</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                 <a
                   class="dropdown-item"
                   routerLink="/transaction-type"
@@ -147,7 +147,7 @@
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="collapseNavbar()"
                 >
-                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <fa-icon [icon]="faScaleBalanced" class="me-2"></fa-icon>
                   <span>Transaction Type</span>
                 </a>
               </li>
@@ -274,7 +274,7 @@
                   <span>Sign in</span>
                 </a>
               </li>
-              <li>
+              <!-- <li>
                 <a
                   class="dropdown-item"
                   routerLink="/account/register"
@@ -285,7 +285,7 @@
                   <fa-icon icon="user-plus" [fixedWidth]="true" />
                   <span>Register</span>
                 </a>
-              </li>
+              </li> -->
             }
           </ul>
         </li>

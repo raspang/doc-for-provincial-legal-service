@@ -9,7 +9,7 @@ const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./home/home'),
-    title: 'Welcome, Java Hipster!',
+    title: 'Provincial Legal Document Management System',
   },
   {
     path: '',

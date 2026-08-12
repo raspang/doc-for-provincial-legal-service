@@ -100,8 +100,8 @@ export class DocumentReferenceFormService {
     return {
       id: null,
       date: currentTime,
-      dateReleased: currentTime,
-      submittedToSirKing: currentTime,
+      // dateReleased: currentTime,
+      // submittedToSirKing: currentTime,
     };
   }
 

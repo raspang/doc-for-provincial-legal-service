@@ -13,7 +13,7 @@ import { IDocumentHistory } from '../document-history.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'jhi-document-history-detail',
   templateUrl: './document-history-detail.html',
-  imports: [FontAwesomeModule, Alert, AlertError, RouterLink, FormatMediumDatetimePipe],
+  imports: [FontAwesomeModule, Alert, AlertError, FormatMediumDatetimePipe],
 })
 export class DocumentHistoryDetail {
   readonly documentHistory = input<IDocumentHistory | null>(null);

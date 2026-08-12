@@ -83,12 +83,17 @@
       <button type="button" class="btn btn-primary" (click)="applyFilter()">Search</button>
 
       <button type="button" class="btn btn-secondary" (click)="clearFilter()">Clear</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="exportAllFilteredPdf()" [disabled]="isExporting()">
+        @if (isExporting()) {
+          Exporting...
+        } @else {
+          Export PDF
+        }
+      </button>
     </div>
   </div>
 
   <jhi-filter [filters]="filters"></jhi-filter>
-
-  <jhi-filter [filters]="filters" />
 
   @if (documentReferences().length === 0) {
     <div class="alert alert-warning" id="no-result">
