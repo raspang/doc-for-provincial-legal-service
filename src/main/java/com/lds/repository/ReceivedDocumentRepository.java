@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -41,4 +43,29 @@ public interface ReceivedDocumentRepository extends JpaRepository<ReceivedDocume
         "select receivedDocument from ReceivedDocument receivedDocument left join fetch receivedDocument.requestedAction left join fetch receivedDocument.typeOfDocument left join fetch receivedDocument.office left join fetch receivedDocument.responsiblePerson left join fetch receivedDocument.documentStatus left join fetch receivedDocument.transactionType where receivedDocument.id =:id"
     )
     Optional<ReceivedDocument> findOneWithToOneRelationships(@Param("id") Long id);
+
+    /**
+     * Find all received documents where:
+     * - documentStatus.warning = true
+     * - responsiblePerson is not null (needed for email)
+     * - transactionType is not null (needed for targetDays)
+     *
+     * The actual dueDate computation and daysBeforeDue filtering is done in the service layer
+     * because it requires date arithmetic: dueDate = date + targetDays.
+     */
+    @Query(
+        """
+            SELECT rd FROM ReceivedDocument rd
+            LEFT JOIN FETCH rd.transactionType tt
+            LEFT JOIN FETCH rd.documentStatus ds
+            LEFT JOIN FETCH rd.responsiblePerson rp
+            LEFT JOIN FETCH rd.typeOfDocument
+            LEFT JOIN FETCH rd.office
+            LEFT JOIN FETCH rd.requestedAction
+            WHERE ds.warning = true
+              AND rp IS NOT NULL
+              AND tt IS NOT NULL
+        """
+    )
+    List<ReceivedDocument> findAllWithWarningAndResponsiblePerson();
 }

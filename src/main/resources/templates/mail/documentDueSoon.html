@@ -1,0 +1,291 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documents Due Soon / Overdue</title>
+    <style>
+      body {
+        font-family: 'Helvetica', 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333333;
+      }
+      .email-container {
+        max-width: 850px;
+        margin: 20px auto;
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+      /* Header matching the PDF layout */
+      .header-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .header-table td {
+        padding: 15px 20px;
+        vertical-align: middle;
+      }
+      .logo-left {
+        width: 15%;
+        text-align: left;
+      }
+      .logo-right {
+        width: 15%;
+        text-align: right;
+      }
+      .header-text {
+        width: 70%;
+        text-align: center;
+      }
+
+      .header-text p {
+        margin: 2px 0;
+        line-height: 1.3;
+        color: #000000;
+      }
+      .header-text .rep {
+        font-size: 11px;
+        font-weight: bold;
+      }
+      .header-text .barmm {
+        font-size: 13px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      .header-text .prov {
+        font-size: 11px;
+        font-weight: bold;
+      }
+      .header-text .dept {
+        font-size: 15px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-top: 6px;
+        margin-bottom: 4px;
+      }
+      .header-text .addr {
+        font-size: 10px;
+        color: #555555;
+        font-style: italic;
+      }
+
+      .header-img {
+        height: 65px;
+        width: auto;
+        max-width: 100%;
+      }
+
+      .separator {
+        border: 0;
+        border-top: 1.5px solid #333333;
+        margin: 0;
+      }
+
+      /* Content Area */
+      .content {
+        padding: 25px 35px;
+      }
+
+      .alert-box {
+        background-color: #fff8e1;
+        border-left: 5px solid #ffc107;
+        padding: 15px 20px;
+        margin-bottom: 25px;
+        border-radius: 4px;
+      }
+      .alert-box h2 {
+        margin: 0 0 8px 0;
+        color: #856404;
+        font-size: 18px;
+      }
+      .alert-box p {
+        margin: 0;
+        font-size: 14px;
+      }
+
+      h3.section-title {
+        font-size: 16px;
+        color: #333333;
+        border-bottom: 2px solid #333333;
+        padding-bottom: 5px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+      }
+
+      /* Table Styling */
+      table.data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        margin-bottom: 20px;
+      }
+      table.data-table th {
+        background-color: #333333;
+        color: #ffffff;
+        padding: 10px 8px;
+        text-align: left;
+        font-weight: bold;
+        border: 1px solid #333333;
+      }
+      table.data-table td {
+        padding: 10px 8px;
+        border: 1px solid #dddddd;
+        vertical-align: top;
+      }
+      table.data-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      .text-muted {
+        font-size: 11px;
+        color: #666666;
+        display: block;
+        margin-top: 3px;
+      }
+      .overdue {
+        color: #dc3545;
+        font-weight: bold;
+      }
+      .due-today {
+        color: #fd7e14;
+        font-weight: bold;
+      }
+
+      /* Recommendations */
+      .recommendations {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        padding: 20px;
+        border-radius: 4px;
+        margin-top: 30px;
+        font-size: 13px;
+      }
+      .recommendations h3 {
+        margin-top: 0;
+        font-size: 15px;
+        color: #495057;
+        border-bottom: 1px solid #ced4da;
+        padding-bottom: 8px;
+      }
+      .recommendations ul {
+        margin: 12px 0;
+        padding-left: 20px;
+      }
+      .recommendations li {
+        margin-bottom: 10px;
+        line-height: 1.5;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #0056b3;
+        color: #ffffff !important;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: 15px;
+      }
+
+      /* Footer */
+      .footer {
+        text-align: center;
+        padding: 25px;
+        font-size: 11px;
+        color: #777777;
+        background-color: #fcfcfc;
+        border-top: 1px solid #eeeeee;
+      }
+      .footer a {
+        color: #0056b3;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <!-- HEADER (Matches PDF Layout) -->
+      <table class="header-table" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td class="header-text">
+            <p class="rep">Republic of the Philippines</p>
+            <p class="barmm">Bangsamoro Autonomous Region in Muslim Mindanao</p>
+            <p class="prov">Province of Lanao del Sur</p>
+            <p class="dept">Provincial Legal Services</p>
+            <p class="addr">New Capitol Complex, Buadi Sacayo, Marawi City</p>
+          </td>
+        </tr>
+      </table>
+      <hr class="separator" />
+
+      <!-- MAIN CONTENT -->
+      <div class="content">
+        <div class="alert-box">
+          <h2>⚠️ Action Required: Documents Due Soon / Overdue</h2>
+          <p>Dear <strong th:text="${personName}">User</strong>,</p>
+          <p style="margin-top: 8px">
+            This is an automated notification to inform you that you have <strong th:text="${totalDocuments}">0</strong> document(s)
+            assigned to you that require your immediate attention.
+          </p>
+        </div>
+
+        <h3 class="section-title">Document Details</h3>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th width="5%">#</th>
+              <th width="12%">Date Received</th>
+              <th width="30%">Document Title</th>
+              <th width="15%">Type / Office</th>
+              <th width="12%">Due Date</th>
+              <th width="12%">Status</th>
+              <th width="14%">Days Overdue</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="doc, iterStat : ${documents}">
+              <td th:text="${iterStat.index + 1}">1</td>
+              <td th:text="${#temporals.format(doc.date, 'MMM dd, yyyy')}">-</td>
+              <td>
+                <strong th:text="${doc.documentTitle}">-</strong>
+                <span class="text-muted" th:if="${doc.remarks}" th:text="'Remarks: ' + ${doc.remarks}"></span>
+              </td>
+              <td>
+                <span th:text="${doc.typeOfDocumentName}">-</span>
+                <span class="text-muted" th:text="${doc.officeName}"></span>
+              </td>
+              <td th:text="${#temporals.format(doc.dueDate, 'MMM dd, yyyy')}">-</td>
+              <td th:text="${doc.documentStatusName}">-</td>
+              <td
+                th:class="${doc.daysBeforeDue &lt; 0} ? 'overdue' : (${doc.daysBeforeDue == 0} ? 'due-today' : '')"
+                th:text="${doc.daysBeforeDue &lt; 0} ? ${-doc.daysBeforeDue} + ' Days Overdue' : (${doc.daysBeforeDue == 0} ? 'Due Today' : ${doc.daysBeforeDue} + ' Days Left')"
+              >
+                0
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <p>This is an automated notification from the <strong>Provincial Legal Services Document Tracker</strong>.</p>
+        <p>Please do not reply directly to this email. For system concerns, contact the administrator.</p>
+        <p style="margin-top: 15px; font-size: 12px">
+          Developed by <a href="https://www.facebook.com/icto.lanaodelsur" target="_blank">ICTO - Lanao del Sur</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

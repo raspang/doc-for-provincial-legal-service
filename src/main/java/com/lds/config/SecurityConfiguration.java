@@ -2,7 +2,7 @@ package com.lds.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-import com.lds.security.*;
+import com.lds.security.AuthoritiesConstants;
 import com.lds.web.filter.SpaWebFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -71,6 +71,7 @@ public class SecurityConfiguration {
                     .requestMatchers("/api/activate").permitAll()
                     .requestMatchers("/api/account/reset-password/init").permitAll()
                     .requestMatchers("/api/account/reset-password/finish").permitAll()
+                    .requestMatchers("/api/received-documents/**").permitAll() 
                     .requestMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
                     .requestMatchers("/api/**").authenticated()
                     .requestMatchers("/v3/api-docs/**").hasAuthority(AuthoritiesConstants.ADMIN)

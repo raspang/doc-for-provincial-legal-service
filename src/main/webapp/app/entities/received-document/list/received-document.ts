@@ -269,10 +269,6 @@ export class ReceivedDocument implements OnInit {
             }),
         );
 
-    // doc.text('Received Documents', 40, 30);
-    // doc.text(`Exported: ${this.formatDateTimeForPdf(dayjs())}`, 40, 45);
-    // doc.text(`Total records: ${rows.length}`, 40, 60);
-
     Promise.all([loadImage(bismillahLogo), loadImage(leftLogo), loadImage(rightLogo)])
       .then(([bismillahImg, leftImg, rightImg]) => {
         // Add header images
@@ -379,67 +375,6 @@ export class ReceivedDocument implements OnInit {
       .catch((error: unknown) => {
         console.error('Error loading images for PDF:', error);
       });
-
-    // const head: string[][] = [
-    //   [
-    //     'ID',
-    //     'Date',
-    //     'Document Title',
-    //     'Requested Action',
-    //     'Type Of Document',
-    //     'Office',
-    //     'Responsible Person',
-    //     'Transaction Type',
-    //     'Days',
-    //     'Due Date',
-    //     'Status',
-    //     'Days Before Due',
-    //     'Date Released',
-    //     'Remarks',
-    //   ],
-    // ];
-
-    // const body = rows.map(receivedDocument => {
-    //   const dueDate = this.getDueDate(receivedDocument);
-    //   const daysBeforeDue = this.getDaysBeforeDue(receivedDocument);
-
-    //   return [
-    //     receivedDocument.id?.toString() ?? '',
-    //     this.formatDateTimeForPdf(receivedDocument.date),
-    //     receivedDocument.documentTitle ?? '',
-    //     receivedDocument.requestedAction?.name ?? '',
-    //     receivedDocument.typeOfDocument?.name ?? '',
-    //     receivedDocument.office?.name ?? '',
-    //     receivedDocument.responsiblePerson?.name ?? '',
-    //     receivedDocument.transactionType?.name ?? '',
-    //     receivedDocument.transactionType?.targetDays?.toString() ?? '',
-    //     this.formatDateTimeForPdf(dueDate),
-    //     receivedDocument.documentStatus?.name ?? '',
-    //     daysBeforeDue?.toString() ?? '',
-    //     this.formatDateTimeForPdf(receivedDocument.dateReleased),
-    //     receivedDocument.remarks ?? '',
-    //   ];
-    // });
-
-    // autoTable(doc, {
-    //   head,
-    //   body,
-    //   startY: 80,
-    //   styles: {
-    //     fontSize: 6.5,
-    //     overflow: 'linebreak',
-    //   },
-    //   headStyles: {
-    //     fillColor: [33, 37, 41],
-    //     textColor: [255, 255, 255],
-    //   },
-    //   margin: {
-    //     left: 40,
-    //     right: 40,
-    //   },
-    // });
-
-    // doc.save(`received-documents-${dayjs().format('YYYY-MM-DD-HH-mm')}.pdf`);
   }
 
   protected formatDateTimeForPdf(value?: dayjs.Dayjs | null): string {

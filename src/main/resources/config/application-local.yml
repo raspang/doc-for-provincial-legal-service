@@ -1,0 +1,9 @@
+spring:
+  mail:
+    password: uyjxzaaqlcoltibh # Your Gmail App Password
+
+jhipster:
+  security:
+    authentication:
+      jwt:
+        base64-secret: c3VwZXJzZWNyZXRrZXlmb3JqaGlwc3Rlcmp3dHRoYXRpc2xvbmdlbm91Z2hmb3IyNTZiaXRzMTIzNDU2Nzg5MA== # Your long JWT secret
