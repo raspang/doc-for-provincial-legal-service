@@ -21,10 +21,12 @@ public class DocumentDueSoonScheduler {
     /**
      * Runs every day at 8:00 AM server time.
      */
-    @Scheduled(cron = "0 0 8 * * ?")
+    // @Scheduled(cron = "0 0 8 * * ?")
 
     // To this (Runs every minute at the 00 second mark):
     // @Scheduled(cron = "0 * * * * ?")
+
+    @Scheduled(cron = "0 0 10 * * ?")
     public void notifyDueSoonDocuments() {
         log.info("Running scheduled due-soon document notification...");
         dueSoonService.findAndNotifyDocumentsDueSoon();

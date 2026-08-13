@@ -10,7 +10,7 @@ const receivedDocumentRoute: Routes = [
     path: '',
     loadComponent: () => import('./list/received-document').then(m => m.ReceivedDocument),
     data: {
-      defaultSort: `date,${DESC}`,
+      defaultSort: `id,${DESC}`,
     },
     canActivate: [UserRouteAccessService],
   },
