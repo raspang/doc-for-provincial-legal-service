@@ -55,6 +55,7 @@ export class DocumentReferenceUpdate implements OnInit {
   save(): void {
     this.isSaving.set(true);
     const documentReference = this.documentReferenceFormService.getDocumentReference(this.editForm);
+
     if (documentReference.id === null) {
       this.subscribeToSaveResponse(this.documentReferenceService.create(documentReference));
     } else {

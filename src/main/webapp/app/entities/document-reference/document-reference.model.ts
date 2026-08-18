@@ -11,6 +11,10 @@ export interface IDocumentReference {
   dateReleased?: dayjs.Dayjs | null;
   submittedToSirKing?: dayjs.Dayjs | null;
   remarks?: string | null;
+  createdBy?: string | null;
+  createdDate?: dayjs.Dayjs | null;
+  lastModifiedBy?: string | null;
+  lastModifiedDate?: dayjs.Dayjs | null;
   typeOfDocument?: Pick<ITypeOfDocument, 'id' | 'name'> | null;
 }
 

@@ -1,7 +1,7 @@
 package com.lds.service.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -38,6 +38,44 @@ public class ReceivedDocumentDTO implements Serializable {
     private DocumentStatusDTO documentStatus;
 
     private TransactionTypeDTO transactionType;
+
+    private Instant createdDate; // JHipster's AbstractAuditingEntity uses 'createdDate' instead of 'createdOn'
+    private String createdBy;
+    private Instant lastModifiedDate; // JHipster uses 'lastModifiedDate' instead of 'updatedOn'
+    private String lastModifiedBy;
+
+    // Getters and Setters
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
 
     public Long getId() {
         return id;

@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-document-reference-heading" data-cy="DocumentReferenceCreateUpdateHeading">Create or edit a Document Reference</h2>
+      <h2 id="jhi-document-reference-heading" data-cy="DocumentReferenceCreateUpdateHeading">Create or edit an Outgoing</h2>
 
       <div>
         <jhi-alert-error />
@@ -36,22 +36,13 @@
             </div>
           }
         </div>
-
-        @let referenceNoRef = editForm.get('referenceNo')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_referenceNo">Reference No</label>
-          <input
-            type="text"
-            class="form-control"
-            name="referenceNo"
-            id="field_referenceNo"
-            data-cy="referenceNo"
-            formControlName="referenceNo"
-          />
-          @if (referenceNoRef.invalid && (referenceNoRef.dirty || referenceNoRef.touched)) {
-            <div></div>
-          }
-        </div>
+        <!-- 
+        @if (documentReference.referenceNo) {
+          <div class="form-group">
+            <label>Reference No</label>
+            <input type="text" class="form-control" [value]="documentReference.referenceNo" readonly />
+          </div>
+        } -->
 
         @let documentTitleRef = editForm.get('documentTitle')!;
         <div class="mb-3">

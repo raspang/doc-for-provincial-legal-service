@@ -11,14 +11,14 @@
     <p class="lead mb-3">Document Monitoring System</p>
 
     <p class="hero-description mx-auto mb-4">
-      Monitor received documents, track document references, and manage document status in one centralized system.
+      Monitor incoming documents, track outgoings, and manage document status in one centralized system.
     </p>
 
     <div class="d-flex justify-content-center gap-3 flex-wrap">
       @if (accountRef !== null) {
-        <a routerLink="/received-document" class="btn btn-light btn-lg"> Received Documents </a>
+        <a routerLink="/received-document" class="btn btn-light btn-lg"> Incomings </a>
 
-        <a routerLink="/document-reference" class="btn btn-outline-light btn-lg"> Document References </a>
+        <a routerLink="/document-reference" class="btn btn-outline-light btn-lg"> Outgoings </a>
       } @else {
         <button type="button" class="btn btn-light btn-lg" (click)="login()">Sign in</button>
 
@@ -35,13 +35,13 @@
     <div class="col-md-4">
       <div class="card feature-card h-100">
         <div class="card-body">
-          <h5 class="card-title">Received Documents</h5>
+          <h5 class="card-title">Incomings</h5>
           <p class="card-text">
             Monitor incoming documents, assigned responsible persons, requested actions, offices, and transaction details.
           </p>
 
           @if (accountRef !== null) {
-            <a routerLink="/received-document" class="btn btn-sm btn-primary"> Open Received Documents </a>
+            <a routerLink="/received-document" class="btn btn-sm btn-primary"> Open Incomings</a>
           } @else {
             <button type="button" class="btn btn-sm btn-primary" (click)="login()">Sign in to view</button>
           }
@@ -52,11 +52,11 @@
     <div class="col-md-4">
       <div class="card feature-card h-100">
         <div class="card-body">
-          <h5 class="card-title">Document References</h5>
+          <h5 class="card-title">Outgoings</h5>
           <p class="card-text">Manage outgoing documents, reference numbers, authors, release dates, and document remarks.</p>
 
           @if (accountRef !== null) {
-            <a routerLink="/document-reference" class="btn btn-sm btn-primary"> Open Document References </a>
+            <a routerLink="/document-reference" class="btn btn-sm btn-primary"> Open Outgoings </a>
           } @else {
             <button type="button" class="btn btn-sm btn-primary" (click)="login()">Sign in to view</button>
           }
@@ -91,7 +91,7 @@
     <div class="col-md-6">
       <div class="card h-100">
         <div class="card-body">
-          <h5 class="card-title mb-3">Received Documents Overview</h5>
+          <h5 class="card-title mb-3">Incomings Overview</h5>
 
           <div class="chart-placeholder d-flex align-items-center justify-content-center">Graph coming soon</div>
         </div>
@@ -101,7 +101,7 @@
     <div class="col-md-6">
       <div class="card h-100">
         <div class="card-body">
-          <h5 class="card-title mb-3">Document References Overview</h5>
+          <h5 class="card-title mb-3">Outgoings Overview</h5>
 
           <div class="chart-placeholder d-flex align-items-center justify-content-center">Graph coming soon</div>
         </div>

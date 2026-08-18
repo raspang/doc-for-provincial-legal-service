@@ -19,6 +19,10 @@ export interface IReceivedDocument {
   responsiblePerson?: Pick<IResponsiblePerson, 'id' | 'name'> | null;
   documentStatus?: Pick<IDocumentStatus, 'id' | 'name' | 'color' | 'warning'> | null;
   transactionType?: Pick<ITransactionType, 'id' | 'name' | 'targetDays'> | null;
+  createdBy?: string | null;
+  createdDate?: dayjs.Dayjs | null;
+  lastModifiedBy?: string | null;
+  lastModifiedDate?: dayjs.Dayjs | null;
 }
 
 export type NewReceivedDocument = Omit<IReceivedDocument, 'id'> & { id: null };

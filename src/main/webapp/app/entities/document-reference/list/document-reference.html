@@ -1,6 +1,6 @@
 <div>
   <h2 id="page-heading" data-cy="DocumentReferenceHeading">
-    <span>Document References</span>
+    <span>Outgoings</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
@@ -15,7 +15,7 @@
         [routerLink]="['/document-reference/new']"
       >
         <fa-icon icon="plus" />
-        <span>Create a new Document Reference</span>
+        <span>Create a new Outgoing</span>
       </button>
     </div>
   </h2>
@@ -97,7 +97,7 @@
 
   @if (documentReferences().length === 0) {
     <div class="alert alert-warning" id="no-result">
-      <span>No Document References found</span>
+      <span>No Outgoings found</span>
     </div>
   } @else {
     <div class="table-responsive table-entities" id="entities">
@@ -166,6 +166,8 @@
                 <fa-icon class="p-1" icon="sort" />
               </div>
             </th>
+            <th jhiSortBy="lastModifiedDate">Audit Trail<fa-icon icon="sort"></fa-icon></th>
+
             <th scope="col"></th>
           </tr>
         </thead>
@@ -189,18 +191,37 @@
               <td>{{ documentReference.dateReleased | formatMediumDatetime }}</td>
               <td>{{ documentReference.submittedToSirKing | formatMediumDatetime }}</td>
               <td>{{ documentReference.remarks }}</td>
+              <td class="align-middle audit-log-cell">
+                <!-- Created Info -->
+                <div class="small">
+                  <div class="fw-bold text-success"><i class="fa fa-plus-circle"></i> Created</div>
+                  <div class="text-muted">
+                    {{ documentReference.createdDate | formatMediumDatetime }}
+                  </div>
+                  <div class="text-truncate d-block" style="max-width: 160px" [title]="documentReference.createdBy">
+                    by {{ documentReference.createdBy }}
+                  </div>
+                </div>
 
+                <!-- Modified Info (Only renders if the document was actually modified) -->
+                @if (
+                  documentReference.lastModifiedBy !== documentReference.createdBy ||
+                  documentReference.lastModifiedDate !== documentReference.createdDate
+                ) {
+                  <div class="small mt-2">
+                    <hr class="my-1 border-secondary opacity-25" />
+                    <div class="fw-bold text-primary"><i class="fa fa-edit"></i> Modified</div>
+                    <div class="text-muted">
+                      {{ documentReference.lastModifiedDate | formatMediumDatetime }}
+                    </div>
+                    <div class="text-truncate d-block" style="max-width: 160px" [title]="documentReference.lastModifiedBy">
+                      by {{ documentReference.lastModifiedBy }}
+                    </div>
+                  </div>
+                }
+              </td>
               <td class="text-end">
                 <div class="btn-group">
-                  <!-- <a
-                    [routerLink]="['/document-reference', documentReference.id, 'view']"
-                    class="btn btn-info btn-sm"
-                    data-cy="entityDetailsButton"
-                  >
-                    <fa-icon icon="eye" />
-                    <span class="d-none d-md-inline">View</span>
-                  </a> -->
-
                   <a
                     [routerLink]="['/document-reference', documentReference.id, 'edit']"
                     class="btn btn-primary btn-sm"

@@ -1,7 +1,14 @@
 package com.lds.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
@@ -15,7 +22,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "document_reference")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class DocumentReference implements Serializable {
+public class DocumentReference extends AbstractAuditingEntity<Long> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -30,7 +37,7 @@ public class DocumentReference implements Serializable {
     @Column(name = "date", nullable = false)
     private Instant date;
 
-    @Column(name = "reference_no", unique = true)
+    @Column(name = "reference_no", unique = true, nullable = false, length = 20)
     private String referenceNo;
 
     @NotNull
@@ -90,7 +97,7 @@ public class DocumentReference implements Serializable {
         return this;
     }
 
-    public void setReferenceNo(String referenceNo) {
+    protected void setReferenceNo(String referenceNo) {
         this.referenceNo = referenceNo;
     }
 
