@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -39,4 +41,7 @@ public interface DocumentReferenceRepository extends JpaRepository<DocumentRefer
         "select documentReference from DocumentReference documentReference left join fetch documentReference.typeOfDocument where documentReference.id =:id"
     )
     Optional<DocumentReference> findOneWithToOneRelationships(@Param("id") Long id);
+
+    @Query("SELECT dr.typeOfDocument.name, COUNT(dr) FROM DocumentReference dr WHERE YEAR(dr.date) = :year GROUP BY dr.typeOfDocument.name")
+    List<Object[]> countOutgoingsByType(@Param("year") int year);
 }

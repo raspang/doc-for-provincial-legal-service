@@ -68,4 +68,12 @@ public interface ReceivedDocumentRepository extends JpaRepository<ReceivedDocume
         """
     )
     List<ReceivedDocument> findAllWithWarningAndResponsiblePerson();
+
+    @Query("SELECT rd FROM ReceivedDocument rd WHERE YEAR(rd.date) = :year")
+    List<ReceivedDocument> findAllForYear(@Param("year") int year);
+
+    @Query(
+        "SELECT rd.responsiblePerson.name, COUNT(rd) FROM ReceivedDocument rd WHERE YEAR(rd.date) = :year AND rd.responsiblePerson IS NOT NULL GROUP BY rd.responsiblePerson.name ORDER BY COUNT(rd) DESC"
+    )
+    List<Object[]> countIncomingsByPerson(@Param("year") int year);
 }

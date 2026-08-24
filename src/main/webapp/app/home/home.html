@@ -1,81 +1,88 @@
 @let accountRef = account();
 
-@if (accountRef === null) {
-  <div class="home-hero position-relative text-center text-white">
-    <div class="home-overlay"></div>
-
-    <div class="container position-relative py-5">
-      <img src="/content/images/cropped-CAPITOLLOGO-01.png" alt="Provincial Capitol Logo" class="home-logo mb-4" />
-
-      <h1 class="display-5 fw-bold">Provincial Legal Services of Lanao del Sur</h1>
-
-      <p class="lead mb-3">Document Monitoring System</p>
-
-      <p class="hero-description mx-auto mb-4">
-        Monitor incoming documents, track outgoings, and manage document status in one centralized system.
-      </p>
-
-      <div class="d-flex justify-content-center gap-3 flex-wrap">
-        <button type="button" class="btn btn-light btn-lg" (click)="login()">Sign in</button>
+<div class="container-fluid mt-4">
+  @if (accountRef === null) {
+    <div class="row justify-content-center">
+      <div class="col-md-8 text-center p-5 bg-light rounded shadow-sm">
+        <img src="/content/images/cropped-CAPITOLLOGO-01.png" alt="Capitol Logo" width="80" class="mb-3 home-logo" />
+        <h2>Provincial Legal Services of Lanao del Sur</h2>
+        <h4 class="text-muted">Document Monitoring System</h4>
+        <p class="lead mt-3" style="color: #333">
+          Monitor incoming documents, track outgoings, and manage document status in one centralized system.
+        </p>
+        <button class="btn btn-primary btn-lg mt-3" (click)="login()">Sign in to Dashboard</button>
       </div>
     </div>
-  </div>
-}
-
-<div class="container my-5">
-  <div class="row g-4">
-    <div class="col-md-4">
-      <div class="card feature-card h-100">
-        <div class="card-body">
-          <h5 class="card-title">Incomings</h5>
-          <p class="card-text">
-            Monitor incoming documents, assigned responsible persons, requested actions, offices, and transaction details.
-          </p>
-
-          @if (accountRef !== null) {
-            <a routerLink="/received-document" class="btn btn-sm btn-primary"> Open Incomings</a>
-          } @else {
-            <button type="button" class="btn btn-sm btn-primary" (click)="login()">Sign in to view</button>
-          }
+  } @else {
+    <!-- Quick Links -->
+    <div class="row mb-4">
+      <div class="col-xl-6 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2 feature-card">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="text-primary fw-bold mb-1">Incomings</h5>
+              <p class="mb-0 text-muted small">Monitor incoming documents, assigned responsible persons, and transaction details.</p>
+            </div>
+            <a routerLink="/received-document" class="btn btn-outline-primary ms-3">Open <i class="fa fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2 feature-card">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="text-success fw-bold mb-1">Outgoings</h5>
+              <p class="mb-0 text-muted small">Manage outgoing documents, reference numbers, authors, and release dates.</p>
+            </div>
+            <a routerLink="/document-reference" class="btn btn-outline-success ms-3">Open <i class="fa fa-arrow-right"></i></a>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="col-md-4">
-      <div class="card feature-card h-100">
-        <div class="card-body">
-          <h5 class="card-title">Outgoings</h5>
-          <p class="card-text">Manage outgoing documents, reference numbers, authors, release dates, and document remarks.</p>
+    <!-- Charts Row 1: Incomings -->
+    <div class="row mb-4">
+      <!-- Incomings Weekly Trend (Current Month) -->
+      <div class="col-xl-8 col-lg-7 mb-4">
+        <div class="card shadow h-100">
+          <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Incomings Overview: Weekly Trend</h6>
+            <span class="badge bg-success fs-6">{{ currentMonthLabel() }}</span>
+          </div>
+          <div class="card-body" style="height: 350px; position: relative">
+            <canvas #trendChart></canvas>
+          </div>
+        </div>
+      </div>
 
-          @if (accountRef !== null) {
-            <a routerLink="/document-reference" class="btn btn-sm btn-primary"> Open Outgoings </a>
-          } @else {
-            <button type="button" class="btn btn-sm btn-primary" (click)="login()">Sign in to view</button>
-          }
+      <!-- Incomings by Responsible Person (Current Year) -->
+      <div class="col-xl-4 col-lg-5 mb-4">
+        <div class="card shadow h-100">
+          <div class="card-header bg-white">
+            <h6 class="m-0 font-weight-bold text-primary">Workload: By Responsible Person</h6>
+            <small class="text-muted">Current Year</small>
+          </div>
+          <div class="card-body d-flex align-items-center justify-content-center" style="height: 350px; position: relative">
+            <canvas #personChart></canvas>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="row mt-5 g-4">
-    <div class="col-md-6">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="card-title mb-3">Incomings Overview</h5>
-
-          <div class="chart-placeholder d-flex align-items-center justify-content-center">Graph coming soon</div>
+    <!-- Charts Row 2: Outgoings -->
+    <div class="row">
+      <!-- Outgoings by Document Type (Current Year) -->
+      <div class="col-12 mb-4">
+        <div class="card shadow h-100">
+          <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-success">Outgoings Overview: By Document Type</h6>
+            <span class="badge bg-primary fs-6">{{ currentYearLabel() }}</span>
+          </div>
+          <div class="card-body" style="height: 400px; position: relative">
+            <canvas #outgoingsChart></canvas>
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="col-md-6">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="card-title mb-3">Outgoings Overview</h5>
-
-          <div class="chart-placeholder d-flex align-items-center justify-content-center">Graph coming soon</div>
-        </div>
-      </div>
-    </div>
-  </div>
+  }
 </div>
