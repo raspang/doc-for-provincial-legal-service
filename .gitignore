@@ -158,3 +158,4 @@ coverage/
 ######################
 /src/main/webapp/swagger-ui/*
 !/src/main/webapp/swagger-ui/index.html
+src/main/resources/config/application-local.yml
