@@ -314,3 +314,15 @@ jhipster:
     from: your-email@gmail.com
     base-url: http://localhost:8080
 ```
+
+application-local.yml:
+
+spring:
+mail:
+password: # Your Gmail App Password
+
+jhipster:
+security:
+authentication:
+jwt:
+base64-secret: # Your long JWT secret
