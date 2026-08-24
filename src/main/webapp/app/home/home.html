@@ -1,34 +1,26 @@
 @let accountRef = account();
 
-<div class="home-hero position-relative text-center text-white">
-  <div class="home-overlay"></div>
+@if (accountRef === null) {
+  <div class="home-hero position-relative text-center text-white">
+    <div class="home-overlay"></div>
 
-  <div class="container position-relative py-5">
-    <img src="/content/images/cropped-CAPITOLLOGO-01.png" alt="Provincial Capitol Logo" class="home-logo mb-4" />
+    <div class="container position-relative py-5">
+      <img src="/content/images/cropped-CAPITOLLOGO-01.png" alt="Provincial Capitol Logo" class="home-logo mb-4" />
 
-    <h1 class="display-5 fw-bold">Provincial Legal Services of Lanao del Sur</h1>
+      <h1 class="display-5 fw-bold">Provincial Legal Services of Lanao del Sur</h1>
 
-    <p class="lead mb-3">Document Monitoring System</p>
+      <p class="lead mb-3">Document Monitoring System</p>
 
-    <p class="hero-description mx-auto mb-4">
-      Monitor incoming documents, track outgoings, and manage document status in one centralized system.
-    </p>
+      <p class="hero-description mx-auto mb-4">
+        Monitor incoming documents, track outgoings, and manage document status in one centralized system.
+      </p>
 
-    <div class="d-flex justify-content-center gap-3 flex-wrap">
-      @if (accountRef !== null) {
-        <a routerLink="/received-document" class="btn btn-light btn-lg"> Incomings </a>
-
-        <a routerLink="/document-reference" class="btn btn-outline-light btn-lg"> Outgoings </a>
-      } @else {
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
         <button type="button" class="btn btn-light btn-lg" (click)="login()">Sign in</button>
-
-        <!-- <a routerLink="/account/register" class="btn btn-outline-light btn-lg">
-          Register
-        </a> -->
-      }
+      </div>
     </div>
   </div>
-</div>
+}
 
 <div class="container my-5">
   <div class="row g-4">
@@ -63,28 +55,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <div class="col-md-4">
-      <div class="card feature-card h-100">
-        <div class="card-body">
-          <h5 class="card-title">Status Monitoring</h5>
-          <p class="card-text">
-            Track document status, due dates, and days remaining before due
-            date for better monitoring and follow-up.
-          </p>
-
-          @if (accountRef !== null) {
-            <a routerLink="/received-document" class="btn btn-sm btn-primary">
-              View Monitoring
-            </a>
-          } @else {
-            <button type="button" class="btn btn-sm btn-primary" (click)="login()">
-              Sign in to view
-            </button>
-          }
-        </div>
-      </div>
-    </div> -->
   </div>
 
   <div class="row mt-5 g-4">

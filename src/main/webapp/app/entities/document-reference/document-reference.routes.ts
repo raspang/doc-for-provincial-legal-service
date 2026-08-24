@@ -10,7 +10,7 @@ const documentReferenceRoute: Routes = [
     path: '',
     loadComponent: () => import('./list/document-reference').then(m => m.DocumentReference),
     data: {
-      defaultSort: `id,${DESC}`,
+      defaultSort: `lastModifiedDate,${DESC}`,
     },
     canActivate: [UserRouteAccessService],
   },
