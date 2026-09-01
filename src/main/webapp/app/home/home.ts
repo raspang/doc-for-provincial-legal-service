@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AccountService } from 'app/core/auth/account.service';
 import { HttpClient } from '@angular/common/http';
 import { Chart, registerables } from 'chart.js';
+import { QRCodeComponent } from 'angularx-qrcode';
 
 // Register Chart.js components
 Chart.register(...registerables);
@@ -19,38 +20,38 @@ interface DashboardStats {
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.html',
   styleUrl: './home.scss',
-  imports: [RouterLink],
+  imports: [RouterLink, QRCodeComponent],
 })
-export default class Home implements OnInit, AfterViewInit, OnDestroy {
+export default class Home implements OnInit, OnDestroy {
+  // --- Public Properties & Signals ---
   public readonly account = inject(AccountService).account;
-  private readonly router = inject(Router);
-  private readonly http = inject(HttpClient);
+  networkAccessUrl = signal<string>('Loading...');
+  currentMonthLabel = signal<string>('');
+  currentYearLabel = signal<string>(new Date().getFullYear().toString());
 
-  // Canvas references
   @ViewChild('outgoingsChart') outgoingsCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('trendChart') trendCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('personChart') personCanvas!: ElementRef<HTMLCanvasElement>;
 
-  // Chart instances
+  // --- Private Properties ---
+  private readonly router = inject(Router);
+  private readonly http = inject(HttpClient);
   private outgoingsChart: Chart | null = null;
   private trendChart: Chart | null = null;
   private personChart: Chart | null = null;
 
-  currentMonthLabel = signal<string>('');
-  currentYearLabel = signal<string>(new Date().getFullYear().toString());
-
   ngOnInit(): void {
+    this.http.get('/api/system/access-url', { responseType: 'text' }).subscribe({
+      next: url => this.networkAccessUrl.set(url),
+      error: () => this.networkAccessUrl.set('http://localhost:8080'),
+    });
+
     if (this.account()) {
       this.loadDashboardStats();
     }
   }
 
-  ngAfterViewInit(): void {
-    // Charts will be initialized here once data is loaded
-  }
-
   ngOnDestroy(): void {
-    // Clean up charts to prevent memory leaks
     this.outgoingsChart?.destroy();
     this.trendChart?.destroy();
     this.personChart?.destroy();

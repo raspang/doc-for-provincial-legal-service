@@ -1,88 +1,84 @@
 @let accountRef = account();
 
-<div class="container-fluid mt-4">
-  @if (accountRef === null) {
-    <div class="row justify-content-center">
-      <div class="col-md-8 text-center p-5 bg-light rounded shadow-sm">
-        <img src="/content/images/cropped-CAPITOLLOGO-01.png" alt="Capitol Logo" width="80" class="mb-3 home-logo" />
-        <h2>Provincial Legal Services of Lanao del Sur</h2>
-        <h4 class="text-muted">Document Monitoring System</h4>
-        <p class="lead mt-3" style="color: #333">
-          Monitor incoming documents, track outgoings, and manage document status in one centralized system.
-        </p>
-        <button class="btn btn-primary btn-lg mt-3" (click)="login()">Sign in to Dashboard</button>
+@if (accountRef === null) {
+  <div class="home-hero position-relative d-flex align-items-center justify-content-center text-center text-white">
+    <div class="home-overlay"></div>
+    <div class="container position-relative z-2">
+      <img src="/content/images/cropped-CAPITOLLOGO-01.png" alt="Logo" class="home-logo mb-4" />
+      <h1 class="display-4 fw-bold mb-3">Provincial Legal Services of Lanao del Sur</h1>
+      <h2 class="h4 mb-4">Document Monitoring System</h2>
+      <p class="hero-description mx-auto mb-4">
+        Monitor incoming documents, track outgoings, and manage document status in one centralized system.
+      </p>
+
+      <button class="btn btn-primary btn-lg px-5 mb-5" (click)="login()"><i class="fa fa-sign-in me-2"></i>Sign in to Dashboard</button>
+
+      <!-- QR Code Access Section -->
+      <div class="qr-access-card mx-auto p-4 rounded shadow-lg">
+        <h6 class="text-muted text-uppercase fw-bold mb-3 small"><i class="fa fa-qrcode me-2"></i>Scan to Access System</h6>
+
+        <qrcode [qrdata]="networkAccessUrl()" [width]="180" [errorCorrectionLevel]="'M'" class="d-block mx-auto mb-3"></qrcode>
+
+        <div class="text-primary fw-bold user-select-all mb-1" style="cursor: text; font-size: 0.9rem">{{ networkAccessUrl() }}</div>
+        <small class="text-muted d-block" style="font-size: 0.75rem">Point your phone or PC camera here</small>
       </div>
     </div>
-  } @else {
-    <!-- Quick Links -->
-    <div class="row mb-4">
-      <div class="col-xl-6 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2 feature-card">
-          <div class="card-body d-flex justify-content-between align-items-center">
-            <div>
-              <h5 class="text-primary fw-bold mb-1">Incomings</h5>
-              <p class="mb-0 text-muted small">Monitor incoming documents, assigned responsible persons, and transaction details.</p>
-            </div>
-            <a routerLink="/received-document" class="btn btn-outline-primary ms-3">Open <i class="fa fa-arrow-right"></i></a>
+  </div>
+} @else {
+  <!-- Authenticated Dashboard Content -->
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="card feature-card border-left-primary h-100">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fa fa-inbox text-primary me-2"></i>Incomings</h5>
+            <p class="card-text text-muted">Monitor incoming documents, assigned responsible persons, and transaction details.</p>
+            <a routerLink="/received-documents" class="btn btn-outline-primary btn-sm">Open</a>
           </div>
         </div>
       </div>
-      <div class="col-xl-6 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2 feature-card">
-          <div class="card-body d-flex justify-content-between align-items-center">
-            <div>
-              <h5 class="text-success fw-bold mb-1">Outgoings</h5>
-              <p class="mb-0 text-muted small">Manage outgoing documents, reference numbers, authors, and release dates.</p>
-            </div>
-            <a routerLink="/document-reference" class="btn btn-outline-success ms-3">Open <i class="fa fa-arrow-right"></i></a>
+      <div class="col-md-6 mb-4">
+        <div class="card feature-card border-left-success h-100">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fa fa-paper-plane text-success me-2"></i>Outgoings</h5>
+            <p class="card-text text-muted">Manage outgoing documents, reference numbers, authors, and release dates.</p>
+            <a routerLink="/document-references" class="btn btn-outline-success btn-sm">Open</a>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Charts Row 1: Incomings -->
-    <div class="row mb-4">
-      <!-- Incomings Weekly Trend (Current Month) -->
-      <div class="col-xl-8 col-lg-7 mb-4">
-        <div class="card shadow h-100">
-          <div class="card-header bg-white d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">Incomings Overview: Weekly Trend</h6>
-            <span class="badge bg-success fs-6">{{ currentMonthLabel() }}</span>
+    <div class="row mt-3">
+      <div class="col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-header bg-white fw-bold">
+            Incomings Overview: Weekly Trend <span class="text-muted fw-normal float-end">{{ currentMonthLabel() }}</span>
           </div>
-          <div class="card-body" style="height: 350px; position: relative">
+          <div class="card-body">
             <canvas #trendChart></canvas>
           </div>
         </div>
       </div>
-
-      <!-- Incomings by Responsible Person (Current Year) -->
-      <div class="col-xl-4 col-lg-5 mb-4">
-        <div class="card shadow h-100">
-          <div class="card-header bg-white">
-            <h6 class="m-0 font-weight-bold text-primary">Workload: By Responsible Person</h6>
-            <small class="text-muted">Current Year</small>
+      <div class="col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-header bg-white fw-bold">
+            Workload: By Responsible Person <span class="text-muted fw-normal float-end">Current Year</span>
           </div>
-          <div class="card-body d-flex align-items-center justify-content-center" style="height: 350px; position: relative">
+          <div class="card-body">
             <canvas #personChart></canvas>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Charts Row 2: Outgoings -->
-    <div class="row">
-      <!-- Outgoings by Document Type (Current Year) -->
       <div class="col-12 mb-4">
-        <div class="card shadow h-100">
-          <div class="card-header bg-white d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-success">Outgoings Overview: By Document Type</h6>
-            <span class="badge bg-primary fs-6">{{ currentYearLabel() }}</span>
+        <div class="card">
+          <div class="card-header bg-white fw-bold">
+            Outgoings Overview: By Document Type <span class="text-muted fw-normal float-end">{{ currentYearLabel() }}</span>
           </div>
-          <div class="card-body" style="height: 400px; position: relative">
-            <canvas #outgoingsChart></canvas>
+          <div class="card-body">
+            <canvas #outgoingsChart style="max-height: 300px"></canvas>
           </div>
         </div>
       </div>
     </div>
-  }
-</div>
+  </div>
+}

@@ -326,3 +326,5 @@ security:
 authentication:
 jwt:
 base64-secret: # Your long JWT secret
+
+./mvnw package -Pprod -DskipTests

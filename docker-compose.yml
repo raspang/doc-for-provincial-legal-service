@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # 1. MariaDB Database
+  mariadb:
+    image: mariadb:11.4
+    container_name: legal-mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: legal_root_password
+      MARIADB_DATABASE: legal
+    ports:
+      - '3306:3306'
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'healthcheck.sh', '--connect', '--innodb_initialized']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Your Spring Boot Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: legal-app
+    restart: always
+    ports:
+      - '8080:8080'
+    environment:
+      # Tell Spring Boot to use the production profile
+      SPRING_PROFILES_ACTIVE: prod
+      # Override the database URL to point to the 'mariadb' container instead of localhost
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/legal?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: legal_root_password
+      # Optional: Force Liquibase to run on startup
+      SPRING_LIQUIBASE_CHANGELOG: classpath:config/liquibase/master.xml
+      JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET: JJu4MjZ4lqY+wrQkHYBawRK4gLLDtOL7V1F85Xnifaddg3cYIi5PZiYFKUuSpkstAeo15912MvLjSdq+VrvnBQ==
+
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
+volumes:
+  mariadb_data:

@@ -8,7 +8,8 @@ dayjs.extend(utc);
   name: 'formatMediumDate',
 })
 export default class FormatMediumDatePipe implements PipeTransform {
-  transform(value: dayjs.Dayjs | string | null | undefined, forceUtc: boolean = false): string {
+  // 👇 Removed ": boolean" here
+  transform(value: dayjs.Dayjs | string | null | undefined, forceUtc = false): string {
     if (!value) return '';
 
     let date = typeof value === 'string' ? dayjs(value) : value;

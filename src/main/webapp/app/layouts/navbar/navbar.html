@@ -51,7 +51,7 @@
                   (click)="collapseNavbar()"
                 >
                   <fa-icon [icon]="faInbox" class="me-1"></fa-icon>
-                  <span>Received Document</span>
+                  <span>Incoming Documents</span>
                 </a>
               </li>
               <li>
@@ -63,7 +63,7 @@
                   (click)="collapseNavbar()"
                 >
                   <fa-icon [icon]="faFileLines" class="me-1"></fa-icon>
-                  <span>Document Reference</span>
+                  <span>Outgoing Documents</span>
                 </a>
               </li>
               <li *jhiHasAnyAuthority="'ROLE_ADMIN'"><div class="dropdown-divider"></div></li>
