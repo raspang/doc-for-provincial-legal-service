@@ -60,7 +60,7 @@ public class DocumentReferenceService {
                         .findById(yearMonth)
                         .orElseThrow(() -> new RuntimeException("Sequence not found after increment"));
 
-                    return String.format("%s-%s-%03d", PREFIX, yearMonth, sequence.getCurrentSequence());
+                    return "%s-%s-%03d".formatted(PREFIX, yearMonth, sequence.getCurrentSequence());
                 } else {
                     // 2. If 0 rows updated, it's a new month. Create it starting at 1.
                     DocumentReferenceSequence newSequence = new DocumentReferenceSequence();
@@ -68,7 +68,7 @@ public class DocumentReferenceService {
                     newSequence.setCurrentSequence(1L);
                     sequenceRepository.save(newSequence);
 
-                    return String.format("%s-%s-%03d", PREFIX, yearMonth, 1L);
+                    return "%s-%s-%03d".formatted(PREFIX, yearMonth, 1L);
                 }
             } catch (DataIntegrityViolationException e) {
                 // 3. Edge case: Another thread just created the sequence for this new month
