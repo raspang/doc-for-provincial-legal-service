@@ -33,6 +33,7 @@
     <include file="config/liquibase/changelog/20260807075447_added_entity_constraints_DocumentReference.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260817000000_added_audit_fields.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260818000001_added_document_reference_sequence.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20261019000001_rename_document_reference_sequence_columns.xml" relativeToChangelogFile="false"/>
 
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->

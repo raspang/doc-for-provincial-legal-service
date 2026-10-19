@@ -1,14 +1,17 @@
-# Use the official Eclipse Temurin (OpenJDK) image for Java 21
-FROM eclipse-temurin:21-jre
+# syntax=docker/dockerfile:1
 
-# Set the working directory inside the container
+FROM maven:3.9.9-eclipse-temurin-21 AS build
+WORKDIR /workspace
+
+COPY . .
+RUN mvn -q -DskipTests dependency:go-offline
+RUN mvn -q -DskipTests -Pprod package
+
+FROM eclipse-temurin:21-jre
 WORKDIR /app
 
-# Copy the built jar file from your target folder into the container
-COPY target/legal-1.0.0.jar app.jar
+COPY --from=build /workspace/target/legal-1.0.0.jar /app/app.jar
 
-# Expose the port the app runs on
 EXPOSE 8080
 
-# Run the jar file
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

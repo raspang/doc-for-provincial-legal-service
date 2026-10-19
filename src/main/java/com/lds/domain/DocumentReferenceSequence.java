@@ -10,10 +10,10 @@ import jakarta.persistence.Table;
 public class DocumentReferenceSequence {
 
     @Id
-    @Column(name = "year_month", length = 7)
+    @Column(name = "year_month_key", length = 7)
     private String yearMonth; // Format: "2026-08"
 
-    @Column(name = "current_sequence")
+    @Column(name = "sequence_value")
     private Long currentSequence = 0L;
 
     // Getters and Setters

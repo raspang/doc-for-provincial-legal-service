@@ -7,11 +7,12 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="20260818000001" author="jhipster">
+        <validCheckSum>9:afb0545fb867b11e07badb4783cfa357;9:862298bb5b21fc29f97b6efbfda411b1</validCheckSum>
         <createTable tableName="document_reference_sequence">
-            <column name="year_month" type="varchar(7)">
+            <column name="year_month_key" type="varchar(7)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="current_sequence" type="bigint" defaultValueNumeric="0">
+            <column name="sequence_value" type="bigint" defaultValueNumeric="0">
                 <constraints nullable="false"/>
             </column>
             <column name="version" type="bigint" defaultValueNumeric="0">

@@ -150,7 +150,73 @@ Generic styles
 }
 
 .footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
+  border-top: 1px solid rgba(15, 23, 42, 0.12);
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.96), rgba(241, 245, 249, 0.96));
+  color: #1f2937;
+}
+
+.footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.footer-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18rem;
+  text-transform: uppercase;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.footer-subtitle {
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: #1f2937;
+  white-space: nowrap;
+}
+
+.footer-divider {
+  width: 1px;
+  height: 2.5rem;
+  background: rgba(15, 23, 42, 0.12);
+}
+
+.footer-status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.footer-status .badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+}
+
+@media (max-width: 576px) {
+  .footer-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-divider {
+    display: none;
+  }
+
+  .footer-subtitle {
+    white-space: normal;
+  }
 }
 
 .hand,

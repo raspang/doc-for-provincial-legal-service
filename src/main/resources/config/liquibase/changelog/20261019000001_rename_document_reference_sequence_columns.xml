@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20261019000001" author="copilot">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="document_reference_sequence" columnName="year_month"/>
+            <not>
+                <columnExists tableName="document_reference_sequence" columnName="year_month_key"/>
+            </not>
+        </preConditions>
+        <renameColumn tableName="document_reference_sequence" oldColumnName="year_month" newColumnName="year_month_key" columnDataType="varchar(7)"/>
+        <renameColumn tableName="document_reference_sequence" oldColumnName="current_sequence" newColumnName="sequence_value" columnDataType="bigint"/>
+    </changeSet>
+</databaseChangeLog>

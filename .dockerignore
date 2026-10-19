@@ -1,0 +1,9 @@
+target/
+.git/
+.github/
+.vscode/
+.idea/
+node_modules/
+.gitignore
+npm-debug.log*
+README.md

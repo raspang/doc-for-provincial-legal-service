@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # 1. MariaDB Database
   mariadb:
@@ -9,8 +7,6 @@ services:
     environment:
       MARIADB_ROOT_PASSWORD: legal_root_password
       MARIADB_DATABASE: legal
-    ports:
-      - '3306:3306'
     volumes:
       - mariadb_data:/var/lib/mysql
     healthcheck:
@@ -21,13 +17,14 @@ services:
 
   # 2. Your Spring Boot Application
   app:
+    image: legal-app:local
     build:
       context: .
       dockerfile: Dockerfile
     container_name: legal-app
     restart: always
     ports:
-      - '8080:8080'
+      - '1980:8080'
     environment:
       # Tell Spring Boot to use the production profile
       SPRING_PROFILES_ACTIVE: prod
