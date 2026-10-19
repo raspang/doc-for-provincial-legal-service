@@ -36,8 +36,6 @@ public class DocumentReferenceCriteria implements Serializable, Criteria {
 
     private InstantFilter dateReleased;
 
-    private InstantFilter submittedToSirKing;
-
     private StringFilter remarks;
 
     private LongFilter typeOfDocumentId;
@@ -53,7 +51,6 @@ public class DocumentReferenceCriteria implements Serializable, Criteria {
         this.documentTitle = other.optionalDocumentTitle().map(StringFilter::copy).orElse(null);
         this.author = other.optionalAuthor().map(StringFilter::copy).orElse(null);
         this.dateReleased = other.optionalDateReleased().map(InstantFilter::copy).orElse(null);
-        this.submittedToSirKing = other.optionalSubmittedToSirKing().map(InstantFilter::copy).orElse(null);
         this.remarks = other.optionalRemarks().map(StringFilter::copy).orElse(null);
         this.typeOfDocumentId = other.optionalTypeOfDocumentId().map(LongFilter::copy).orElse(null);
         this.distinct = other.distinct;
@@ -178,25 +175,6 @@ public class DocumentReferenceCriteria implements Serializable, Criteria {
         this.dateReleased = dateReleased;
     }
 
-    public InstantFilter getSubmittedToSirKing() {
-        return submittedToSirKing;
-    }
-
-    public Optional<InstantFilter> optionalSubmittedToSirKing() {
-        return Optional.ofNullable(submittedToSirKing);
-    }
-
-    public InstantFilter submittedToSirKing() {
-        if (submittedToSirKing == null) {
-            setSubmittedToSirKing(new InstantFilter());
-        }
-        return submittedToSirKing;
-    }
-
-    public void setSubmittedToSirKing(InstantFilter submittedToSirKing) {
-        this.submittedToSirKing = submittedToSirKing;
-    }
-
     public StringFilter getRemarks() {
         return remarks;
     }
@@ -270,7 +248,6 @@ public class DocumentReferenceCriteria implements Serializable, Criteria {
             Objects.equals(documentTitle, that.documentTitle) &&
             Objects.equals(author, that.author) &&
             Objects.equals(dateReleased, that.dateReleased) &&
-            Objects.equals(submittedToSirKing, that.submittedToSirKing) &&
             Objects.equals(remarks, that.remarks) &&
             Objects.equals(typeOfDocumentId, that.typeOfDocumentId) &&
             Objects.equals(distinct, that.distinct)
@@ -279,18 +256,7 @@ public class DocumentReferenceCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-            id,
-            date,
-            referenceNo,
-            documentTitle,
-            author,
-            dateReleased,
-            submittedToSirKing,
-            remarks,
-            typeOfDocumentId,
-            distinct
-        );
+        return Objects.hash(id, date, referenceNo, documentTitle, author, dateReleased, remarks, typeOfDocumentId, distinct);
     }
 
     // prettier-ignore
@@ -303,7 +269,6 @@ public class DocumentReferenceCriteria implements Serializable, Criteria {
             optionalDocumentTitle().map(f -> "documentTitle=" + f + ", ").orElse("") +
             optionalAuthor().map(f -> "author=" + f + ", ").orElse("") +
             optionalDateReleased().map(f -> "dateReleased=" + f + ", ").orElse("") +
-            optionalSubmittedToSirKing().map(f -> "submittedToSirKing=" + f + ", ").orElse("") +
             optionalRemarks().map(f -> "remarks=" + f + ", ").orElse("") +
             optionalTypeOfDocumentId().map(f -> "typeOfDocumentId=" + f + ", ").orElse("") +
             optionalDistinct().map(f -> "distinct=" + f + ", ").orElse("") +

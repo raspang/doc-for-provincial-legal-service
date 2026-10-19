@@ -36,13 +36,25 @@
             </div>
           }
         </div>
-        <!-- 
+        <!--
         @if (documentReference.referenceNo) {
           <div class="form-group">
             <label>Reference No</label>
             <input type="text" class="form-control" [value]="documentReference.referenceNo" readonly />
           </div>
         } -->
+
+        <div class="mb-3">
+          <label class="form-label" for="field_referenceNo">Reference No</label>
+          <input
+            type="text"
+            class="form-control"
+            name="referenceNo"
+            id="field_referenceNo"
+            data-cy="referenceNo"
+            formControlName="referenceNo"
+          />
+        </div>
 
         @let documentTitleRef = editForm.get('documentTitle')!;
         <div class="mb-3">
@@ -106,21 +118,6 @@
               class="form-control"
               name="dateReleased"
               formControlName="dateReleased"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_submittedToSirKing">Submitted To Sir King</label>
-          <div class="d-flex">
-            <input
-              id="field_submittedToSirKing"
-              data-cy="submittedToSirKing"
-              type="datetime-local"
-              class="form-control"
-              name="submittedToSirKing"
-              formControlName="submittedToSirKing"
               placeholder="YYYY-MM-DD HH:mm"
             />
           </div>

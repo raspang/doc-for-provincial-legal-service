@@ -27,8 +27,6 @@ public class DocumentReferenceDTO implements Serializable {
 
     private Instant dateReleased;
 
-    private Instant submittedToSirKing;
-
     private String remarks;
 
     @NotNull
@@ -120,14 +118,6 @@ public class DocumentReferenceDTO implements Serializable {
         this.dateReleased = dateReleased;
     }
 
-    public Instant getSubmittedToSirKing() {
-        return submittedToSirKing;
-    }
-
-    public void setSubmittedToSirKing(Instant submittedToSirKing) {
-        this.submittedToSirKing = submittedToSirKing;
-    }
-
     public String getRemarks() {
         return remarks;
     }
@@ -175,7 +165,6 @@ public class DocumentReferenceDTO implements Serializable {
             ", documentTitle='" + getDocumentTitle() + "'" +
             ", author='" + getAuthor() + "'" +
             ", dateReleased='" + getDateReleased() + "'" +
-            ", submittedToSirKing='" + getSubmittedToSirKing() + "'" +
             ", remarks='" + getRemarks() + "'" +
             ", typeOfDocument=" + getTypeOfDocument() +
             "}";

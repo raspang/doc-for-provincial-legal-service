@@ -20,17 +20,16 @@ type DocumentReferenceFormGroupInput = IDocumentReference | PartialWithRequiredK
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends IDocumentReference | NewDocumentReference> = Omit<T, 'date' | 'dateReleased' | 'submittedToSirKing'> & {
+type FormValueOf<T extends IDocumentReference | NewDocumentReference> = Omit<T, 'date' | 'dateReleased'> & {
   date?: string | null;
   dateReleased?: string | null;
-  submittedToSirKing?: string | null;
 };
 
 type DocumentReferenceFormRawValue = FormValueOf<IDocumentReference>;
 
 type NewDocumentReferenceFormRawValue = FormValueOf<NewDocumentReference>;
 
-type DocumentReferenceFormDefaults = Pick<NewDocumentReference, 'id' | 'date' | 'dateReleased' | 'submittedToSirKing'>;
+type DocumentReferenceFormDefaults = Pick<NewDocumentReference, 'id' | 'date' | 'dateReleased'>;
 
 type DocumentReferenceFormGroupContent = {
   id: FormControl<DocumentReferenceFormRawValue['id'] | NewDocumentReference['id']>;
@@ -39,7 +38,6 @@ type DocumentReferenceFormGroupContent = {
   documentTitle: FormControl<DocumentReferenceFormRawValue['documentTitle']>;
   author: FormControl<DocumentReferenceFormRawValue['author']>;
   dateReleased: FormControl<DocumentReferenceFormRawValue['dateReleased']>;
-  submittedToSirKing: FormControl<DocumentReferenceFormRawValue['submittedToSirKing']>;
   remarks: FormControl<DocumentReferenceFormRawValue['remarks']>;
   typeOfDocument: FormControl<DocumentReferenceFormRawValue['typeOfDocument']>;
 };
@@ -71,7 +69,6 @@ export class DocumentReferenceFormService {
       }),
       author: new FormControl(documentReferenceRawValue.author),
       dateReleased: new FormControl(documentReferenceRawValue.dateReleased),
-      submittedToSirKing: new FormControl(documentReferenceRawValue.submittedToSirKing),
       remarks: new FormControl(documentReferenceRawValue.remarks),
       typeOfDocument: new FormControl(documentReferenceRawValue.typeOfDocument, {
         validators: [Validators.required],
@@ -112,7 +109,6 @@ export class DocumentReferenceFormService {
       ...rawDocumentReference,
       date: dayjs(rawDocumentReference.date, DATE_TIME_FORMAT),
       dateReleased: dayjs(rawDocumentReference.dateReleased, DATE_TIME_FORMAT),
-      submittedToSirKing: dayjs(rawDocumentReference.submittedToSirKing, DATE_TIME_FORMAT),
     };
   }
 
@@ -123,7 +119,6 @@ export class DocumentReferenceFormService {
       ...documentReference,
       date: documentReference.date ? documentReference.date.format(DATE_TIME_FORMAT) : undefined,
       dateReleased: documentReference.dateReleased ? documentReference.dateReleased.format(DATE_TIME_FORMAT) : undefined,
-      submittedToSirKing: documentReference.submittedToSirKing ? documentReference.submittedToSirKing.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

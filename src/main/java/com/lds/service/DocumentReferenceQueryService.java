@@ -89,7 +89,6 @@ public class DocumentReferenceQueryService extends QueryService<DocumentReferenc
                     buildStringSpecification(criteria.getDocumentTitle(), DocumentReference_.documentTitle),
                     buildStringSpecification(criteria.getAuthor(), DocumentReference_.author),
                     buildRangeSpecification(criteria.getDateReleased(), DocumentReference_.dateReleased),
-                    buildRangeSpecification(criteria.getSubmittedToSirKing(), DocumentReference_.submittedToSirKing),
                     buildStringSpecification(criteria.getRemarks(), DocumentReference_.remarks),
                     buildSpecification(criteria.getTypeOfDocumentId(), root ->
                         root.join(DocumentReference_.typeOfDocument, JoinType.LEFT).get(TypeOfDocument_.id)

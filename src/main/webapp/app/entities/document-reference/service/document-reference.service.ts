@@ -11,10 +11,9 @@ import { IDocumentReference, NewDocumentReference } from '../document-reference.
 
 export type PartialUpdateDocumentReference = Partial<IDocumentReference> & Pick<IDocumentReference, 'id'>;
 
-type RestOf<T extends IDocumentReference | NewDocumentReference> = Omit<T, 'date' | 'dateReleased' | 'submittedToSirKing'> & {
+type RestOf<T extends IDocumentReference | NewDocumentReference> = Omit<T, 'date' | 'dateReleased'> & {
   date?: string | null;
   dateReleased?: string | null;
-  submittedToSirKing?: string | null;
 };
 
 export type RestDocumentReference = RestOf<IDocumentReference>;
@@ -52,7 +51,6 @@ export class DocumentReferencesService {
       ...restDocumentReference,
       date: restDocumentReference.date ? dayjs(restDocumentReference.date) : undefined,
       dateReleased: restDocumentReference.dateReleased ? dayjs(restDocumentReference.dateReleased) : undefined,
-      submittedToSirKing: restDocumentReference.submittedToSirKing ? dayjs(restDocumentReference.submittedToSirKing) : undefined,
     };
   }
 }
@@ -137,7 +135,6 @@ export class DocumentReferenceService extends DocumentReferencesService {
       ...documentReference,
       date: documentReference.date?.toJSON() ?? null,
       dateReleased: documentReference.dateReleased?.toJSON() ?? null,
-      submittedToSirKing: documentReference.submittedToSirKing?.toJSON() ?? null,
     };
   }
 

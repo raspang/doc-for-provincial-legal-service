@@ -9,7 +9,6 @@ export interface IDocumentReference {
   documentTitle?: string | null;
   author?: string | null;
   dateReleased?: dayjs.Dayjs | null;
-  submittedToSirKing?: dayjs.Dayjs | null;
   remarks?: string | null;
   createdBy?: string | null;
   createdDate?: dayjs.Dayjs | null;

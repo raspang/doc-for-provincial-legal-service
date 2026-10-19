@@ -88,8 +88,11 @@ public class DocumentReferenceService {
     public DocumentReferenceDTO save(DocumentReferenceDTO documentReferenceDTO) {
         LOG.debug("Request to save DocumentReference : {}", documentReferenceDTO);
 
-        String refNumber = generateNextReferenceNumber();
-        documentReferenceDTO.setReferenceNo(refNumber);
+        String requestedReferenceNo = documentReferenceDTO.getReferenceNo();
+        if (requestedReferenceNo == null || requestedReferenceNo.isBlank()) {
+            requestedReferenceNo = generateNextReferenceNumber();
+        }
+        documentReferenceDTO.setReferenceNo(requestedReferenceNo);
 
         DocumentReference documentReference = documentReferenceMapper.toEntity(documentReferenceDTO);
         documentReference = documentReferenceRepository.save(documentReference);
@@ -104,6 +107,13 @@ public class DocumentReferenceService {
      */
     public DocumentReferenceDTO update(DocumentReferenceDTO documentReferenceDTO) {
         LOG.debug("Request to update DocumentReference : {}", documentReferenceDTO);
+
+        if (documentReferenceDTO.getReferenceNo() == null || documentReferenceDTO.getReferenceNo().isBlank()) {
+            documentReferenceRepository
+                .findById(documentReferenceDTO.getId())
+                .ifPresent(existing -> documentReferenceDTO.setReferenceNo(existing.getReferenceNo()));
+        }
+
         DocumentReference documentReference = documentReferenceMapper.toEntity(documentReferenceDTO);
         documentReference = documentReferenceRepository.save(documentReference);
         return documentReferenceMapper.toDto(documentReference);

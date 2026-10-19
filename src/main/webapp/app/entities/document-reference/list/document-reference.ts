@@ -285,16 +285,7 @@ export class DocumentReference implements OnInit {
         doc.setFontSize(14);
         doc.text('Document Reference Report', pageWidth / 2, 115, { align: 'center' });
         // Table setup
-        const columns = [
-          'Date',
-          'Reference No',
-          'Document Title',
-          'Type Of Document',
-          'Author',
-          'Date Released',
-          'Submitted To Sir King',
-          'Remarks',
-        ];
+        const columns = ['Date', 'Reference No', 'Document Title', 'Type Of Document', 'Author', 'Date Released', 'Remarks'];
         const tableRows = rows.map(documentReference => [
           this.formatDateTimeForPdf(documentReference.date),
           documentReference.referenceNo ?? '',
@@ -302,7 +293,6 @@ export class DocumentReference implements OnInit {
           documentReference.typeOfDocument?.name ?? '',
           documentReference.author ?? '',
           this.formatDateTimeForPdf(documentReference.dateReleased),
-          this.formatDateTimeForPdf(documentReference.submittedToSirKing),
           documentReference.remarks ?? '',
         ]);
         autoTable(doc, {

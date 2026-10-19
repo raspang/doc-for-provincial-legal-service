@@ -50,9 +50,6 @@ public class DocumentReference extends AbstractAuditingEntity<Long> implements S
     @Column(name = "date_released")
     private Instant dateReleased;
 
-    @Column(name = "submitted_to_sir_king")
-    private Instant submittedToSirKing;
-
     @Column(name = "remarks")
     private String remarks;
 
@@ -140,19 +137,6 @@ public class DocumentReference extends AbstractAuditingEntity<Long> implements S
         this.dateReleased = dateReleased;
     }
 
-    public Instant getSubmittedToSirKing() {
-        return this.submittedToSirKing;
-    }
-
-    public DocumentReference submittedToSirKing(Instant submittedToSirKing) {
-        this.setSubmittedToSirKing(submittedToSirKing);
-        return this;
-    }
-
-    public void setSubmittedToSirKing(Instant submittedToSirKing) {
-        this.submittedToSirKing = submittedToSirKing;
-    }
-
     public String getRemarks() {
         return this.remarks;
     }
@@ -208,7 +192,6 @@ public class DocumentReference extends AbstractAuditingEntity<Long> implements S
             ", documentTitle='" + getDocumentTitle() + "'" +
             ", author='" + getAuthor() + "'" +
             ", dateReleased='" + getDateReleased() + "'" +
-            ", submittedToSirKing='" + getSubmittedToSirKing() + "'" +
             ", remarks='" + getRemarks() + "'" +
             "}";
     }

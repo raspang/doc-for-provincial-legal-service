@@ -152,13 +152,6 @@
                 <fa-icon class="p-1" icon="sort" />
               </div>
             </th>
-            <th scope="col" jhiSortBy="submittedToSirKing">
-              <div class="d-flex">
-                <span>Submitted To Sir King</span>
-
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
             <th scope="col" jhiSortBy="remarks">
               <div class="d-flex">
                 <span>Remarks</span>
@@ -189,7 +182,6 @@
               </td>
               <td>{{ documentReference.author }}</td>
               <td>{{ documentReference.dateReleased | formatMediumDatetime }}</td>
-              <td>{{ documentReference.submittedToSirKing | formatMediumDatetime }}</td>
               <td>{{ documentReference.remarks }}</td>
               <td class="align-middle audit-log-cell">
                 <!-- Created Info -->
