@@ -861,7 +861,6 @@ class DocumentReferenceResourceIT {
             .documentTitle(UPDATED_DOCUMENT_TITLE)
             .author(UPDATED_AUTHOR)
             .dateReleased(UPDATED_DATE_RELEASED)
-            .submittedToSirKing(UPDATED_SUBMITTED_TO_SIR_KING)
             .remarks(UPDATED_REMARKS);
 
         restDocumentReferenceMockMvc
