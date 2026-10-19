@@ -60,9 +60,6 @@ class DocumentReferenceResourceIT {
     private static final Instant DEFAULT_DATE_RELEASED = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATE_RELEASED = Instant.ofEpochMilli(1786088823278L);
 
-    private static final Instant DEFAULT_SUBMITTED_TO_SIR_KING = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_SUBMITTED_TO_SIR_KING = Instant.ofEpochMilli(1786088823278L);
-
     private static final String DEFAULT_REMARKS = "AAAAAAAAAA";
     private static final String UPDATED_REMARKS = "BBBBBBBBBB";
 
@@ -110,7 +107,6 @@ class DocumentReferenceResourceIT {
             .documentTitle(DEFAULT_DOCUMENT_TITLE)
             .author(DEFAULT_AUTHOR)
             .dateReleased(DEFAULT_DATE_RELEASED)
-            .submittedToSirKing(DEFAULT_SUBMITTED_TO_SIR_KING)
             .remarks(DEFAULT_REMARKS);
         // Add required entity
         TypeOfDocument typeOfDocument;
@@ -138,7 +134,6 @@ class DocumentReferenceResourceIT {
             .documentTitle(UPDATED_DOCUMENT_TITLE)
             .author(UPDATED_AUTHOR)
             .dateReleased(UPDATED_DATE_RELEASED)
-            .submittedToSirKing(UPDATED_SUBMITTED_TO_SIR_KING)
             .remarks(UPDATED_REMARKS);
         // Add required entity
         TypeOfDocument typeOfDocument;
@@ -259,7 +254,6 @@ class DocumentReferenceResourceIT {
             .andExpect(jsonPath("$.[*].documentTitle").value(hasItem(DEFAULT_DOCUMENT_TITLE)))
             .andExpect(jsonPath("$.[*].author").value(hasItem(DEFAULT_AUTHOR)))
             .andExpect(jsonPath("$.[*].dateReleased").value(hasItem(DEFAULT_DATE_RELEASED.toString())))
-            .andExpect(jsonPath("$.[*].submittedToSirKing").value(hasItem(DEFAULT_SUBMITTED_TO_SIR_KING.toString())))
             .andExpect(jsonPath("$.[*].remarks").value(hasItem(DEFAULT_REMARKS)));
     }
 
@@ -297,7 +291,6 @@ class DocumentReferenceResourceIT {
             .andExpect(jsonPath("$.documentTitle").value(DEFAULT_DOCUMENT_TITLE))
             .andExpect(jsonPath("$.author").value(DEFAULT_AUTHOR))
             .andExpect(jsonPath("$.dateReleased").value(DEFAULT_DATE_RELEASED.toString()))
-            .andExpect(jsonPath("$.submittedToSirKing").value(DEFAULT_SUBMITTED_TO_SIR_KING.toString()))
             .andExpect(jsonPath("$.remarks").value(DEFAULT_REMARKS));
     }
 
@@ -549,42 +542,6 @@ class DocumentReferenceResourceIT {
 
     @Test
     @Transactional
-    void getAllDocumentReferencesBySubmittedToSirKingIsEqualToSomething() throws Exception {
-        // Initialize the database
-        insertedDocumentReference = documentReferenceRepository.saveAndFlush(documentReference);
-
-        // Get all the documentReferenceList where submittedToSirKing equals to
-        defaultDocumentReferenceFiltering(
-            "submittedToSirKing.equals=" + DEFAULT_SUBMITTED_TO_SIR_KING,
-            "submittedToSirKing.equals=" + UPDATED_SUBMITTED_TO_SIR_KING
-        );
-    }
-
-    @Test
-    @Transactional
-    void getAllDocumentReferencesBySubmittedToSirKingIsInShouldWork() throws Exception {
-        // Initialize the database
-        insertedDocumentReference = documentReferenceRepository.saveAndFlush(documentReference);
-
-        // Get all the documentReferenceList where submittedToSirKing in
-        defaultDocumentReferenceFiltering(
-            "submittedToSirKing.in=" + DEFAULT_SUBMITTED_TO_SIR_KING + "," + UPDATED_SUBMITTED_TO_SIR_KING,
-            "submittedToSirKing.in=" + UPDATED_SUBMITTED_TO_SIR_KING
-        );
-    }
-
-    @Test
-    @Transactional
-    void getAllDocumentReferencesBySubmittedToSirKingIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        insertedDocumentReference = documentReferenceRepository.saveAndFlush(documentReference);
-
-        // Get all the documentReferenceList where submittedToSirKing is not null
-        defaultDocumentReferenceFiltering("submittedToSirKing.specified=true", "submittedToSirKing.specified=false");
-    }
-
-    @Test
-    @Transactional
     void getAllDocumentReferencesByRemarksIsEqualToSomething() throws Exception {
         // Initialize the database
         insertedDocumentReference = documentReferenceRepository.saveAndFlush(documentReference);
@@ -674,7 +631,6 @@ class DocumentReferenceResourceIT {
             .andExpect(jsonPath("$.[*].documentTitle").value(hasItem(DEFAULT_DOCUMENT_TITLE)))
             .andExpect(jsonPath("$.[*].author").value(hasItem(DEFAULT_AUTHOR)))
             .andExpect(jsonPath("$.[*].dateReleased").value(hasItem(DEFAULT_DATE_RELEASED.toString())))
-            .andExpect(jsonPath("$.[*].submittedToSirKing").value(hasItem(DEFAULT_SUBMITTED_TO_SIR_KING.toString())))
             .andExpect(jsonPath("$.[*].remarks").value(hasItem(DEFAULT_REMARKS)));
 
         // Check, that the count call also returns 1
@@ -729,7 +685,6 @@ class DocumentReferenceResourceIT {
             .documentTitle(UPDATED_DOCUMENT_TITLE)
             .author(UPDATED_AUTHOR)
             .dateReleased(UPDATED_DATE_RELEASED)
-            .submittedToSirKing(UPDATED_SUBMITTED_TO_SIR_KING)
             .remarks(UPDATED_REMARKS);
         DocumentReferenceDTO documentReferenceDTO = documentReferenceMapper.toDto(updatedDocumentReference);
 

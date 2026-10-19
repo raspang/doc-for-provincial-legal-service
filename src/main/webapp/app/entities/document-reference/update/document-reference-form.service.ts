@@ -98,7 +98,6 @@ export class DocumentReferenceFormService {
       id: null,
       date: currentTime,
       // dateReleased: currentTime,
-      // submittedToSirKing: currentTime,
     };
   }
 

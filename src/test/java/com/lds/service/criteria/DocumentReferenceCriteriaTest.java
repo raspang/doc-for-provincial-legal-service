@@ -77,7 +77,6 @@ class DocumentReferenceCriteriaTest {
         documentReferenceCriteria.documentTitle();
         documentReferenceCriteria.author();
         documentReferenceCriteria.dateReleased();
-        documentReferenceCriteria.submittedToSirKing();
         documentReferenceCriteria.remarks();
         documentReferenceCriteria.typeOfDocumentId();
         documentReferenceCriteria.distinct();
@@ -92,7 +91,6 @@ class DocumentReferenceCriteriaTest {
                 condition.apply(criteria.getDocumentTitle()) &&
                 condition.apply(criteria.getAuthor()) &&
                 condition.apply(criteria.getDateReleased()) &&
-                condition.apply(criteria.getSubmittedToSirKing()) &&
                 condition.apply(criteria.getRemarks()) &&
                 condition.apply(criteria.getTypeOfDocumentId()) &&
                 condition.apply(criteria.getDistinct()),
@@ -112,7 +110,6 @@ class DocumentReferenceCriteriaTest {
                 condition.apply(criteria.getDocumentTitle(), copy.getDocumentTitle()) &&
                 condition.apply(criteria.getAuthor(), copy.getAuthor()) &&
                 condition.apply(criteria.getDateReleased(), copy.getDateReleased()) &&
-                condition.apply(criteria.getSubmittedToSirKing(), copy.getSubmittedToSirKing()) &&
                 condition.apply(criteria.getRemarks(), copy.getRemarks()) &&
                 condition.apply(criteria.getTypeOfDocumentId(), copy.getTypeOfDocumentId()) &&
                 condition.apply(criteria.getDistinct(), copy.getDistinct()),

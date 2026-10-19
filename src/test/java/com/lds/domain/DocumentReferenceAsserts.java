@@ -52,9 +52,6 @@ public class DocumentReferenceAsserts {
             .satisfies(a -> assertThat(a.getDocumentTitle()).as("check documentTitle").isEqualTo(expected.getDocumentTitle()))
             .satisfies(a -> assertThat(a.getAuthor()).as("check author").isEqualTo(expected.getAuthor()))
             .satisfies(a -> assertThat(a.getDateReleased()).as("check dateReleased").isEqualTo(expected.getDateReleased()))
-            .satisfies(a ->
-                assertThat(a.getSubmittedToSirKing()).as("check submittedToSirKing").isEqualTo(expected.getSubmittedToSirKing())
-            )
             .satisfies(a -> assertThat(a.getRemarks()).as("check remarks").isEqualTo(expected.getRemarks()));
     }
 

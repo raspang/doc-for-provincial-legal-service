@@ -11,7 +11,6 @@ const requireRestSample: RestDocumentReference = {
   ...sampleWithRequiredData,
   date: sampleWithRequiredData.date?.toJSON(),
   dateReleased: sampleWithRequiredData.dateReleased?.toJSON(),
-  submittedToSirKing: sampleWithRequiredData.submittedToSirKing?.toJSON(),
 };
 
 describe('DocumentReference Service', () => {

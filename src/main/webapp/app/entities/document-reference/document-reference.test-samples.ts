@@ -14,7 +14,6 @@ export const sampleWithPartialData: IDocumentReference = {
   referenceNo: 'over pushy for',
   documentTitle: 'upliftingly',
   dateReleased: dayjs('2026-08-06T16:05'),
-  submittedToSirKing: dayjs('2026-08-06T22:40'),
 };
 
 export const sampleWithFullData: IDocumentReference = {
@@ -24,7 +23,6 @@ export const sampleWithFullData: IDocumentReference = {
   documentTitle: 'needy',
   author: 'despite fatally fencing',
   dateReleased: dayjs('2026-08-07T05:51'),
-  submittedToSirKing: dayjs('2026-08-07T06:33'),
   remarks: 'pitiful presume psst',
 };
 
